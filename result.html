@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>占いの館「soleil」鑑定結果</title>
+  <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「Soleil」で使用する占いプログラムの結果閲覧ページ">
+  <meta name="robots" content="noindex,follow">
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .container { padding: 1rem; }
+    h1, h2 { color: var(--fg-accent); }
+    h2 { border-bottom: 1px solid var(--bg-accent); }
+  </style>
+</head>
+<body>
+  <div id="container" class="container">
+    <div id="display-view" class="card shrunk" style="position: relative;">
+      <div id="font-size" class="display-button-container">
+        <b>文字の大きさ</b>
+        <button class="display-button" data-size="small">極小</button>
+        <button class="display-button" data-size="smaller">小</button>
+        <button class="display-button" data-size="medium">中</button>
+        <button class="display-button" data-size="large">大</button>
+        <button class="display-button" data-size="larger">極大</button>
+      </div>
+      <div id="width" class="display-button-container">
+        <b>画面の幅</b>
+        <button class="display-button" data-width="768px">狭い</button>
+        <button class="display-button" data-width="1024px">標準</button>
+        <button class="display-button" data-width="1280px">広い</button>
+        <button class="display-button" data-width="100vw">画面全体</button>
+      </div>
+      <button id="hide-display" class="cross-container"><div class="cross"></div></button>
+    </div>
+
+    <div id="loading-view" class="card loading-card">
+      <div class="spinner"></div>
+      <p id="loading-text">占い結果を読み込んでいます...</p>
+    </div>
+
+    <div id="result-content" style="display: none;">
+      <div class="card">
+        <p id="timestamp" style="text-align: right;"></p>
+        <h1 id="booth-title"></h1>
+        <p id="booth-description"></p>
+      </div>
+
+      <div class="card">
+        <h2>あなたの運勢</h2>
+        <div id="fortune-list"></div>
+      </div>
+
+      <div class="card">
+        <p style="color: var(--fg-default); text-align: center;">あなたを象徴するキャラクター</p>
+        <h2 id="hero-title" style="text-align: center;"></h2>
+        <img id="hero-image" class="result-image" src="" alt="キャラクター画像">
+        <p id="hero-description" class="insert"></p>
+      </div>
+
+      <div class="card">
+        <h2>属性分析</h2>
+        <div id="attributes-list"></div>
+      </div>
+
+      <div class="card">
+        <p style="color: var(--fg-default); text-align: center;">アドバイス</p>
+        <h2 id="card-title" style="text-align: center;"></h2>
+        <img id="card-image" class="result-image" src="" alt="カード画像">
+        <p id="card-description" class="insert"></p>
+      </div>
+    </div>
+
+    <div id="feedback-view" class="card">
+      <h2>感想・不具合の報告</h2>
+      <p>占いをご体験くださりありがとうございました。高校生としてできる限りの工夫を凝らして企画しましたので、今後の生活の参考になりましたら幸いです。</p>
+      <form id="feedback-form">
+        <p>よろしければ、占いの感想などをこちらにご記入ください。もし表示などに不具合がございましたら、あわせてご記入ください。</p>
+        <textarea id="feedback-text" placeholder="記入は任意です。何回でも送信できます。" required></textarea>
+        <div class="button-container">
+          <button type="submit" class="navigation-button primary">送信する</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="log-view" class="card message-card" style="display: none;">
+      <p id="log-text" style="color: var(--fg-default);"></p>
+      <button id="hide-log" class="cross-container"><div class="cross"></div></button>
+    </div>
+    <div id="error-view" class="card message-card" style="display: none;">
+      <h2>エラー</h2>
+      <p id="error-text" style="margin: 0.5rem 0; color: var(--fg-default);"></p>
+      <p>エラーの内容や原因が不明な場合は、開発者までお知らせください。</p>
+      <button id="hide-error" class="cross-container"><div class="cross"></div></button>
+    </div>
+  </div>
+
+  <script>
+    // 画面の外観調整
+    const fontSizeButtons = document.querySelectorAll("#font-size button");
+    const widthButtons = document.querySelectorAll("#width button");
+
+    adjustFontSize(localStorage.getItem("result_font_size") || "medium");
+    adjustWidth(localStorage.getItem("result_width") || "768px");
+
+    function adjustFontSize(size) {
+      document.body.style.fontSize = size;
+      fontSizeButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.size === size));
+      localStorage.setItem("result_font_size", size);
+    }
+    function adjustWidth(width) {
+      document.body.style.setProperty("--content-width", width);
+      widthButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.width === width));
+      localStorage.setItem("result_width", width);
+    }
+
+    fontSizeButtons.forEach(btn => btn.addEventListener("click", () => adjustFontSize(btn.dataset.size)));
+    widthButtons.forEach(btn => btn.addEventListener("click", () => adjustWidth(btn.dataset.width)));
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const booth = urlParams.get("booth");
+    const index = urlParams.get("index");
+    const name = urlParams.get("name");
+    document.documentElement.setAttribute("booth-theme", booth || "none");
+
+    // 結果取得
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzcDhDJkbXbZEz3ozVlXg3-H15OeigkiT9-MLB9n0H9jEG6D3M0-KRgg-NJFxoYTYO-g/exec";
+
+    const displayView = document.getElementById("display-view");
+    const errorView = document.getElementById("error-view");
+    const loadingView = document.getElementById("loading-view");
+    const resultContent = document.getElementById("result-content");
+    const feedbackView = document.getElementById("feedback-view");
+    const logView = document.getElementById("log-view");
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        if (booth && index && name) {
+          const response = await fetch(`${SCRIPT_URL}?booth=${booth}&index=${index}&name=${encodeURIComponent(name)}`);
+          const json = await response.json();
+          if (!json.success) { throw new Error(json.message || "結果の取得に失敗しました。"); }
+          await renderResult(json);
+        } else {
+          feedbackView.style.display = "none";
+          throw new Error("無効なURLです。パラメータが含まれていません。");
+        }
+      } catch (err) {
+        loadingView.style.display = "none";
+        showError(err.message);
+      }
+    });
+
+    function renderResult(data) {
+      document.getElementById("timestamp").textContent = `鑑定日時 ${data.timestamp || "不明"}`;
+      document.getElementById("booth-title").textContent = data.concept.title;
+      document.getElementById("booth-description").textContent = data.concept.description;
+
+      // 運勢
+      const fortuneContainer = document.getElementById("fortune-list");
+      fortuneContainer.innerHTML = "";
+      if (data.fortune && Array.isArray(data.fortune)) {
+        for (const f of data.fortune) {
+          const score = Math.max(Math.min(Number(f.score), 5), 0);
+          const stars = "★".repeat(score) + "☆".repeat(5 - score);
+          const item = document.createElement("div");
+          item.className = "fortune-item";
+
+          const header = document.createElement("div");
+          header.className = "flex-container";
+          header.innerHTML = `
+            <h3>${f.title}</h3>
+            <span class="stars">${stars}</span>
+          `;
+          item.appendChild(header);
+
+          const description = document.createElement("div");
+          description.className = "flex-container";
+          for (const d of f.descriptions) {
+            const descriptionItem = document.createElement("span");
+            descriptionItem.className = "flex-item fortune-description";
+            descriptionItem.textContent = d;
+            description.appendChild(descriptionItem);
+          }
+          item.appendChild(description);
+
+          fortuneContainer.appendChild(item);
+        }
+      }
+
+      // キャラクター
+      document.getElementById("hero-title").textContent = data.character.title || `未知のキャラクター`;
+      document.getElementById("hero-description").textContent = data.character.description;
+      document.getElementById("hero-image").src = data.character.file || "";
+
+      // 属性
+      const attributesContainer = document.getElementById("attributes-list");
+      attributesContainer.innerHTML = "";
+      if (data.attributes && Array.isArray(data.attributes)) {
+        for (const a of data.attributes) {
+          const score = Math.max(Math.min(Number(a.score), 100), 0);
+          const item = document.createElement("div");
+          item.className = "attributes-item";
+
+          const header = document.createElement("div");
+          header.className = "flex-container";
+          header.innerHTML = `
+            <h3>${a.title}</h3>
+            <h3>${score} %</h3>
+          `;
+          item.appendChild(header);
+
+          const ratio = document.createElement("div");
+          ratio.className = "ratio-container";
+          ratio.innerHTML = `
+            <div class="ratio-bar" style="width: ${score}%"></div>
+          `;
+          item.appendChild(ratio);
+
+          const description = document.createElement("div");
+          description.className = "flex-container";
+          for (const d of a.descriptions) {
+            const descriptionItem = document.createElement("span");
+            descriptionItem.className = "flex-item";
+            descriptionItem.textContent = d;
+            description.appendChild(descriptionItem);
+          }
+          item.appendChild(description);
+
+          attributesContainer.appendChild(item);
+        }
+      }
+
+      // カード情報
+      document.getElementById("card-title").textContent = data.card.title || `未知のカード`;
+      document.getElementById("card-description").textContent = data.card.description;
+      document.getElementById("card-image").src = data.card.file || "";
+
+      loadingView.style.display = "none";
+      resultContent.style.display = "block";
+    }
+
+    // フィードバック送信
+    document.getElementById("feedback-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector("button");
+      const text = document.getElementById("feedback-text");
+
+      btn.disabled = true;
+      btn.textContent = "送信中...";
+
+      try {
+        const response = await fetch(SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify({
+            action: "postFeedback",
+            data: {
+              index: Number(index),
+              text: text.value
+            }
+          })
+        });
+        const json = await response.json();
+
+        if (json.success) {
+          showLog("感想を送信しました。ありがとうございました！");
+          document.getElementById("feedback-text").value = "";
+        } else {
+          throw new Error(json.message);
+        }
+      } catch (err) {
+        showError(`送信に失敗しました。\n${err.message}`);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "送信する";
+      }
+    });
+
+    // メッセージ表示
+    function showLog(text) {
+      console.log(text)
+      document.getElementById("log-text").textContent = String(text);
+      logView.style.display = "block";
+    }
+    function showError(text) {
+      console.error(text)
+      document.getElementById("error-text").textContent = String(text);
+      errorView.style.display = "block";
+    }
+    document.getElementById("hide-log").addEventListener("click", () => {
+      logView.style.display = "none";
+    });
+    document.getElementById("hide-error").addEventListener("click", () => {
+      errorView.style.display = "none";
+    });
+    document.getElementById("hide-display").addEventListener("click", () => {
+      displayView.style.display = "none";
+    });
+  </script>
+</body>
+</html>

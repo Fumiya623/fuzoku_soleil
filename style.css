@@ -1,0 +1,565 @@
+/* ---コンセプトにあった配色--- */
+/* 標準テーマ ミスティックパープル */
+:root {
+  --bg-default: #0f172a;
+  --bg-normal: #1e293b;
+  --bg-accent: #5b21b6;
+  --bg-eccentric: #6d28d9;
+  --fg-default: #cad1dc;
+  --fg-normal: #e5eaf0;
+  --fg-accent: #a855f7;
+  --fg-eccentric: #c084fc;
+}
+/* スナックすばる ネオンローズ */
+[booth-theme="snack"] {
+  --bg-default: #120914;
+  --bg-normal: #241429;
+  --bg-accent: #881337;
+  --bg-eccentric: #9f1239;
+  --fg-default: #fa9fae;
+  --fg-normal: #fed2d7;
+  --fg-accent: #e11d48;
+  --fg-eccentric: #fb7185;
+}
+/* ウチらが恋路占わんとす ギャルマゼンタ */
+[booth-theme="gal"] {
+  --bg-default: #180018;
+  --bg-normal: #2d002e;
+  --bg-accent: #86198f;
+  --bg-eccentric: #a21caf;
+  --fg-default: #f472b6;
+  --fg-normal: #ffb3ec;
+  --fg-accent: #e879f9;
+  --fg-eccentric: #f0abfc;
+}
+/* 人生元素解析 サイバーグリーン */
+[booth-theme="element"] {
+  --bg-default: #05140e;
+  --bg-normal: #0d281e;
+  --bg-accent: #065f46;
+  --bg-eccentric: #047857;
+  --fg-default: #6ee7b7;
+  --fg-normal: #a7f3d0;
+  --fg-accent: #10b981;
+  --fg-eccentric: #34d399;
+}
+/* オマエタチノミライウラナッテヤル コズミックブルー */
+[booth-theme="alien"] {
+  --bg-default: #030712;
+  --bg-normal: #111827;
+  --bg-accent: #075985;
+  --bg-eccentric: #0369a1;
+  --fg-default: #6b7280;
+  --fg-normal: #9ca3af;
+  --fg-accent: #0ea5e9;
+  --fg-eccentric: #38bdf8;
+}
+
+/* ---全体設定--- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+html, body {
+  width: 100%;
+  min-width: 256px;
+  min-height: 100vh;
+  background-color: #000000;
+  color: #ffffff;
+  font-family: sans-serif;
+  line-height: 1.6;
+}
+button, input, textarea {
+  font-size: inherit;
+}
+h1 {
+  font-size: 2rem;
+  margin: 0.5rem 0;
+  text-align: center;
+}
+h2 {
+  font-size: 1.5rem;
+  margin: 0.25rem 0;
+}
+h3 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+b {
+  color: var(--fg-default);
+}
+
+/* ---汎用的な要素--- */
+.container {
+  width: 100%;
+  height: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  background-color: var(--bg-default);
+  --sidebar-size-min: 4rem;
+  --sidebar-size-default: 22rem;
+  --sidebar-size-max: 52rem;
+  --sidebar-size: var(--sidebar-size-default);
+}
+
+p.insert {
+  white-space: pre-line;
+}
+
+.card {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: var(--bg-normal);
+  color: var(--fg-normal);
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 8px var(--bg-accent);
+}
+.card.emphasized {
+  text-align: center;
+  border: 2px dashed var(--fg-eccentric);
+}
+.card.shrunk {
+  padding: 0.25rem 1rem;
+}
+
+.loading-card {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border: 0.25rem solid var(--bg-accent);
+  border-top-color: var(--fg-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.display-button-container {
+  margin: 0.5rem 0;
+}
+.display-button {
+  margin: 0 0.125rem;
+  padding: 0.0625rem 0.25rem;
+  background-color: var(--bg-normal);
+  border: 2px solid var(--fg-accent);
+  border-radius: 0.25rem;
+  color: var(--fg-normal);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.display-button:hover {
+  border-color: var(--fg-eccentric);
+  box-shadow: 0 2px 6px var(--fg-eccentric);
+}
+.display-button.active {
+  background-color: var(--bg-eccentric);
+}
+
+.message-card {
+  position: relative;
+  background-color: var(--bg-accent);
+}
+.cross-container {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.cross {
+  width: 1rem;
+  height: 1rem;
+  position: relative;
+}
+.cross::before, .cross::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--fg-normal);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) rotate(45deg);
+}
+.cross::after {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+/* ---主に回答入力ページ用--- */
+/* 画面分割の設定 */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-size);
+  min-width: var(--sidebar-size-min);
+  max-width: var(--sidebar-size-max);
+  background-color: var(--bg-accent);
+  color: var(--fg-normal);
+  padding: 1rem;
+  overflow-y: auto;
+  transition: transform 0.2s ease, margin-left 0.2s ease;
+}
+
+.resizer {
+  position: relative;
+  width: 0.5rem;
+  background-color: var(--fg-default);
+  cursor: col-resize;
+  transition: background-color 0.2s;
+}
+.resizer:hover {
+  background-color: var(--fg-normal);
+}
+
+.resize-button {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  top: 0;
+  right: 100%;
+  border: 1.5rem solid transparent;
+  border-left-width: 0;
+  border-right-color: var(--fg-default);
+  transform-origin: right;
+  transition: background-color 0.2s, transform 0.2s ease;
+}
+.resize-button:hover {
+  border-right-color: var(--fg-normal);
+}
+
+.container.collapsed .sidebar {
+  margin-left: calc(-1 * clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)));
+  transform: translateX(calc(-1 * max((100vw - var(--content-width)) / 2, 0px)));
+}
+.container.collapsed .resizer {
+  width: 0;
+}
+.container.collapsed .resize-button {
+  transform: translateX(calc(-1 * max((100vw - var(--content-width)) / 2, 0px))) rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    --sidebar-size-default: 12rem;
+  }
+  .sidebar {
+    width: 100% !important;
+    height: var(--sidebar-size);
+    min-height: var(--sidebar-size-min);
+    max-height: var(--sidebar-size-max);
+    min-width: unset;
+    max-width: unset;
+    transition: transform 0.2s ease, margin-top 0.2s ease;
+  }
+  .resizer {
+    width: 100%;
+    height: 0.5rem;
+    cursor: row-resize;
+  }
+  .resize-button {
+    top: unset;
+    right: unset;
+    left: 0.5rem;
+    bottom: 100%;
+    border: 1.5rem solid transparent;
+    border-top-width: 0;
+    border-bottom-color: var(--fg-default);
+    transform-origin: bottom;
+  }
+  .resize-button:hover {
+    border-right-color: transparent;
+    border-bottom-color: var(--fg-eccentric);
+  }
+  .container.collapsed .sidebar {
+    margin-left: 0 !important;
+    margin-top: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) * -1);
+  }
+  .container.collapsed .resizer {
+    height: 0;
+  }
+  #width {
+    display: none;
+  }
+}
+
+/* サイドバー内の要素 */
+.form-bar {
+  display: none;
+  margin: 2rem 0;
+}
+.form-bar.active {
+  display: block;
+}
+.form-bar.preview {
+  display: block;
+  padding: 0.25rem;
+  background-color: var(--bg-eccentric);
+  color: var(--fg-default);
+  font-size: 75%;
+}
+#sidebar-content p {
+  margin: 0.5rem 0;
+}
+
+/* 本文の要素 */
+.main-content {
+  flex: 1;
+  padding: 0 1rem;
+  background-color: var(--bg-default);
+  overflow-y: auto;
+}
+
+.progress-container {
+  background-color: var(--bg-accent);
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background-color: var(--fg-accent);
+  transition: width 0.2s ease;
+}
+
+.form-card {
+  display: none;
+}
+.form-card.active {
+  display: block;
+  animation: fadeIn 0.2s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.choices-container.list {
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.choices-container.grid {
+  margin: 0.5rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+.choice-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.5rem 1.5rem;
+  background-color: var(--bg-normal);
+  border: 2px solid var(--fg-accent);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.choice-option:hover {
+  border-color: var(--fg-eccentric);
+}
+.choice-option input[type="radio"] {
+  position: absolute;
+  top: 50%;
+  left: 0.5rem;
+  accent-color: var(--fg-accent);
+  transform: translateY(-50%) scale(1.2);
+}
+.choice-option:has(input[type="radio"]:checked) {
+  border-color: var(--fg-accent);
+  background: var(--bg-accent);
+}
+.choice-image {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-description-container {
+  display: none;
+}
+.card-description-container.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.card-description-container img {
+  max-width: 50%;
+}
+.card-description {
+  flex: 1;
+}
+
+.link-container {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+}
+.link {
+  display: block;
+  padding: 0.5rem;
+  background-color: var(--bg-default);
+  border: 2px solid var(--fg-accent);
+  border-radius: 0.25rem;
+  color: var(--fg-normal);
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+.link:hover {
+  border-color: var(--fg-eccentric);
+  box-shadow: 0 2px 6px var(--fg-eccentric);
+  transform: translateY(-2px);
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem 0;
+}
+.navigation-button {
+  flex: 1;
+  padding: 0.5rem;
+  background-color: var(--bg-normal);
+  border: 2px solid var(--fg-accent);
+  color: var(--fg-normal);
+  border-radius: 0.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.navigation-button:hover {
+  border-color: var(--fg-eccentric);
+  box-shadow: 0 2px 6px var(--fg-eccentric);
+}
+.navigation-button:active {
+  transform: scale(0.99);
+}
+.navigation-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.navigation-button.primary {
+  background-color: var(--bg-accent);
+}
+.navigation-button.primary:hover {
+  background-color: var(--bg-eccentric);
+}
+
+.input-field {
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border: 2px solid var(--fg-accent);
+  border-radius: 0.25rem;
+  background-color: var(--bg-normal);
+  color: var(--fg-normal);
+  text-align: center;
+  letter-spacing: 1px;
+  outline: none;
+}
+.input-field:focus {
+  border-color: var(--fg-eccentric);
+}
+
+.big-number {
+  margin: 0.25rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--fg-accent);
+  letter-spacing: 1px;
+}
+
+/* ---主に結果閲覧ページ用--- */
+textarea {
+  width: 100%;
+  height: 7rem;
+  margin: 0.25rem 0;
+  padding: 0.5rem;
+  border: 1px solid var(--fg-accent);
+  border-radius: 0.25rem;
+  background-color: var(--bg-normal);
+  color: var(--fg-normal);
+  outline: none;
+  resize: vertical;
+  min-height: 2rem;
+}
+textarea:focus {
+  border-color: var(--fg-eccentric);
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  gap: 1rem;
+}
+.flex-item {
+  min-width: 0;
+  color: var(--fg-default);
+}
+
+.fortune-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px dashed var(--bg-accent);
+}
+.fortune-item:last-child {
+  border-bottom: none;
+}
+.fortune-description:first-child::before {
+  content: "★1 ";
+}
+.fortune-description:last-child::after {
+  content: " ★5";
+}
+.stars {
+  color: #f59e0b;
+  font-size: 1.25rem;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.attributes-item {
+  padding: 0.5rem 0;
+}
+
+.ratio-container {
+  background-color: var(--bg-accent);
+  height: 0.5rem;
+  border-radius: 0.25rem;
+  margin-bottom: 0.25rem;
+  overflow: hidden;
+}
+.ratio-bar {
+  width: 0%;
+  height: 100%;
+  background-color: var(--fg-accent);
+  transition: width 0.2s ease-out;
+}
+
+.result-image {
+  width: 50%;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  margin: 0.5rem auto;
+  display: block;
+  box-shadow: 0 2px 6px var(--fg-accent);
+}
