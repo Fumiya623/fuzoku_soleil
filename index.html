@@ -71,7 +71,7 @@
 
       <div id="login-card" class="card shrunk">
         <div class="button-container">
-          <button class="navigation-button primary" onclick="handleAuth()">ログイン</button>
+          <button id="login-button" class="navigation-button primary">ログイン</button>
         </div>
       </div>
 
@@ -209,34 +209,44 @@
         const tokenExpiry = localStorage.getItem("gas_token_expiry");
         if (savedToken && tokenExpiry && Date.now() < parseInt(tokenExpiry)) {
           accessToken = savedToken;
-          loadQuestions();
         }
       } else {
         loadingView.style.display = "none";
         portalView.style.display = "block";
       }
+      waitForGSI();
     });
 
-    tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: CLIENT_ID,
-      scope: SCOPES,
-      callback: async (tokenResponse) => {
-        if (tokenResponse.error) {
-          showError(`認証エラーが発生しました。\n${tokenResponse}`);
-          return;
-        }
-        accessToken = tokenResponse.access_token;
+    function waitForGSI() {
+      if (window.google && google.accounts) {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: async (tokenResponse) => {
+            if (tokenResponse.error) {
+              showError(`認証エラーが発生しました。\n${tokenResponse}`);
+              return;
+            }
+            accessToken = tokenResponse.access_token;
 
-        localStorage.setItem("gas_access_token", accessToken);
-        localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 300) * 1000));
-        if (booth) {
-          await loadQuestions();
-        } else {
-          showLog("アカウントが認証されました。");
-          document.getElementById("login-card").style.display = "none";
-        }
+            localStorage.setItem("gas_access_token", accessToken);
+            localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 300) * 1000));
+            if (booth) {
+              await loadQuestions();
+            } else {
+              showLog("アカウントが認証されました。");
+              document.getElementById("login-card").style.display = "none";
+            }
+          }
+        });
+
+        document.getElementById("login-button").addEventListener("click", handleAuth)
+        if (accessToken) { loadQuestions(); }
+
+      } else {
+        setTimeout(waitForGSI, 50);
       }
-    });
+    }
 
     function handleAuth(require = false) {
       tokenClient.requestAccessToken({ prompt: require ? "consent" : "" });
