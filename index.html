@@ -156,7 +156,7 @@
     });
     resizer.addEventListener("dblclick", () => {
       document.body.style.setProperty("--sidebar-size", "var(--sidebar-size-default)");
-    })
+    });
 
     let isResizing = false;
 
@@ -254,7 +254,7 @@
           }
         });
 
-        document.getElementById("login-button").addEventListener("click", handleAuth)
+        document.getElementById("login-button").addEventListener("click", handleAuth);
         if (accessToken) { loadQuestions(); }
 
       } else {
@@ -416,7 +416,7 @@
         <h2>カード選択</h2>
         <p>お客さんに画面を見せ、直感で一つ選んでもらいます。</p>
       `;
-      sidebar.appendChild(cardBar)
+      sidebar.appendChild(cardBar);
 
       const cardCard = document.createElement("div");
       cardCard.className = "card form-card";
@@ -454,7 +454,7 @@
         <h2>カード解説</h2>
         <p>選んだカードの説明は、後で見ることもできます。</p>
       `;
-      sidebar.appendChild(descriptionBar)
+      sidebar.appendChild(descriptionBar);
 
       const descriptionWrapper = document.createElement("div");
       descriptionWrapper.className = "card form-card";
@@ -469,10 +469,10 @@
             <p class="insert">${cho.description}</p>
           </div>
         `;
-        cardContainer.dataset.index = cho.index
+        cardContainer.dataset.index = cho.index;
         descriptionWrapper.appendChild(cardContainer);
       }
-      container.appendChild(descriptionWrapper)
+      container.appendChild(descriptionWrapper);
 
       const descriptionBadge = document.createElement("div");
       descriptionBadge.textContent = "選んだカードの解説";
@@ -487,7 +487,7 @@
         <h2>結果番号の入力</h2>
         <p>入力・送信中もトークをつなぎます。今日の占いを振り返り、お客さんの印象などを伝えましょう。</p>
       `;
-      sidebar.appendChild(codeBar)
+      sidebar.appendChild(codeBar);
 
       const codeCard = document.createElement("div");
       codeCard.className = "card form-card";
@@ -495,7 +495,7 @@
         <h1>おつかれさまでした</h1>
         <p>占い師が、結果を保存する<b>二次元コード用紙</b>を一つ取り、印字された4桁の番号を入力します。</p>
         <input type="number" id="code-index" class="input-field" placeholder="0000" min="1000" max="9999" required>
-      `
+      `;
       container.appendChild(codeCard);
 
       const codeBadge = document.createElement("div");
@@ -517,7 +517,7 @@
       for (const [idx, bar] of document.querySelectorAll(".form-bar").entries()) {
         bar.classList.toggle("active", idx === currentStep);
         bar.classList.toggle("preview", idx === currentStep - 1 || idx === currentStep + 1);
-        bar.querySelector("strong").textContent = idx === currentStep - 1 ? "前の項目：" : idx === currentStep + 1 ? "次の項目：" : ""
+        bar.querySelector("strong").textContent = idx === currentStep - 1 ? "前の項目：" : idx === currentStep + 1 ? "次の項目：" : "";
       }
       for (const [idx, card] of document.querySelectorAll(".form-card").entries()) {
         card.classList.toggle("active", idx === currentStep);
@@ -549,13 +549,13 @@
       }
       currentStep++;
       updateStepDisplay();
-    })
+    });
     prevButton.addEventListener("click", () => {
       if (currentStep > 0) {
         currentStep--;
         updateStepDisplay();
       }
-    })
+    });
 
     formView.addEventListener("input", () => { isFormChanged = true; });
     formView.addEventListener("submit", async (e) => {
@@ -592,14 +592,14 @@
         formView.style.display = "block";
       }
       loadingView.style.display = "none";
-    })
+    });
     document.getElementById("reset-button").addEventListener("click", () => {
       formView.reset();
       currentStep = 0;
       updateStepDisplay();
       successView.style.display = "none";
       formView.style.display = "block";
-    })
+    });
 
     function updateLocalData() {
       const table = document.getElementById("local-data-table");
@@ -664,17 +664,17 @@
       isFormChanged = false;
       formView.style.display = "none";
       successView.style.display = "block";
-    })
+    });
 
     // メッセージ表示
     function showLog(text) {
-      console.log(text)
+      console.log(text);
       document.getElementById("log-text").textContent = String(text);
       logView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
     }
     function showError(text) {
-      console.error(text)
+      console.error(text);
       document.getElementById("error-text").textContent = String(text);
       localSaveButton.style.display = "none";
       errorView.style.display = "block";
