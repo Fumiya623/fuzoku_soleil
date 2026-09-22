@@ -823,7 +823,7 @@ summary {
 details > div {
   margin: 0 0.5rem;
 }
-details > ul, details > ol {
+details > p, details > ul, details > ol {
   margin: 0.25rem 0.5rem;
 }
 
