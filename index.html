@@ -4,110 +4,120 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>占いの館「soleil」入力フォーム</title>
-  <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「Soleil」で使用する占いプログラムの回答入力ページ">
+  <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「soleil」で使用する占いプログラムの回答入力ページ">
   <meta name="robots" content="noindex,follow">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
   <link rel="stylesheet" href="style.css">
-  <style>
-    html, body { height: 100%; overflow: hidden; }
-    .container { display: flex; }
-    h1, h2 { color: var(--fg-default); }
-  </style>
 </head>
 <body>
-  <div id="container" class="container">
-    <div class="sidebar">
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-container">
       <h1 id="booth-title">占いの館「soleil」</h1>
-      <div id="sidebar-content" style="flex: 1;">
+      <div id="sidebar-content" class="sidebar-content">
         <p>こちらは模擬店スタッフ用の内部システムです。</p>
-        <p>模擬店スタッフは事前に登録したアカウントでログインしてください。</p>
-        <p><b>操作のヒント：</b>三角形を押すと、このサイドバーを隠したり再表示したりすることができます。境界線をドラッグすると区切り幅が変わり、境界線をダブルクリックすると初めの位置に戻ります。</p>
+        <p><b>操作のヒント：</b>三角形を押すと、このサイドバーを隠したり再表示したりすることができます。境界線をドラッグすると幅が変わり、境界線をダブルクリックすると初めの位置に戻ります。</p>
       </div>
+      <table id="local-data-table" style="display: none;">
+        <thead>
+          <tr>
+            <th>結果番号</th>
+            <th>回答</th>
+            <th>カード</th>
+            <th>再送信</th>
+          </tr>
+        </thead>
+        <tbody id="local-data"></tbody>
+      </table>
       <div id="font-size" class="display-button-container">
-        <b>文字の大きさ</b>
-        <button class="display-button" data-size="small">極小</button>
-        <button class="display-button" data-size="smaller">小</button>
-        <button class="display-button" data-size="medium">中</button>
-        <button class="display-button" data-size="large">大</button>
-        <button class="display-button" data-size="larger">極大</button>
+        <strong>文字の大きさ</strong>
+        <div>
+          <button class="display-button" data-size="small">極小</button>
+          <button class="display-button" data-size="smaller">小</button>
+          <button class="display-button" data-size="medium">中</button>
+          <button class="display-button" data-size="large">大</button>
+          <button class="display-button" data-size="larger">極大</button>
+        </div>
       </div>
       <div id="width" class="display-button-container">
-        <b>画面の幅</b>
-        <button class="display-button" data-width="768px">狭い</button>
-        <button class="display-button" data-width="1024px">標準</button>
-        <button class="display-button" data-width="1280px">広い</button>
-        <button class="display-button" data-width="100vw">画面全体</button>
+        <strong>画面の幅</strong>
+        <div>
+          <button class="display-button" data-width="768px">狭い</button>
+          <button class="display-button" data-width="1024px">標準</button>
+          <button class="display-button" data-width="1280px">広い</button>
+          <button class="display-button" data-width="100vw">画面全体</button>
+        </div>
       </div>
     </div>
     <div id="resizer" class="resizer">
       <button id="resize-button" class="resize-button"></button>
     </div>
-
-    <div class="main-content">
-      <div id="log-view" class="card message-card" style="display: none;">
-        <p id="log-text" style="color: var(--fg-default);"></p>
-        <button id="hide-log" class="cross-container"><div class="cross"></div></button>
-      </div>
-      <div id="error-view" class="card message-card" style="display: none;">
-        <h2>エラー</h2>
-        <p id="error-text" style="margin: 0.5rem 0; color: var(--fg-default);"></p>
-        <p>エラーの内容や原因が不明な場合は、開発者までお知らせください。</p>
-        <button id="hide-error" class="cross-container"><div class="cross"></div></button>
-      </div>
-
-      <div id="portal-view" class="card" style="display: none;">
-        <h1>占いの館「soleil」へようこそ</h1>
-        <p>開校記念祭において、有志模擬店として占いの館を出店しています。</p>
-        <p>模擬店スタッフは下記のブース別ページを開き、事前に登録したアカウントでログインしてください。</p>
-        <div class="link-container">
-          <a href="?booth=snack" class="link" style="border-color: #f43f5e !important;">スナックママの人生の転機占い</a>
-          <a href="?booth=gal" class="link" style="border-color: #f472b6 !important;">ギャルの恋愛占い</a>
-          <a href="?booth=element" class="link" style="border-color: #34d399 !important;">マッドサイエンティストの元素占い</a>
-          <a href="?booth=alien" class="link" style="border-color: #38bdf8 !important;">宇宙人の未知の才能占い</a>
-        </div>
-        <p>「<b>アクセスをブロック: Soleilシステム は Google の審査プロセスを完了していません</b>」と表示される場合、ログインしたアカウントは登録されていません。間違いだと思われる場合は、開発者までお知らせください。</p>
-      </div>
-
-      <div id="login-card" class="card shrunk">
-        <div class="button-container">
-          <button id="login-button" class="navigation-button primary">ログイン</button>
-        </div>
-      </div>
-
-      <div id="loading-view" class="card loading-card" style="display: none;">
-        <div class="spinner"></div>
-        <p id="loading-text">ブースの情報を取得しています...</p>
-      </div>
-
-      <form id="form-view" style="display: none;">
-        <div class="progress-container">
-          <div id="progress-bar" class="progress-bar"></div>
-        </div>
-        <div id="questions-container"></div>
-        <div class="button-container">
-          <button type="button" id="prev-button" class="navigation-button" style="display: none;">戻る</button>
-          <button type="button" id="next-button" class="navigation-button primary">進む</button>
-          <button type="submit" id="submit-button" class="navigation-button primary" style="display: none;">送信する</button>
-        </div>
-      </form>
-
-      <div id="success-view" class="card" style="display: none;">
-        <h1>占い完了</h1>
-        <p>結果が保存されました。</p>
-        <div class="card emphasized">
-          <p>結果の登録番号</p>
-          <span id="submitted-code-index" class="big-number"></span>
-          <div id="result-link" class="link-container"></div>
-        </div>
-        <p>印字された番号をよく確かめて、<b>二次元コードの紙</b>を受け取ってください。</p>
-        <p>ブースから出たら、<b>パワーストーン</b>も受け取ってください。</p>
-        <div class="button-container">
-          <button type="button" id="reset-button" class="navigation-button primary">占いを終了する</button>
-        </div>
-      </div>
-    </div>
   </div>
+
+  <main class="shrunk">
+    <div id="log-view" class="card message-card" style="display: none;">
+      <p id="log-text" style="color: var(--fg-default);"></p>
+      <button id="hide-log" class="cross-container"><div class="cross"></div></button>
+    </div>
+    <div id="error-view" class="card message-card" style="display: none;">
+      <h2>エラー</h2>
+      <p id="error-text" style="margin: 0.5rem 0; color: var(--fg-default);"></p>
+      <p>エラーの内容や原因が不明な場合は、開発者までお知らせください。</p>
+      <button id="local-save-button" class="display-button" style="display: none;" data-items="">一時的にローカル保存する（結果番号をよく確かめてください）</button>
+      <button id="hide-error" class="cross-container"><div class="cross"></div></button>
+    </div>
+
+    <section id="portal-view" class="card" style="display: none;">
+      <h1>占いの館「soleil」へようこそ</h1>
+      <p>ここは占いの館「soleil」。思わず「それ言う？」と言いたくなる正直な占いを提供します。占い師との対話の中で、お客様の運命がおのずと導き出されることでしょう。開校記念祭にて、1年C組でお待ちしております。</p>
+      <p>模擬店スタッフは下記のブース別ページを開き、事前に登録したアカウントでログインしてください。</p>
+      <nav class="link-container">
+        <a href="?booth=snack" class="link" style="border-color: #fb7185 !important;">スナックママの人生の転機占い</a>
+        <a href="?booth=gal" class="link" style="border-color: #f0abfc !important;">ギャルの恋愛占い</a>
+        <a href="?booth=element" class="link" style="border-color: #34d399 !important;">マッドサイエンティストの元素占い</a>
+        <a href="?booth=alien" class="link" style="border-color: #38bdf8 !important;">宇宙人の未知の才能占い</a>
+      </nav>
+    </section>
+
+    <div id="login-card" class="card">
+      <button id="login-button" class="navigation-button primary login-button">ログイン</button>
+      <p>占い師ページを開く人は、事前に<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header" target="_blank" rel="noopener noreferrer">専用Googleフォーム</a>でメールアドレスを送信してください。開発者がシステムに登録し、Googleで承認されるまで最大数時間かかります。</p>
+      <p>「<b>アクセスをブロック: Soleilシステム は Google の審査プロセスを完了していません</b>」と表示される場合、ログインしようとしたアカウントは登録されていません。間違いだと思われる場合は、開発者までお知らせください。</p>
+    </div>
+
+    <div id="loading-view" class="card loading-card" style="display: none;">
+      <div class="spinner"></div>
+      <p id="loading-text">ブースの情報を取得しています...</p>
+    </div>
+
+    <form id="form-view" style="display: none;">
+      <div class="progress-container">
+        <div id="progress-bar" class="progress-bar"></div>
+      </div>
+      <div id="questions-container"></div>
+      <div class="navigation-button-container">
+        <button type="button" id="prev-button" class="navigation-button" style="display: none;">戻る</button>
+        <button type="button" id="next-button" class="navigation-button primary">進む</button>
+        <button type="submit" id="submit-button" class="navigation-button primary" style="display: none;">送信する</button>
+      </div>
+      <div id="navigation-badge" class="navigation-badge"></div>
+    </form>
+
+    <section id="success-view" class="card" style="display: none;">
+      <h1>占い完了</h1>
+      <p>結果が保存されました。</p>
+      <div class="card emphasized">
+        <p>結果の登録番号</p>
+        <span id="submitted-code-index" class="big-number"></span>
+        <div id="result-link" class="link-container"></div>
+      </div>
+      <p>印字された番号をよく確かめて、<b>二次元コード用紙</b>を占い師から受け取ってください。</p>
+      <p>ブースから出たら、<b>パワーストーン</b>も受け取ってください。</p>
+      <div class="navigation-button-container">
+        <button type="button" id="reset-button" class="navigation-button primary">占いを終了する</button>
+      </div>
+    </section>
+  </main>
 
   <script>
     // 画面の外観調整
@@ -136,15 +146,16 @@
     document.documentElement.setAttribute("booth-theme", booth || "none");
 
     // 折りたたみ機能
-    const container = document.getElementById("container");
+    const main = document.querySelector("main");
     const resizer = document.getElementById("resizer");
     const resizeButton = document.getElementById("resize-button");
 
     resizeButton.addEventListener("click", () => {
-      container.classList.toggle("collapsed");
+      main.classList.toggle("shrunk");
+      document.getElementById("sidebar").classList.toggle("collapsed");
     });
     resizer.addEventListener("dblclick", () => {
-      container.style.setProperty("--sidebar-size", "var(--sidebar-size-default)");
+      document.body.style.setProperty("--sidebar-size", "var(--sidebar-size-default)");
     })
 
     let isResizing = false;
@@ -158,13 +169,13 @@
     document.addEventListener("mousemove", (e) => {
       if (!isResizing) return;
       if (window.innerWidth <= 768) {
-        const containerRect = container.getBoundingClientRect();
+        const containerRect = document.body.getBoundingClientRect();
         const newHeight = e.clientY - containerRect.top;
-        container.style.setProperty("--sidebar-size", `${newHeight}px`);
+        document.body.style.setProperty("--sidebar-size", `${newHeight}px`);
       } else {
-        const containerRect = container.getBoundingClientRect();
+        const containerRect = document.body.getBoundingClientRect();
         const newWidth = e.clientX - containerRect.left;
-        container.style.setProperty("--sidebar-size", `${newWidth}px`);
+        document.body.style.setProperty("--sidebar-size", `${newWidth}px`);
       }
     });
 
@@ -183,16 +194,18 @@
       if (!isResizing) return;
       const touch = e.touches[0];
       if (window.innerWidth <= 768) {
-        const containerRect = container.getBoundingClientRect();
+        const containerRect = main.getBoundingClientRect();
         const newHeight = touch.clientY - containerRect.top;
-        container.style.setProperty("--sidebar-size", `${newHeight}px`);
+        document.body.style.setProperty("--sidebar-size", `${newHeight}px`);
       } else {
-        const containerRect = container.getBoundingClientRect();
+        const containerRect = main.getBoundingClientRect();
         const newWidth = touch.clientX - containerRect.left;
-        container.style.setProperty("--sidebar-size", `${newWidth}px`);
+        document.body.style.setProperty("--sidebar-size", `${newWidth}px`);
       }
     });
     document.addEventListener("touchend", () => { isResizing = false; });
+
+    document.querySelectorAll("a").forEach(tag => tag.addEventListener('dragstart', (e) => { if (isResizing) { e.preventDefault(); } }));
 
     // GASからのデータ取得
     const CLIENT_ID = "217598875934-4chp1r2f91aadptieqegdv62mtgrrkqh.apps.googleusercontent.com";
@@ -203,7 +216,8 @@
     let accessToken = null;
 
     document.addEventListener("DOMContentLoaded", () => {
-      container.style.transition = "all 0.2s ease"; // 読み込み時は瞬間的に幅を決めてボタン押下時のみ滑らかにする
+      main.style.transition = "all 0.2s ease";
+      updateLocalData();
       if (booth) {
         const savedToken = localStorage.getItem("gas_access_token");
         const tokenExpiry = localStorage.getItem("gas_token_expiry");
@@ -224,13 +238,13 @@
           scope: SCOPES,
           callback: async (tokenResponse) => {
             if (tokenResponse.error) {
-              showError(`認証エラーが発生しました。\n${tokenResponse}`);
+              showError(`認証エラーが発生しました。\n${JSON.stringify(tokenResponse.error)}`);
               return;
             }
             accessToken = tokenResponse.access_token;
 
             localStorage.setItem("gas_access_token", accessToken);
-            localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 300) * 1000));
+            localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 60) * 1000));
             if (booth) {
               await loadQuestions();
             } else {
@@ -248,15 +262,12 @@
       }
     }
 
-    function handleAuth(require = false) {
-      tokenClient.requestAccessToken({ prompt: require ? "consent" : "" });
+    function handleAuth(free = true) {
+      tokenClient.requestAccessToken({ prompt: free ? "" : "consent" });
     }
 
     async function callGasFunction(functionName, parameters = []) {
-      if (!accessToken) {
-        showLog("Googleアカウントでログインして、アクセスを認証してください。");
-        return null;
-      }
+      if (!accessToken) { return { success: false, message: "Googleアカウントでログインして、アクセスを認証してください。" }; }
 
       try {
         const response = await fetch(`https://script.googleapis.com/v1/scripts/${SCRIPT_ID}:run`, {
@@ -273,15 +284,11 @@
         });
 
         const json = await response.json();
-        if (json.error) {
-          showError(`関数${functionName}の実行時にエラーが発生しました。\n${json.error}`);
-          return null;
-        }
+        if (json.error) { return { success: false, message: `関数${functionName}の実行時にエラーが発生しました。\n${JSON.stringify(json.error)}` }; }
         return json.response.result;
 
       } catch (err) {
-        showError(`通信エラーが発生しました。\n${err}`);
-        return null;
+        return { success: false, message: `通信エラーが発生しました。\n${err}`, local: true };
       }
     }
 
@@ -297,7 +304,9 @@
     const prevButton = document.getElementById("prev-button");
     const nextButton = document.getElementById("next-button");
     const submitButton = document.getElementById("submit-button");
+    const localSaveButton = document.getElementById("local-save-button");
 
+    let localData = [];
     let isFormChanged = false;
 
     let currentStep = 0;
@@ -319,7 +328,7 @@
       if (json && json.success) {
         renderForm(json);
       } else {
-        showError(json.message || "データの取得に失敗しました。");
+        showError(json && json.message || "データの取得に失敗しました。");
       }
       loadingView.style.display = "none";
     }
@@ -330,6 +339,8 @@
 
       const container = document.getElementById("questions-container");
       container.innerHTML = "";
+      const navigationBadge = document.getElementById("navigation-badge");
+      navigationBadge.innerHTML = "";
 
       questionCount = data.questions.length;
       totalSteps = 0;
@@ -338,7 +349,7 @@
       const conceptBar = document.createElement("div");
       conceptBar.className = "form-bar active";
       conceptBar.innerHTML = `
-        <b></b>
+        <strong></strong>
         <h2>担当者</h2>
         <p class="insert">${data.concept.staff}</p>
       `;
@@ -357,7 +368,7 @@
       for (const que of data.questions) {
         const questionBar = document.createElement("div");
         questionBar.className = "form-bar";
-        questionBar.appendChild(document.createElement("b"));
+        questionBar.appendChild(document.createElement("strong"));
 
         const barTitle = document.createElement("h2");
         barTitle.textContent = `質問${que.index}`;
@@ -373,7 +384,7 @@
         const questionCard = document.createElement("div");
         questionCard.className = "card form-card";
         questionCard.innerHTML = `
-          <h2>質問${que.index}</h2>
+          <div class="flex-container"><h2>質問${que.index}</h2><span class="form-badge">${que.notes[0] || ""}</span></div>
           <p class="insert">${que.description}</p>
         `;
 
@@ -390,6 +401,10 @@
         }
         questionCard.appendChild(choicesWrapper);
         container.appendChild(questionCard);
+
+        const badge = document.createElement("div");
+        badge.textContent = String(que.notes[0]) || `質問${que.index}`;
+        navigationBadge.appendChild(badge);
         totalSteps++;
       }
 
@@ -397,10 +412,9 @@
       const cardBar = document.createElement("div");
       cardBar.className = "form-bar";
       cardBar.innerHTML = `
-        <b></b>
+        <strong></strong>
         <h2>カード選択</h2>
-        <p>紙のカードを机に並べ、お客さんに直感で一つ選んでもらいます。<br>お客さんが選んだものと同じカードを、画面上で選択します。</p>
-        <p>※紙のカードがない場合はお客さんにこの画面を見せて、直接選んでもらいます。</p>
+        <p>お客さんに画面を見せ、直感で一つ選んでもらいます。</p>
       `;
       sidebar.appendChild(cardBar)
 
@@ -426,13 +440,17 @@
       }
       cardCard.appendChild(cardsWrapper);
       container.appendChild(cardCard);
+
+      const cardBadge = document.createElement("div");
+      cardBadge.textContent = "直感カード選択";
+      navigationBadge.appendChild(cardBadge);
       totalSteps++;
 
       // カード解説
       const descriptionBar = document.createElement("div");
       descriptionBar.className = "form-bar";
       descriptionBar.innerHTML = `
-        <b></b>
+        <strong></strong>
         <h2>カード解説</h2>
         <p>選んだカードの説明は、後で見ることもできます。</p>
       `;
@@ -455,15 +473,19 @@
         descriptionWrapper.appendChild(cardContainer);
       }
       container.appendChild(descriptionWrapper)
+
+      const descriptionBadge = document.createElement("div");
+      descriptionBadge.textContent = "選んだカードの解説";
+      navigationBadge.appendChild(descriptionBadge);
       totalSteps++;
 
       // 結果番号の入力
       const codeBar = document.createElement("div");
       codeBar.className = "form-bar";
       codeBar.innerHTML = `
-        <b></b>
+        <strong></strong>
         <h2>結果番号の入力</h2>
-        <p>うまく保存できない場合は、再読み込みなどせずに、一時的に保存する機能を利用し、後で保存します。</p>
+        <p>入力・送信中もトークをつなぎます。今日の占いを振り返り、お客さんの印象などを伝えましょう。</p>
       `;
       sidebar.appendChild(codeBar)
 
@@ -471,10 +493,14 @@
       codeCard.className = "card form-card";
       codeCard.innerHTML = `
         <h1>おつかれさまでした</h1>
-        <p>結果を保存する<b>二次元コードの紙</b>を一つ取り、印字された4桁の番号を入力してください。</p>
+        <p>占い師が、結果を保存する<b>二次元コード用紙</b>を一つ取り、印字された4桁の番号を入力します。</p>
         <input type="number" id="code-index" class="input-field" placeholder="0000" min="1000" max="9999" required>
       `
       container.appendChild(codeCard);
+
+      const codeBadge = document.createElement("div");
+      codeBadge.textContent = "結果番号の入力と送信";
+      navigationBadge.appendChild(codeBadge);
       totalSteps++;
 
       formView.style.display = "block";
@@ -491,10 +517,13 @@
       for (const [idx, bar] of document.querySelectorAll(".form-bar").entries()) {
         bar.classList.toggle("active", idx === currentStep);
         bar.classList.toggle("preview", idx === currentStep - 1 || idx === currentStep + 1);
-        bar.querySelector("b").textContent = idx === currentStep - 1 ? "前の項目：" : idx === currentStep + 1 ? "次の項目：" : ""
+        bar.querySelector("strong").textContent = idx === currentStep - 1 ? "前の項目：" : idx === currentStep + 1 ? "次の項目：" : ""
       }
       for (const [idx, card] of document.querySelectorAll(".form-card").entries()) {
         card.classList.toggle("active", idx === currentStep);
+      }
+      for (const [idx, badge] of document.querySelectorAll(".navigation-badge > div").entries()) {
+        badge.classList.toggle("active", idx === currentStep);
       }
 
       prevButton.style.display = currentStep === 0 ? "none" : "block";
@@ -534,10 +563,10 @@
 
       formView.style.display = "none";
       loadingView.style.display = "block";
-      document.getElementById("loading-text").textContent = "占い結果を保存しています..."
+      document.getElementById("loading-text").textContent = "占い結果を保存しています...";
 
       const answers = [];
-      for (let i = 0; i < questionCount; i++) {
+      for (let i = 1; i <= questionCount; i++) {
         const selected = document.querySelector(`input[name="question_${i}"]:checked`);
         answers.push(selected ? Number(selected.value): 0);
       }
@@ -548,14 +577,18 @@
 
       const json = await callGasFunction("saveFortuneData", [booth, code, answers, card]);
       if (json && json.success) {
-        document.getElementById("submitted-code-index").textContent = String(code)
+        document.getElementById("submitted-code-index").textContent = String(code);
         document.getElementById("result-link").innerHTML = `
-          <a href="result.html?booth=${booth}&index=${code}&name=${json.name}" class="link" target="_blank" rel="noopener noreferrer">結果を開く（二次元コードと同じページです）</a>
-        `
+          <a href="result.html?booth=${booth}&index=${code}&name=${json.name}" class="link" target="_blank" rel="noopener noreferrer">結果を開く（二次元コードと同じページ）</a>
+        `;
         isFormChanged = false;
         successView.style.display = "block";
       } else {
-        showError(json.message || "保存に失敗しました。");
+        showError(json && json.message || "保存に失敗しました。");
+        if (json && json.local) {
+          localSaveButton.dataset.items = `${code} ${answers.join(",")} ${card};`;
+          localSaveButton.style.display = "block";
+        }
         formView.style.display = "block";
       }
       loadingView.style.display = "none";
@@ -568,16 +601,84 @@
       formView.style.display = "block";
     })
 
+    function updateLocalData() {
+      const table = document.getElementById("local-data-table");
+      const tbody = document.getElementById("local-data");
+      const items = localStorage.getItem("local_result");
+
+      localData = [];
+      tbody.innerHTML = "";
+      if (!items) {
+        if (items === "") { localStorage.removeItem("local_result"); }
+        table.style.display = "none";
+        return;
+      }
+
+      for (const [index, data] of items.split(";").filter(Boolean).entries()) {
+        const dataList = data.split(" ");
+        localData.push([Number(dataList[0]), dataList[1].split(",").map(Number), Number(dataList[2])]);
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${dataList[0]}</td>
+          <td>${dataList[1]}</td>
+          <td>${dataList[2]}</td>
+          <td><button id="local-data-button-${index}" onclick="retrySave(${index})">再送信</button></td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      table.style.display = "block";
+    }
+
+    async function retrySave(index) {
+      const item = localData[index];
+      if (!item) { return; }
+      const button = document.getElementById(`local-data-button-${index}`);
+      button.style.display = "none";
+
+      loadingView.style.display = "block";
+      document.getElementById("loading-text").textContent = `${item[0]}番の占い結果を再送信しています...`;
+
+      const json = await callGasFunction("saveFortuneData", [booth, ...item]);
+      if (json && json.success) {
+        localStorage.setItem("local_result", (localStorage.getItem("local_result") || "").split(";").filter((_, idx) => idx !== index).join(";"));
+        updateLocalData();
+        showLog(`${item[0]}番の占い結果を保存しました。`);
+      } else {
+        button.style.display = "block";
+        showError(json && json.message || "保存に失敗しました。");
+      }
+      loadingView.style.display = "none";
+    }
+
+    localSaveButton.addEventListener("click", () => {
+      const item = localSaveButton.dataset.items;
+      if (!item) { return; }
+      localStorage.setItem("local_result", (localStorage.getItem("local_result") || "") + item);
+      updateLocalData();
+      localSaveButton.style.display = "none";
+      document.getElementById("submitted-code-index").textContent = item.split(" ")[0];
+      document.getElementById("result-link").innerHTML = `
+        <p>現在、結果は端末に一時保存されています。時間をおいてから二次元コードを読み取ると、結果を見られるようになります。</p>
+      `;
+      isFormChanged = false;
+      formView.style.display = "none";
+      successView.style.display = "block";
+    })
+
     // メッセージ表示
     function showLog(text) {
       console.log(text)
       document.getElementById("log-text").textContent = String(text);
       logView.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "auto" });
     }
     function showError(text) {
       console.error(text)
       document.getElementById("error-text").textContent = String(text);
+      localSaveButton.style.display = "none";
       errorView.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "auto" });
     }
     document.getElementById("hide-log").addEventListener("click", () => {
       logView.style.display = "none";
