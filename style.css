@@ -5,7 +5,7 @@
   --bg-normal: #1e293b;
   --bg-accent: #5b21b6;
   --bg-eccentric: #6d28d9;
-  --fg-default: #cad1dc;
+  --fg-default: #c6c2df;
   --fg-normal: #e5eaf0;
   --fg-accent: #a855f7;
   --fg-eccentric: #c084fc;
@@ -14,10 +14,10 @@
 [booth-theme="snack"] {
   --bg-default: #120914;
   --bg-normal: #241429;
-  --bg-accent: #881337;
-  --bg-eccentric: #9f1239;
-  --fg-default: #fa9fae;
-  --fg-normal: #fed2d7;
+  --bg-accent: #660e29;
+  --bg-eccentric: #770e2b;
+  --fg-default: #fccfd6;
+  --fg-normal: #fee8eb;
   --fg-accent: #e11d48;
   --fg-eccentric: #fb7185;
 }
@@ -25,10 +25,10 @@
 [booth-theme="gal"] {
   --bg-default: #180018;
   --bg-normal: #2d002e;
-  --bg-accent: #86198f;
-  --bg-eccentric: #a21caf;
-  --fg-default: #f472b6;
-  --fg-normal: #ffb3ec;
+  --bg-accent: #64136b;
+  --bg-eccentric: #7a1583;
+  --fg-default: #fcdcec;
+  --fg-normal: #ffe6f8;
   --fg-accent: #e879f9;
   --fg-eccentric: #f0abfc;
 }
@@ -36,10 +36,10 @@
 [booth-theme="element"] {
   --bg-default: #05140e;
   --bg-normal: #0d281e;
-  --bg-accent: #065f46;
-  --bg-eccentric: #047857;
-  --fg-default: #6ee7b7;
-  --fg-normal: #a7f3d0;
+  --bg-accent: #044734;
+  --bg-eccentric: #035a41;
+  --fg-default: #daf9ed;
+  --fg-normal: #e9fcf4;
   --fg-accent: #10b981;
   --fg-eccentric: #34d399;
 }
@@ -49,8 +49,8 @@
   --bg-normal: #111827;
   --bg-accent: #075985;
   --bg-eccentric: #0369a1;
-  --fg-default: #6b7280;
-  --fg-normal: #9ca3af;
+  --fg-default: #d6d8e8;
+  --fg-normal: #e0e1f0;
   --fg-accent: #0ea5e9;
   --fg-eccentric: #38bdf8;
 }
@@ -65,46 +65,72 @@
 html, body {
   width: 100%;
   min-width: 256px;
-  min-height: 100vh;
+  min-height: 100%;
   background-color: #000000;
   color: #ffffff;
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
+  --content-width: 100%;
+  --sidebar-size-min: 4rem;
+  --sidebar-size-default: max(calc(100% - var(--content-width) - 0.5rem), 12rem);
+  --sidebar-size-max: 52rem;
+  --sidebar-size: var(--sidebar-size-default);
 }
 button, input, textarea {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-default);
+  color: var(--fg-default);
+  border: none;
   font-size: inherit;
 }
-h1 {
-  font-size: 2rem;
-  margin: 0.5rem 0;
-  text-align: center;
-}
-h2 {
-  font-size: 1.5rem;
-  margin: 0.25rem 0;
-}
-h3 {
-  font-size: 1.25rem;
-  margin: 0;
-}
-b {
-  color: var(--fg-default);
-}
-
-/* ---汎用的な要素--- */
-.container {
+main {
+  display: flow-root;
   width: 100%;
   height: 100%;
   max-width: var(--content-width);
   margin: 0 auto;
+  padding: 0 1rem;
   background-color: var(--bg-default);
-  --sidebar-size-min: 4rem;
-  --sidebar-size-default: 22rem;
-  --sidebar-size-max: 52rem;
-  --sidebar-size: var(--sidebar-size-default);
+}
+h1 {
+  font-size: 200%;
+  margin: 0 0 0.5rem;
+  text-align: center;
+  color: var(--fg-default);
+}
+h2 {
+  font-size: 150%;
+  margin: 0 0 0.25rem;
+  color: var(--fg-default);
+}
+h3 {
+  font-size: 125%;
+  margin: 0;
+  color: var(--fg-normal);
+}
+p {
+  margin: 0.5rem 0;
+}
+strong {
+  color: var(--fg-default);
+}
+a {
+  color: var(--fg-accent);
+}
+ul, ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+object {
+  width: 100%;
+  height: 20rem;
+  border: none;
 }
 
-p.insert {
+/* ---汎用的な要素--- */
+.insert {
   white-space: pre-line;
 }
 
@@ -119,9 +145,6 @@ p.insert {
 .card.emphasized {
   text-align: center;
   border: 2px dashed var(--fg-eccentric);
-}
-.card.shrunk {
-  padding: 0.25rem 1rem;
 }
 
 .loading-card {
@@ -144,7 +167,7 @@ p.insert {
 }
 .display-button {
   margin: 0 0.125rem;
-  padding: 0.0625rem 0.25rem;
+  padding: 0.25rem 0.5rem;
   background-color: var(--bg-normal);
   border: 2px solid var(--fg-accent);
   border-radius: 0.25rem;
@@ -159,6 +182,44 @@ p.insert {
 }
 .display-button.active {
   background-color: var(--bg-eccentric);
+}
+.login-button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.link-container {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+}
+.link {
+  display: block;
+  padding: 0.5rem;
+  background-color: var(--bg-default);
+  border: 2px solid var(--fg-accent);
+  border-radius: 0.25rem;
+  color: var(--fg-normal);
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+.link:hover {
+  border-color: var(--fg-eccentric);
+  box-shadow: 0 2px 6px var(--fg-eccentric);
+  transform: translateY(-2px);
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  gap: 1rem;
+}
+.flex-item {
+  min-width: 0;
+  color: var(--fg-default);
 }
 
 .message-card {
@@ -195,22 +256,39 @@ p.insert {
 
 /* ---主に回答入力ページ用--- */
 /* 画面分割の設定 */
+main.shrunk {
+  position: sticky;
+  left: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) + 0.5rem);
+}
+
 .sidebar {
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
   width: var(--sidebar-size);
   min-width: var(--sidebar-size-min);
   max-width: var(--sidebar-size-max);
+  height: 100%;
   background-color: var(--bg-accent);
   color: var(--fg-normal);
+  z-index: 1;
+  transition: left 0.2s ease;
+}
+.sidebar-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   overflow-y: auto;
-  transition: transform 0.2s ease, margin-left 0.2s ease;
 }
 
 .resizer {
-  position: relative;
+  position: absolute;
+  left: 100%;
+  top: 0;
   width: 0.5rem;
+  height: 100%;
   background-color: var(--fg-default);
   cursor: col-resize;
   transition: background-color 0.2s;
@@ -222,7 +300,6 @@ p.insert {
 .resize-button {
   position: absolute;
   background: none;
-  border: none;
   cursor: pointer;
   top: 0;
   right: 100%;
@@ -230,38 +307,43 @@ p.insert {
   border-left-width: 0;
   border-right-color: var(--fg-default);
   transform-origin: right;
-  transition: background-color 0.2s, transform 0.2s ease;
+  transition: border-color 0.2s, transform 0.2s ease;
 }
 .resize-button:hover {
   border-right-color: var(--fg-normal);
 }
 
-.container.collapsed .sidebar {
-  margin-left: calc(-1 * clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)));
-  transform: translateX(calc(-1 * max((100vw - var(--content-width)) / 2, 0px)));
+.sidebar.collapsed {
+  left: calc(-1 * clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)));
 }
-.container.collapsed .resizer {
+.sidebar.collapsed .resizer {
   width: 0;
 }
-.container.collapsed .resize-button {
-  transform: translateX(calc(-1 * max((100vw - var(--content-width)) / 2, 0px))) rotate(180deg);
+.sidebar.collapsed .resize-button {
+  transform: rotate(180deg);
 }
 
 @media (max-width: 768px) {
-  .container {
-    flex-direction: column;
+  html, body {
     --sidebar-size-default: 12rem;
   }
+  main.shrunk {
+    position: block;
+    left: unset;
+    margin-top: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) + 0.5rem);
+  }
   .sidebar {
-    width: 100% !important;
+    width: 100%;
     height: var(--sidebar-size);
     min-height: var(--sidebar-size-min);
     max-height: var(--sidebar-size-max);
     min-width: unset;
     max-width: unset;
-    transition: transform 0.2s ease, margin-top 0.2s ease;
+    transition: top 0.2s ease;
   }
   .resizer {
+    left: 0;
+    top: 100%;
     width: 100%;
     height: 0.5rem;
     cursor: row-resize;
@@ -269,7 +351,7 @@ p.insert {
   .resize-button {
     top: unset;
     right: unset;
-    left: 0.5rem;
+    left: 0;
     bottom: 100%;
     border: 1.5rem solid transparent;
     border-top-width: 0;
@@ -278,13 +360,13 @@ p.insert {
   }
   .resize-button:hover {
     border-right-color: transparent;
-    border-bottom-color: var(--fg-eccentric);
+    border-bottom-color: var(--fg-normal);
   }
-  .container.collapsed .sidebar {
-    margin-left: 0 !important;
-    margin-top: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) * -1);
+  .sidebar.collapsed {
+    left: 0;
+    top: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) * -1);
   }
-  .container.collapsed .resizer {
+  .sidebar.collapsed .resizer {
     height: 0;
   }
   #width {
@@ -293,9 +375,15 @@ p.insert {
 }
 
 /* サイドバー内の要素 */
+.sidebar-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 1rem;
+}
 .form-bar {
   display: none;
-  margin: 2rem 0;
 }
 .form-bar.active {
   display: block;
@@ -303,22 +391,15 @@ p.insert {
 .form-bar.preview {
   display: block;
   padding: 0.25rem;
-  background-color: var(--bg-eccentric);
   color: var(--fg-default);
+  background-color: var(--bg-eccentric);
   font-size: 75%;
 }
-#sidebar-content p {
-  margin: 0.5rem 0;
+.form-bar.preview h2 {
+  font-size: 150%;
 }
 
 /* 本文の要素 */
-.main-content {
-  flex: 1;
-  padding: 0 1rem;
-  background-color: var(--bg-default);
-  overflow-y: auto;
-}
-
 .progress-container {
   background-color: var(--bg-accent);
   height: 0.5rem;
@@ -344,6 +425,13 @@ p.insert {
   to { opacity: 1; transform: translateY(0); }
 }
 
+.form-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  color: var(--fg-normal);
+  background-color: var(--bg-accent);
+}
+
 .choices-container.list {
   margin: 0.5rem 0;
   display: flex;
@@ -353,7 +441,7 @@ p.insert {
 .choices-container.grid {
   margin: 0.5rem 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(calc(25% - 1.5rem), 1fr));
   gap: 0.5rem;
 }
 .choice-option {
@@ -381,7 +469,6 @@ p.insert {
   transform: translateY(-50%) scale(1.2);
 }
 .choice-option:has(input[type="radio"]:checked) {
-  border-color: var(--fg-accent);
   background: var(--bg-accent);
 }
 .choice-image {
@@ -407,30 +494,9 @@ p.insert {
   flex: 1;
 }
 
-.link-container {
-  display: grid;
-  gap: 0.5rem;
-  margin: 0.25rem 0;
-}
-.link {
-  display: block;
-  padding: 0.5rem;
-  background-color: var(--bg-default);
-  border: 2px solid var(--fg-accent);
-  border-radius: 0.25rem;
-  color: var(--fg-normal);
-  text-decoration: none;
-  text-align: center;
-  transition: all 0.2s;
-}
-.link:hover {
-  border-color: var(--fg-eccentric);
-  box-shadow: 0 2px 6px var(--fg-eccentric);
-  transform: translateY(-2px);
-}
-
-.button-container {
+.navigation-button-container {
   display: flex;
+  justify-content: start;
   gap: 1rem;
   margin: 0.5rem 0;
 }
@@ -461,6 +527,22 @@ p.insert {
 }
 .navigation-button.primary:hover {
   background-color: var(--bg-eccentric);
+}
+
+.navigation-badge {
+  margin-left: 50%;
+  width: 50%;
+}
+.navigation-badge > div {
+  display: none;
+  color: var(--fg-default);
+  text-align: center;
+}
+.navigation-badge > div::before {
+  content: "次は ";
+}
+.navigation-badge > div.active {
+  display: block;
 }
 
 .input-field {
@@ -503,18 +585,6 @@ textarea {
 }
 textarea:focus {
   border-color: var(--fg-eccentric);
-}
-
-.flex-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.25rem;
-  gap: 1rem;
-}
-.flex-item {
-  min-width: 0;
-  color: var(--fg-default);
 }
 
 .fortune-item {
@@ -562,4 +632,259 @@ textarea:focus {
   margin: 0.5rem auto;
   display: block;
   box-shadow: 0 2px 6px var(--fg-accent);
+}
+
+/* ---主に情報整理ページ用--- */
+/* ヘッダーとメニュー */
+header {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--content-width);
+  height: 3rem;
+  top: 0;
+  left: 50%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-accent);
+  transform: translateX(-50%);
+}
+header a {
+  color: var(--fg-normal);
+  text-decoration: none;
+}
+.drawer-check {
+  display: none;
+}
+.hamburger {
+  display: flex;
+  height: 3rem;
+  width: 3rem;
+  padding: 1rem;
+  background-color: var(--bg-eccentric);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.hamburger span, .hamburger span::before, .hamburger span::after {
+  content: "";
+  display: block;
+  height: 0.25rem;
+  width: 1.5rem;
+  background: var(--fg-normal);
+  position: absolute;
+}
+.hamburger span::before {
+  bottom: 0.5rem;
+}
+.hamburger span::after {
+  top: 0.5rem;
+}
+.menu-content {
+  position: fixed;
+  z-index: 1;
+  top: 3rem;
+  left: 50%;
+  width: 100%;
+  max-width: var(--content-width);
+  padding: 1rem;
+  background-color: var(--bg-eccentric);
+  box-shadow: 0 1px 8px var(--bg-default);
+  transform: translateX(-50%) translateY(-100%);
+  transition: transform 0.2s ease;
+}
+.index-button {
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+.index-button.active {
+  background-color: var(--bg-eccentric);
+}
+.drawer-check:checked ~ .menu-content {
+  transform: translateX(-50%);
+}
+
+/* 各項目 */
+.content-section {
+  display: none;
+  animation: fadeIn 0.2s ease-in-out;
+}
+.content-section.active {
+  display: block;
+}
+
+.step-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.step {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  border-radius: 0.25rem;
+  background-color: var(--bg-default);
+  position: relative;
+  overflow: hidden;
+}
+.step > div {
+  padding: 0.5rem;
+}
+.step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-accent);
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.step-timer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.25rem 0.5rem;
+  font-weight: bold;
+  background-color: var(--bg-eccentric);
+}
+
+.scrollable {
+  width: 100%;
+  background-color: var(--bg-default);
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  margin: 0.5rem auto;
+  background-color: var(--bg-normal);
+}
+.scrollable > table {
+  margin: 0;
+  box-shadow: inset 4px 0 8px var(--bg-accent);
+}
+th, td {
+  border: none;
+  border-bottom: 1px solid var(--fg-accent);
+  border-right: 1px solid var(--bg-default);
+  padding: 0.25rem 0.5rem;
+}
+th {
+  background-color: var(--bg-accent);
+}
+td:first-child, th:first-child {
+  position: sticky;
+  left: 0;
+  background-color: var(--bg-default);
+  color: var(--fg-default);
+  font-weight: bold;
+}
+th:first-child {
+  background-color: var(--bg-eccentric);
+  color: var(--fg-normal);
+}
+.hidden-row {
+  display: none;
+}
+
+td > button {
+  padding: 0 0.25rem;
+  background-color: var(--bg-normal);
+  border: 2px solid var(--fg-accent);
+  border-radius: 0.25rem;
+  color: var(--fg-normal);
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+td > button:hover {
+  border-color: var(--fg-eccentric);
+  box-shadow: 0 2px 6px var(--fg-eccentric);
+}
+td > button.active {
+  background-color: var(--bg-eccentric);
+}
+
+details {
+  margin: 0.25rem 0;
+  border: 2px solid var(--fg-default);
+  border-radius: 0.25rem;
+  background-color: var(--bg-normal);
+  color: var(--fg-normal);
+  overflow-y: hidden;
+}
+summary {
+  padding: 0.5rem;
+  background-color: var(--bg-default);
+  cursor: pointer;
+  font-weight: bold;
+}
+details > div {
+  margin: 0 0.5rem;
+}
+details > ul, details > ol {
+  margin: 0.25rem 0.5rem;
+}
+
+.screenshot {
+  width: 50%;
+  object-fit: cover;
+  border-radius: 0.25rem;
+  margin: 0.5rem auto;
+  display: block;
+}
+.image-container {
+  margin: 0.5rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.5rem;
+}
+.image-container .screenshot {
+  width: 100%;
+  margin: 0;
+}
+
+
+.text-snack {
+  color: #fb7185;
+}
+.text-gal {
+  color: #f0abfc;
+}
+.text-element {
+  color: #34d399;
+}
+.text-alien {
+  color: #38bdf8;
+}
+
+.link-snack {
+  border-color: #fb7185;
+}
+.link-gal {
+  border-color: #f0abfc;
+}
+.link-element {
+  border-color: #34d399;
+}
+.link-alien {
+  border-color: #38bdf8;
+}
+
+.th-snack {
+  border-bottom-color: #e11d48;
+  background-color: #660e29;
+}
+.th-gal {
+  border-bottom-color: #e879f9;
+  background-color: #64136b;
+}
+.th-element {
+  border-bottom-color: #10b981;
+  background-color: #044734;
+}
+.th-alien {
+  border-bottom-color: #0ea5e9;
+  background-color: #075985;
 }
