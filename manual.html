@@ -452,6 +452,42 @@
         <h1>4. おまけ（しくみの詳細）</h1>
         <p>システムの詳細を解説します。詳細は後日追加します。</p>
       </div>
+
+      <div class="card">
+        <h2>生成AIへの企画説明プロンプト例</h2>
+        <p>生成AIにアドバイスやアイデアを求める際、企画説明のテンプレートとして使い回せるプロンプトを残しておく。指示に関係する部分の説明をコピー＆ペーストして、説明の後に指示を加える形で活用してよい。</p>
+        <details>
+          <summary>プロンプト</summary>
+          <p class="insert">1か月後にある高校の開校記念祭で、模擬店として占いの店を出店します。この店では、4つのブースで占い師がお客さんの運勢を占います。占い師はブースのコンセプトに合わせたコスプレをします。
+
+            各ブースのコンセプト（ブース名）：
+            ①スナックママの人生の転機占い（スナックすばる）
+            ②ギャルの恋愛占い（ウチらが恋路占わんとす）
+            ③マッドサイエンティストの人生を変える元素占い（人生元素解析）
+            ④宇宙人の未知の才能占い（オマエタチノミライウラナッテヤル）
+
+            仕組み：プログラミングを活用してオリジナルの占いを作ります。
+            ・番号とランダムな16文字の名前がパラメーターとしてついた結果閲覧用QRコードを各ブース50枚、あらかじめ用意しておきます。
+            ・コンセプトごとの質問設定・結果文面・実行履歴をGoogleスプレッドシートに保管します。
+            ・占いにおいて回答やQRコード番号を入力するフォームと、占い後にお客さんがQRコードから閲覧する占い結果を、GitHub PagesのHTMLで表示します。
+            ・データのやり取りをGoogle Apps Scriptが仲介し、スプレッドシートへのデータの読み書きやHTMLとのデータの送受信を担います。
+
+            大まかな占いの流れ：
+            1. 占い師は事前にパソコンまたはタブレット端末を用意し、専用ウェブサイトを開いておく。お客さんをブースに迎え入れて、占いを始める。
+            2. 占い師がお客さんと会話し、お客さんに質問をしたり、占い師から見たお客さんの印象を選んだりして、占い師が端末上で回答を選択していく。5択の質問が10個ある。
+            3. 占いらしい様々な模様が描かれた複数枚のカードの画像が画面上に表示される。この画面をお客さんに見せ、直感で一つ選んでもらう。選んだカードに基づいて、お客さんの未来の予測、アドバイス、ラッキーアイテムなどを表示する。
+            4. 端末を返却してもらい、占い師は結果を紐づけるQRコードの番号を入力する。
+            5. 回答、選んだカード、QRコード番号の情報がGASに送信され、GAS内部で回答をもとに占いの結果を算出してスプレッドシートに保存する。
+            6. 保存が完了すると、結果が占い師の端末に表示される。これはQRコードを読み込んだ際に表示されるページと同じ内容である。結果をざっと見たら、占い師はQRコードの紙をお客さんに渡す。占い後にパワーストーンが渡され、QRコードの紙と合わせてお土産となる。
+            7. お客さんは占い後にQRコードを自分の端末で読み取り、結果を閲覧する。
+
+            結果ページの内容：
+            占い時の質問に対する選択に応じて、各コンセプトにあった複数の観点でお客さんの属性を数値化し、数値とともに、その数値に応じたアドバイスを載せます。属性の値をもとに、総合的に最も近いキャラクターを判定し、キャラクターのイラストと特徴も添えます。属性とキャラクターはお客さんの現状分析に当たります。さらに（属性とは別に）複数の観点で運勢を5段階評価し、その際にはキャラクターごとに初期値を決めておき、もともとランダムで生成されたQRコード名をもとに調整を加える方式をとります。また、占いの最後に選択したカードをもとに、お客さんに近い将来降りかかる運命を予測し、今後の行動の方針やラッキーアイテムなどを表示します。こちらは主に未来予測であり、どの組み合わせでも内容が矛盾しないように注意して文面を作成しておきます。
+
+            以上の情報を踏まえ、（指示）
+          </p>
+        </details>
+      </div>
     </section>
 
     <div id="login-card" class="card">
@@ -517,8 +553,8 @@
         hash = btn.dataset.index;
         showSection();
         history.pushState(null, "", "#" + hash);
-      })
-    })
+      });
+    });
     function showHashSection() {
       hash = location.hash.replace("#", "") || "0";
       showSection();
@@ -563,7 +599,7 @@
           }
         });
 
-        document.getElementById("login-button").addEventListener("click", handleAuth)
+        document.getElementById("login-button").addEventListener("click", handleAuth);
         if (accessToken) { loadResults(); }
 
       } else {
@@ -687,13 +723,13 @@
     const logView = document.getElementById("log-view");
     const errorView = document.getElementById("error-view");
     function showLog(text) {
-      console.log(text)
+      console.log(text);
       document.getElementById("log-text").textContent = String(text);
       logView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
     }
     function showError(text) {
-      console.error(text)
+      console.error(text);
       document.getElementById("error-text").textContent = String(text);
       errorView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
