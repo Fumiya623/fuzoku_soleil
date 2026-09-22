@@ -4,21 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>占いの館「soleil」鑑定結果</title>
-  <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「Soleil」で使用する占いプログラムの結果閲覧ページ">
+  <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「soleil」で使用する占いプログラムの結果閲覧ページ">
   <meta name="robots" content="noindex,follow">
 
   <link rel="stylesheet" href="style.css">
   <style>
-    .container { padding: 1rem; }
     h1, h2 { color: var(--fg-accent); }
     h2 { border-bottom: 1px solid var(--bg-accent); }
   </style>
 </head>
 <body>
-  <div id="container" class="container">
-    <div id="display-view" class="card shrunk" style="position: relative;">
+  <main>
+    <div id="display-view" class="card" style="position: relative; padding: 0.5rem 1rem;">
       <div id="font-size" class="display-button-container">
-        <b>文字の大きさ</b>
+        <strong>文字の大きさ</strong>
         <button class="display-button" data-size="small">極小</button>
         <button class="display-button" data-size="smaller">小</button>
         <button class="display-button" data-size="medium">中</button>
@@ -26,11 +25,11 @@
         <button class="display-button" data-size="larger">極大</button>
       </div>
       <div id="width" class="display-button-container">
-        <b>画面の幅</b>
+        <strong>画面の幅</strong>
         <button class="display-button" data-width="768px">狭い</button>
         <button class="display-button" data-width="1024px">標準</button>
         <button class="display-button" data-width="1280px">広い</button>
-        <button class="display-button" data-width="100vw">画面全体</button>
+        <button class="display-button" data-width="100%">画面全体</button>
       </div>
       <button id="hide-display" class="cross-container"><div class="cross"></div></button>
     </div>
@@ -41,47 +40,35 @@
     </div>
 
     <div id="result-content" style="display: none;">
-      <div class="card">
-        <p id="timestamp" style="text-align: right;"></p>
+      <section class="card">
+        <div id="timestamp" style="text-align: right;"></div>
         <h1 id="booth-title"></h1>
         <p id="booth-description"></p>
-      </div>
+      </section>
 
-      <div class="card">
+      <section class="card">
         <h2>あなたの運勢</h2>
         <div id="fortune-list"></div>
-      </div>
+      </section>
 
-      <div class="card">
+      <section class="card">
         <p style="color: var(--fg-default); text-align: center;">あなたを象徴するキャラクター</p>
         <h2 id="hero-title" style="text-align: center;"></h2>
         <img id="hero-image" class="result-image" src="" alt="キャラクター画像">
         <p id="hero-description" class="insert"></p>
-      </div>
+      </section>
 
-      <div class="card">
+      <section class="card">
         <h2>属性分析</h2>
         <div id="attributes-list"></div>
-      </div>
+      </section>
 
-      <div class="card">
+      <section class="card">
         <p style="color: var(--fg-default); text-align: center;">アドバイス</p>
         <h2 id="card-title" style="text-align: center;"></h2>
         <img id="card-image" class="result-image" src="" alt="カード画像">
         <p id="card-description" class="insert"></p>
-      </div>
-    </div>
-
-    <div id="feedback-view" class="card">
-      <h2>感想・不具合の報告</h2>
-      <p>占いをご体験くださりありがとうございました。高校生としてできる限りの工夫を凝らして企画しましたので、今後の生活の参考になりましたら幸いです。</p>
-      <form id="feedback-form">
-        <p>よろしければ、占いの感想などをこちらにご記入ください。もし表示などに不具合がございましたら、あわせてご記入ください。</p>
-        <textarea id="feedback-text" placeholder="記入は任意です。何回でも送信できます。" required></textarea>
-        <div class="button-container">
-          <button type="submit" class="navigation-button primary">送信する</button>
-        </div>
-      </form>
+      </section>
     </div>
 
     <div id="log-view" class="card message-card" style="display: none;">
@@ -94,7 +81,19 @@
       <p>エラーの内容や原因が不明な場合は、開発者までお知らせください。</p>
       <button id="hide-error" class="cross-container"><div class="cross"></div></button>
     </div>
-  </div>
+
+    <section id="feedback-view" class="card" style="display: none;">
+      <h2>感想・不具合の報告</h2>
+      <p>占いをご体験くださりありがとうございました。高校生としてできる限りの工夫を凝らして企画しましたので、今後の生活の参考になりましたら幸いです。</p>
+      <form id="feedback-form">
+        <p>よろしければ、占いの感想などをこちらにご記入ください。もし表示などに不具合がございましたら、あわせてご記入ください。</p>
+        <textarea id="feedback-text" placeholder="記入は任意です。何回でも送信できます。" required></textarea>
+        <div class="navigation-button-container">
+          <button type="submit" class="navigation-button primary">送信する</button>
+        </div>
+      </form>
+    </section>
+  </main>
 
   <script>
     // 画面の外観調整
@@ -137,13 +136,15 @@
     document.addEventListener("DOMContentLoaded", async () => {
       try {
         if (booth && index && name) {
+          document.getElementById("feedback-text").value = localStorage.getItem(`feedback_text_${index}`) || ""
+          feedbackView.style.display = "block";
           const response = await fetch(`${SCRIPT_URL}?booth=${booth}&index=${index}&name=${encodeURIComponent(name)}`);
+          if (!response) { throw new Error("通信エラーが発生しました。") }
           const json = await response.json();
           if (!json.success) { throw new Error(json.message || "結果の取得に失敗しました。"); }
           await renderResult(json);
         } else {
-          feedbackView.style.display = "none";
-          throw new Error("無効なURLです。パラメータが含まれていません。");
+          throw new Error("無効なURLです。パラメータが不足しています。");
         }
       } catch (err) {
         loadingView.style.display = "none";
@@ -265,7 +266,8 @@
 
         if (json.success) {
           showLog("感想を送信しました。ありがとうございました！");
-          document.getElementById("feedback-text").value = "";
+          localStorage.setItem(`feedback_text_${index}`, text.value)
+          text.value = "";
         } else {
           throw new Error(json.message);
         }
