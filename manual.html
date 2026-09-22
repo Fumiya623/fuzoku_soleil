@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>占いの館「soleil」スタッフガイド</title>
+  <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「soleil」で使用する占いプログラムの情報整理ページ">
+  <meta name="robots" content="noindex,follow">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <link rel="stylesheet" href="style.css">
+  <style>
+    main { height: calc(100% - 3rem); margin-top: 3rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div><label for="drawer-check" class="hamburger"><span></span></label></div>
+    <h2><a href="">占いの館「soleil」スタッフガイド</a></h2>
+  </header>
+  <div>
+    <input id="drawer-check" class="drawer-check" type="checkbox">
+    <div class="menu-content">
+      <nav class="link-container">
+        <button class="link index-button" data-index="0">トップページ</button>
+        <button class="link index-button" data-index="1">1. 占いの流れ</button>
+        <button class="link index-button" data-index="2">2. 占いを体験する</button>
+        <button class="link index-button" data-index="3">3. 内容を編集したいとき</button>
+        <button class="link index-button" data-index="4">4. おまけ（しくみの詳細）</button>
+      </nav>
+      <div id="font-size" class="display-button-container">
+        <strong>文字の大きさ</strong>
+        <button class="display-button" data-size="small">極小</button>
+        <button class="display-button" data-size="smaller">小</button>
+        <button class="display-button" data-size="medium">中</button>
+        <button class="display-button" data-size="large">大</button>
+        <button class="display-button" data-size="larger">極大</button>
+      </div>
+      <div id="width" class="display-button-container">
+        <strong>画面の幅</strong>
+        <button class="display-button" data-width="768px">狭い</button>
+        <button class="display-button" data-width="1024px">標準</button>
+        <button class="display-button" data-width="1280px">広い</button>
+        <button class="display-button" data-width="100%">画面全体</button>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div id="log-view" class="card message-card" style="display: none;">
+      <p id="log-text"></p>
+      <button id="hide-log" class="cross-container"><div class="cross"></div></button>
+    </div>
+    <div id="error-view" class="card message-card" style="display: none;">
+      <h2>エラー</h2>
+      <p id="error-text" style="margin: 0.5rem 0; color: var(--fg-default);"></p>
+      <p>エラーの内容や原因が不明な場合は、開発者までお知らせください。</p>
+      <button id="hide-error" class="cross-container"><div class="cross"></div></button>
+    </div>
+
+    <section id="section-0" class="content-section active">
+      <div class="card">
+        <h1>占いの館「soleil」へようこそ</h1>
+        <p>模擬店のスタッフ（主に占い師）に向けて、ブース内での占いの流れや操作方法を解説しています。</p>
+        <p>画面左上の<b>三本線</b>を押すと目次が表示されます。その横の<b>タイトル</b>を押すとこのトップページに戻ります。</p>
+        <details>
+          <summary>リンクマップ</summary>
+          <div>
+            <h3>占い師用ページ</h3>
+            <ul>
+              <li><a href="index.html">トップページ</a></li>
+              <li><a href="index.html?booth=snack" class="text-snack">スナックママの人生の転機占い</a></li>
+              <li><a href="index.html?booth=gal" class="text-gal">ギャルの恋愛占い</a></li>
+              <li><a href="index.html?booth=element" class="text-element">マッドサイエンティストの元素占い</a></li>
+              <li><a href="index.html?booth=alien" class="text-alien">宇宙人の未知の才能占い</a></li>
+            </ul>
+            <h3>データベース</h3>
+            <ul>
+              <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header">アカウント登録フォーム</a></li>
+              <li><a href="https://docs.google.com/spreadsheets/d/1ulzrqqKb2LJGSlRsjeE5PeWD7sZLk_aEylJdKLgl2gg/edit?usp=sharing">スプレッドシート</a></li>
+              <li><a href="https://script.google.com/d/1z-JcTMHU00_jVSh8ZM9-MKI9zLTgTXyW5GpQXgYS1ic7qWiDjP-OfVcw/edit?usp=sharing">データ読み書き用 Google Apps Script</a></li>
+              <li><a href="https://script.google.com/d/1hZjHsx9aTnox8kvYcHUxT_WUnzP_pu0hdQ25dWTRMAPI8pu3pwf5Ay9h/edit?usp=sharing">占い結果取得用 Google Apps Script</a></li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>目次</h2>
+        <nav class="link-container">
+          <a href="#1" class="link index-button" data-index="1">1. 占いの流れ</a>
+          <a href="#2" class="link index-button" data-index="2">2. 占いを体験する</a>
+          <a href="#3" class="link index-button" data-index="3">3. 内容を編集したいとき</a>
+          <a href="#4" class="link index-button" data-index="4">4. おまけ（しくみの詳細）</a>
+        </nav>
+      </div>
+    </section>
+
+    <section id="section-1" class="content-section">
+      <div class="card">
+        <h1>1. 占いの流れ</h1>
+        <p>各ブースの中でどのように占いが進行するのか、事前準備とあわせて解説します。占い師の皆さんは事前に目を通し、占いの流れを理解しておきましょう。</p>
+        <p>占いの概要をつかめたら、「2. 占いを体験する」に進み、練習してみましょう。</p>
+      </div>
+
+      <div class="card">
+        <h2>前日までの事前準備</h2>
+        <h3>アカウント登録（主に占い師）</h3>
+        <p>全体グループラインで案内した通り、当日デバイスを操作する占い師や、内容を確認する責任者などは、システムにGoogleアカウントを登録します。</p>
+        <ol>
+          <li>事前に<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Googleフォーム</a>でメールアドレスを送信します。</li>
+          <li>石塚がシステムに登録します。Googleで承認されるまで最大数時間かかります。</li>
+          <li>初回のみアカウント認証が必要です。画面左上の三本線の横の<b>タイトル</b>を押してトップページに戻り、下までスクロールして、ログインを行います。</li>
+        </ol>
+
+        <details>
+          <summary>結果閲覧用の二次元コード用紙を印刷する（詳細は未定）</summary>
+          <div>
+            <p>模擬店スタッフたちで協力して、事前に紙を印刷し、切り取っておきます。占い後にお客さんに渡し、自分の結果を見てもらうための紙です。</p>
+            <p>A4・カラー・片面で30ページ印刷し、8枚ずつに切り取ります。各ブース60回分あります。</p>
+            <object data="tools/code_cards_sample.pdf#zoom=Fit" type="application/pdf">二次元コード用紙のPDFは、下のボタンから開けます。</object>
+            <a href="tools/code_cards.pdf" class="link" target="_blank" rel="noopener noreferrer">印刷用PDFを開く</a>
+            <p>いつ誰がどこで印刷して切り取るのか、詳細は未定です。</p>
+            <p>紙の大きさや画像などを変更したい場合は、石塚までお伝えください。</p>
+          </div>
+        </details>
+        <details>
+          <summary>質問の紙や接客マニュアルなどを印刷する？（未定）</summary>
+          <div>
+            <p>画面上に表示する「10個の質問と選択肢」や「カード選択」の内容をお客さんに見せる方法については未定です。画面をお客さんに直接見せるのか、紙に印刷しておくのか、決まり次第更新します。</p>
+            <p>また、卓上マニュアルの案はこのページの最下部にあります。形式や具体的なデザインを改良したうえで、当日の扱い方も今後決める予定です。</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>当日の流れ</h2>
+        <p>ブース内では、1人当たり<b>5分程度</b>で占いを行います。</p>
+        <div class="step-container">
+          <div class="step">
+            <div class="step-number">0</div>
+            <div>
+              <h3>お客さんを迎える準備</h3>
+              <p>パソコンまたはタブレットで<a href="index.html" target="_blank" rel="noopener noreferrer">占い師用ページ</a>を開いておきます。事前にアカウント登録が必要です。</p>
+              <p>コンセプトに合わせた衣装・メイク・話し方のスイッチを入れます。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">1</div>
+            <div>
+              <h3>お出迎え</h3>
+              <p>お客さんを笑顔（またはキャラクターになりきった表情）でブースへ迎え入れ、席に案内します。</p>
+              <details>
+                <summary>セリフ例</summary>
+                <ul>
+                  <li><strong>スナックすばる</strong><br>「あら、いらっしゃい！入って入って。今日はどんなお悩みかしら？」</li>
+                  <li><strong>ウチらが恋路占わんとす</strong><br>「いらっしゃーい！マジ今日会えてアゲなんだけど！恋の悩み？聞いちゃおうかな！」</li>
+                  <li><strong>人生元素解析</strong><br>「よくぞ来た、被験者よ……フフフ、君の人生の構成元素を解析してやろう。」</li>
+                  <li><strong>オマエタチノミライウラナッテヤル</strong><br>「ワレワレハ……ウチュウジンダ……オマエノ ミライ 探知スル……」</li>
+                </ul>
+              </details>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div>
+              <h3>選択式の質問</h3>
+              <div class="step-timer">2～3分（1問10～20秒）</div>
+              <p>会話を楽しみながら、5択の質問10個について、端末の画面上で「お客さんの回答」や「占い師から見たお客さんの印象」を選んでいきます。</p>
+              <p>端末を見つめっぱなしにせず、お客さんの目を見ながら会話の中で質問を投げかけます。</p>
+              <details>
+                <summary>サクサク進めよう（詳細）</summary>
+                <ul>
+                  <li><strong>リアクションはほどほどに</strong><br>「はい、次！」「オッケー！」とサクサク進めるのが基本。ときどき「ほう……ここでそれを選ぶか」「案外、裏の顔があるタイプね…」と深みのあるリアクションを入れます。</li>
+                  <li><strong>お客さんが迷っている・緊張しているとき</strong><br>占い師の「直感」で選択肢を選んで進めます。<br>「迷ったら直感でAにしとこ！ウチもAっぽいと思ってた！」「迷イハ 雑念……ワタシノ 波動デ『A』ト 判定シタ……」など。</li>
+                </ul>
+              </details>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div>
+              <h3>運命のカード選択</h3>
+              <div class="step-timer">約30秒</div>
+              <ol>
+                <li>画面上に表示された複数のカード画像をお客さんに見せ、直感で1枚選んでもらいます。</li>
+                <li>カードの説明が画面上に表示されるので、簡単に紹介します。</li>
+              </ol>
+              <p>カードを選んだ瞬間に「ほう……それを選びましたか」「いいカード引くじゃん！」など、少し神秘的・大げさに反応すると盛り上がります。</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div>
+              <h3>結果登録＆データ送信</h3>
+              <div class="step-timer">約30秒</div>
+              <p>端末を手元に戻し、結果を保存します。</p>
+              <ol>
+                <li>用意してある「二次元コード用紙」を1枚取り、書かれた番号を端末に入力して送信ボタンを押します。</li>
+                <li>データの保存を待ちます（数秒〜十数秒）。</li>
+              </ol>
+              <details>
+                <summary>お客さんとの会話を大切に（詳細）</summary>
+                <ul>
+                  <li><strong>つなぎのトーク</strong><br>送信中の待ち時間が退屈にならないよう、トークをつなぎます。</li>
+                  <li><strong>通信エラー発生時</strong><br>世界観に合わせたセリフを言いながら、「一時保存するボタン」を押します。（※再読み込みはしない）</li>
+                </ul>
+              </details>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">5</div>
+            <div>
+              <h3>結果の口頭解説＆お土産の伝授</h3>
+              <div class="step-timer">30秒～1分</div>
+              <ol>
+                <li>画面に結果が表示されたら、ポイントを絞って口頭で伝えます。</li>
+                <li>先ほど番号を入力した「二次元コード用紙」をお客さんに手渡します。</li>
+                <li>スマホでQRコードを読み取ると、占い結果をいつでも見返せることを伝えます。</li>
+              </ol>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">6</div>
+            <div>
+              <h3>お見送り</h3>
+              <p>感謝を込めて、世界観を保ちながらお見送りします。</p>
+              <p>ブースを出たらパワーストーンを受け取るよう伝えます。</p>
+              <details>
+                <summary>セリフ例</summary>
+                <ul>
+                  <li><strong>スナックすばる</strong><br>「また人生に迷ったら、いつでも立ち寄ってね。行ってらっしゃい！」</li>
+                  <li><strong>ウチらが恋路占わんとす</strong><br>「マジで応援してるからね！恋、勝ち取ってこ〜！」</li>
+                  <li><strong>人生元素解析</strong><br>「実験成功だ！君の未来の元素反応、楽しみにしているぞ！」</li>
+                  <li><strong>オマエタチノミライウラナッテヤル</strong><br>「ミライガ……ヨキモノニ……ナルコトヲ……イノル……」</li>
+                </ul>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>決めゼリフ集</h2>
+        <p>自身のキャラクターに合ったセリフを考えておきましょう。表にあるのは一例です。</p>
+        <div class="scrollable">
+          <table style="min-width: 72rem;">
+            <thead>
+              <tr>
+                <th style="min-width: 8rem;">ステップ</th>
+                <th class="th-snack">スナックすばる</th>
+                <th class="th-gal">ウチらが恋路占わんとす</th>
+                <th class="th-element">人生元素解析</th>
+                <th class="th-alien">オマエタチノミライウラナッテヤル</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>① お出迎え</td>
+                <td>「あら、いらっしゃい！まあ座って座って。今日はどんなお悩みかしら？」</td>
+                <td>「いらっしゃーい！マジ今日会えてアゲなんだけど！恋の悩み？全部言っちゃって！」</td>
+                <td>「よくぞ来た、被験者よ……。フフフ、君の人生の構成元素を解析してやろう。」</td>
+                <td>「ワレワレハ……ウチュウジンダ……オマエノ 未知ノチカラ探知スル……。」</td>
+              </tr>
+              <tr>
+                <td>② ヒアリング中</td>
+                <td>「ふむふむ……なるほどね。アンタ、本当はけっこう情に厚いタイプでしょ？」</td>
+                <td>「待ってそれ超わかる〜！わかるけどウチ的にはこういうとこ気になるかも！」</td>
+                <td>「ほう……その反応、興味深い。君の内部で化学反応が始まっているぞ。」</td>
+                <td>「オマエノ シコウパターンスキャンチュウ……面白い波形ガ 出テイル……。」</td>
+              </tr>
+              <tr>
+                <td>③ カード選択</td>
+                <td>「このカードの中から、直感で『これだ』と思うものを1枚選んで。アンタの未来が見えてくるわ。」</td>
+                <td>「じゃあこのカードから1枚指さして！直感がいっちばん大事だから！直感信じて〜！」</td>
+                <td>「この中から直感で1元素……いや、1枚を選択しろ！君の未来の分子構造を決める！」</td>
+                <td>「コノ カードノ ナカカラ1枚 指サセ……オマエノ 波動ニ 反応スル……。」</td>
+              </tr>
+              <tr>
+                <td>④ 送信・待ち時間</td>
+                <td>「今、アンタの運勢を天に送信してるからちょっと待ってね。焦りは禁物よ〜。」</td>
+                <td>「今ウチらの恋愛サーバーにデータ送ってるから待ってて！マジ超いい結果出そう！」</td>
+                <td>「ただいま元素データを量子計算中だ……！君の未来が弾けそうになっているぞ。」</td>
+                <td>「データ 宇宙本部ニ 送信チュウ……ピピピ……交信完了マデ ノコリワズカ……。」</td>
+              </tr>
+              <tr>
+                <td>⑤ 結果解説＆お土産</td>
+                <td>「アンタのタイプは〇〇ね！このQRコードをあげるわ。ブースを出たらパワーストーンを受け取って、後でゆっくり見なさい。」</td>
+                <td>「じゃん！ウチらの診断結果！このQR渡すからね！出たところでパワーストーンもらって、スマホで読み込んで絶対見てね！」</td>
+                <td>「実験成功だ！君の属性は〇〇！この解析結果（QR）を授与する。外の受付で触媒（ストーン）を受取り、後で検証せよ。」</td>
+                <td>「解析完了……オマエハ 〇〇タイプ。コノ QRコードヲ 授与スル……。出口デ 謎ノ鉱石ヲ 受ケ取り、スマホデ 確認セヨ。」</td>
+              </tr>
+              <tr>
+                <td>⑥ お見送り</td>
+                <td>「また人生に迷ったら、いつでも立ち寄ってね。行ってらっしゃい！」</td>
+                <td>「マジで応援してるからね！恋、勝ち取ってこ〜！バイバイっ！」</td>
+                <td>「フハハハ！君の未来の元素反応、楽しみにしているぞ！研究室を出たまえ！」</td>
+                <td>「オマエノ ミライガ……光輝クモノニ ナルコトヲ……イノル……ワレワレハ 友ダ。」</td>
+              </tr>
+              <tr>
+                <td>🚨 トラブル時（通信エラー等）</td>
+                <td>「あら困った、霊界の電波が乱れてるみたい。データを手元に保存しておくわね。」</td>
+                <td>「やば！Wi-Fi萎えたかも！？一旦スマホの中に保存しとくね！」</td>
+                <td>「不測の事態だ！電磁波障害が発生！緊急ローカルセーブを実行する！」</td>
+                <td>「通信障害発生……太陽フレアノ 影響カ……機体メモリニ 一時保存 スル……。」</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>卓上チェックシート</h2>
+        <object data="tools/manual_checksheet.pdf#zoom=Fit" type="application/pdf">卓上チェックシートのPDFは、下のボタンから開けます。</object>
+        <a href="tools/manual_checksheet.pdf" class="link" target="_blank" rel="noopener noreferrer">新しいタブで開く</a>
+        <p>占いの流れをつかめたら、実際に練習してみましょう。画面左上の<b>三本線</b>を押して「2. 占いを体験する」に進みます。</p>
+      </div>
+    </section>
+
+    <section id="section-2" class="content-section">
+      <div class="card">
+        <h1>2. 占いを体験する</h1>
+        <p>占いの理解を深め、操作に慣れるために、事前に練習しておきましょう。</p>
+        <p>「1. 占いの流れ」に目を通してから練習しましょう。</p>
+      </div>
+
+      <div class="card">
+        <h2>システムを開く</h2>
+        <p>下のボタンから、担当ブースの占いシステムを開きます。</p>
+        <nav class="link-container">
+          <a href="index.html?booth=snack" class="link link-snack" target="_blank" rel="noopener noreferrer">スナックママの人生の転機占い</a>
+          <a href="index.html?booth=gal" class="link link-gal" target="_blank" rel="noopener noreferrer">ギャルの恋愛占い</a>
+          <a href="index.html?booth=element" class="link link-element" target="_blank" rel="noopener noreferrer">マッドサイエンティストの元素占い</a>
+          <a href="index.html?booth=alien" class="link link-alien" target="_blank" rel="noopener noreferrer">宇宙人の未知の才能占い</a>
+        </nav>
+        <p>ログインボタンが表示されたらログインします。画面に従って「質問10個」「カード選択」「結果番号入力」「送信」の順に進めます。</p>
+        <p>結果番号を入力する場面では、下の表から未使用の番号を選択して入力します。</p>
+      </div>
+
+      <div class="card">
+        <h2>結果番号一覧</h2>
+        <p>取得にはログインが必要です。</p>
+        <div id="result-table">
+          <div class="flex-container">
+            <h3>スナックママの人生の転機占い</h3>
+            <div>
+              <span id="result-counter-snack">（未取得）</span>
+              <button id="result-display-snack" class="display-button">すべて表示</button>
+              <button id="result-reload-snack" class="display-button">更新</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>結果番号</th>
+                <th>用途</th>
+                <th>タイムスタンプ</th>
+                <th>結果リンク</th>
+                <th>削除</th>
+              </tr>
+            </thead>
+            <tbody id="result-snack"></tbody>
+          </table>
+
+          <div class="flex-container">
+            <h3>ギャルの恋愛占い</h3>
+            <div>
+              <span id="result-counter-gal">（未取得）</span>
+              <button id="result-display-gal" class="display-button">すべて表示</button>
+              <button id="result-reload-gal" class="display-button">更新</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>結果番号</th>
+                <th>用途</th>
+                <th>タイムスタンプ</th>
+                <th>結果リンク</th>
+                <th>削除</th>
+              </tr>
+            </thead>
+            <tbody id="result-gal"></tbody>
+          </table>
+
+          <div class="flex-container">
+            <h3>マッドサイエンティストの元素占い</h3>
+            <div>
+              <span id="result-counter-element">（未取得）</span>
+              <button id="result-display-element" class="display-button">すべて表示</button>
+              <button id="result-reload-element" class="display-button">更新</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>結果番号</th>
+                <th>用途</th>
+                <th>タイムスタンプ</th>
+                <th>結果リンク</th>
+                <th>削除</th>
+              </tr>
+            </thead>
+            <tbody id="result-element"></tbody>
+          </table>
+
+          <div class="flex-container">
+            <h3>宇宙人の未知の才能占い</h3>
+            <div>
+              <span id="result-counter-alien">（未取得）</span>
+              <button id="result-display-alien" class="display-button">すべて表示</button>
+              <button id="result-reload-alien" class="display-button">更新</button>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>結果番号</th>
+                <th>用途</th>
+                <th>タイムスタンプ</th>
+                <th>結果リンク</th>
+                <th>削除</th>
+              </tr>
+            </thead>
+            <tbody id="result-alien"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="section-3" class="content-section">
+      <div class="card">
+        <h1>3. 内容を編集したいとき</h1>
+        <p>占いの内容を編集する方法を解説します。</p>
+      </div>
+      <div class="card">
+        <h2>表示する言葉を変える</h2>
+        <p><a href="https://docs.google.com/spreadsheets/d/1ulzrqqKb2LJGSlRsjeE5PeWD7sZLk_aEylJdKLgl2gg/edit?usp=sharing" target="_blank" rel="noopener noreferrer">スプレッドシート</a>を開くと、文言などを変更できます。閲覧と編集にはアカウント登録が必要です。詳細は後日追加します。</p>
+      </div>
+      <div class="card">
+        <h2>使う画像を変える</h2>
+        <p>カード画像や、結果画面に表示するキャラクター画像を変えたい場合は、画像データ（PNG／JPEG）を石塚まで送ってください。</p>
+      </div>
+      <div class="card">
+        <h2>ウェブページの見た目を変える</h2>
+        <p>見づらい色、ややこしい操作、不明なエラーなどあれば、石塚まで伝えてください。</p>
+      </div>
+    </section>
+
+    <section id="section-4" class="content-section">
+      <div class="card">
+        <h1>4. おまけ（しくみの詳細）</h1>
+        <p>システムの詳細を解説します。詳細は後日追加します。</p>
+      </div>
+    </section>
+
+    <div id="login-card" class="card">
+      <button id="login-button" class="navigation-button primary login-button">ログイン</button>
+      <p>「2. 占いを体験する」で占い結果を取得する際にログインが必要です。</p>
+      <details>
+        <summary>ログイン手順</summary>
+        <div>
+          <p>占い師ページを開く人は、事前に<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Googleフォーム</a>でメールアドレスを送信してください。石塚がシステムに登録し、Googleで承認されるまで最大数時間かかります。</p>
+          <p>登録が完了したら、初回のみ認証が必要になります。</p>
+          <ol>
+            <li>上の「ログイン」ボタンを押す。</li>
+            <li>ログインするアカウントを入力・選択する。</li>
+            <li>（初回のみ）画面左下の「続行」を押す。</li>
+            <img class="screenshot" src="screenshots/confirmation1.png" alt="ログイン画像1つ目">
+            <li>（初回のみ）すべてにチェックを入れ、下までスクロールして「続行」を押す。</li>
+            <img class="screenshot" src="screenshots/confirmation2.png" alt="ログイン画像2つ目">
+          </ol>
+          <p>一度ログインすると、1時間程度は再ログイン不要になります。</p>
+          <p>「<b>アクセスをブロック: Soleilシステム は Google の審査プロセスを完了していません</b>」と表示される場合、ログインしようとしたアカウントは登録されていません。間違いだと思われる場合は、石塚までお知らせください。</p>
+        </div>
+      </details>
+    </div>
+  </main>
+
+  <script>
+    // 画面の外観調整
+    const fontSizeButtons = document.querySelectorAll("#font-size button");
+    const widthButtons = document.querySelectorAll("#width button");
+
+    adjustFontSize(localStorage.getItem("manual_font_size") || "large");
+    adjustWidth(localStorage.getItem("manual_width") || "1024px");
+
+    function adjustFontSize(size) {
+      document.body.style.fontSize = size;
+      fontSizeButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.size === size));
+      localStorage.setItem("manual_font_size", size);
+    }
+    function adjustWidth(width) {
+      document.body.style.setProperty("--content-width", width);
+      widthButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.width === width));
+      localStorage.setItem("manual_width", width);
+    }
+
+    fontSizeButtons.forEach(btn => btn.addEventListener("click", () => adjustFontSize(btn.dataset.size)));
+    widthButtons.forEach(btn => btn.addEventListener("click", () => adjustWidth(btn.dataset.width)));
+
+    // 項目切り替え
+    const drawerCheck = document.getElementById("drawer-check");
+    const indexButtons = document.querySelectorAll(".index-button");
+    const sections = document.querySelectorAll(".content-section");
+    let hash;
+
+    function showSection() {
+      indexButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.index === hash));
+      sections.forEach(sec => sec.classList.toggle("active", sec.id === `section-${hash}`));
+      document.getElementById("login-card").style.display = ((hash === "0" || hash === "2") && !accessToken) ? "block" : "none";
+      drawerCheck.checked = false;
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+    indexButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        hash = btn.dataset.index;
+        showSection();
+        history.pushState(null, "", "#" + hash);
+      })
+    })
+    function showHashSection() {
+      hash = location.hash.replace("#", "") || "0";
+      showSection();
+    }
+    window.addEventListener("popstate", showHashSection);
+
+    // GASからのデータ取得
+    const CLIENT_ID = "217598875934-4chp1r2f91aadptieqegdv62mtgrrkqh.apps.googleusercontent.com";
+    const SCRIPT_ID = "AKfycbx3gcdIXPjk8yK-EdWUG2_rd5X-SDI28ck38_qv8vLB_OY6mAmjiIgHGyWj4B9BWV0";
+    const SCOPES = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets";
+
+    let tokenClient;
+    let accessToken = null;
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const savedToken = localStorage.getItem("gas_access_token");
+      const tokenExpiry = localStorage.getItem("gas_token_expiry");
+      if (savedToken && tokenExpiry && Date.now() < parseInt(tokenExpiry)) {
+        accessToken = savedToken;
+      }
+      showHashSection();
+      waitForGSI();
+    });
+
+    function waitForGSI() {
+      if (window.google && google.accounts) {
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES,
+          callback: async (tokenResponse) => {
+            if (tokenResponse.error) {
+              showError(`認証エラーが発生しました。\n${JSON.stringify(tokenResponse.error)}`);
+              return;
+            }
+            accessToken = tokenResponse.access_token;
+
+            localStorage.setItem("gas_access_token", accessToken);
+            localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 60) * 1000));
+            if (hash === "0") { showLog("アカウントが認証されました。"); }
+            document.getElementById("login-card").style.display = "none";
+            await loadResults();
+          }
+        });
+
+        document.getElementById("login-button").addEventListener("click", handleAuth)
+        if (accessToken) { loadResults(); }
+
+      } else {
+        setTimeout(waitForGSI, 50);
+      }
+    }
+
+    function handleAuth(free = true) {
+      tokenClient.requestAccessToken({ prompt: free ? "" : "consent" });
+    }
+
+    async function callGasFunction(functionName, parameters = []) {
+      if (!accessToken) { return { success: false, message: "Googleアカウントでログインして、アクセスを認証してください。" }; }
+
+      try {
+        const response = await fetch(`https://script.googleapis.com/v1/scripts/${SCRIPT_ID}:run`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            function: functionName,
+            parameters: parameters,
+            devMode: true // テスト中で最新の下書きコードを実行する場合
+          })
+        });
+
+        const json = await response.json();
+        if (json.error) { return { success: false, message: `関数${functionName}の実行時にエラーが発生しました。\n${JSON.stringify(json.error)}` }; }
+        return json.response.result;
+
+      } catch (err) {
+        return { success: false, message: `通信エラーが発生しました。\n${err}` };
+      }
+    }
+
+    // 結果一覧の取得
+    async function loadResults(booth = "") {
+      if (accessToken) {
+        for (const key of ["snack", "gal", "element", "alien"]) {
+          if (!booth || key === booth) {
+            document.getElementById(`result-${key}`).innerHTML = `<td></td><td colspan="4">読み込み中...</td>`;
+          }
+        }
+      }
+      data = await callGasFunction("getAllResultIndex", [booth]);
+      if (!data || !data.success || (booth && !data[booth])) {
+        showError(data && data.message || "結果の読み込み中にエラーが発生しました。");
+        return;
+      }
+      for (const key of ["snack", "gal", "element", "alien"]) {
+        if (booth && key !== booth) { continue; }
+        let used = 0;
+        const tbody = document.getElementById(`result-${key}`);
+        tbody.innerHTML = "";
+        const len = data[key].length;
+        for (let i = 0; i < len; i++) {
+          const row = data[key][i];
+          const tr = document.createElement("tr");
+          tr.id = `row-${key}-${row.index}`;
+          tr.className = i < 90 ? "hidden-row" : "";
+          tr.innerHTML = `
+            <td>${row.index}</td>
+            <td>${i < 60 ? "本番" : i < 90 ? "予備" : "練習"}</td>
+            <td>${row.timestamp || "未使用"}</td>
+            <td><a href="result.html?booth=${key}&index=${row.index}&name=${row.codeName}" target="_blank" rel="noopener noreferrer">結果を開く</a></td>
+            <td>${row.timestamp ? `<button onclick="deleteResult('${key}', ${row.index})">削除</button>` : ""}</td>
+          `;
+          tbody.appendChild(tr);
+          if (row.timestamp) { used++; }
+        }
+        document.getElementById(`result-display-${key}`).textContent = "すべて表示";
+        document.getElementById(`result-counter-${key}`).dataset.count = `${used} ${len}`;
+        document.getElementById(`result-counter-${key}`).textContent = `使用中 ${used}枚 / ${len}枚`;
+      }
+    }
+
+    async function deleteResult(booth, index) {
+      if (!confirm(`${index}番の結果を削除してもよろしいですか？\nこの操作は取り消せません。`)) { return; }
+      const row = document.getElementById(`row-${booth}-${index}`);
+      const cells = row ? row.querySelectorAll("td") : [];
+      if (cells[2] && cells[4]) {
+        cells[2].textContent = "削除中...";
+        cells[4].querySelector("button").style.display = "none";
+      }
+      data = await callGasFunction("deleteResult", [booth, index]);
+      if (!data || !data.success) {
+        showError(data && data.message || "結果の処理中にエラーが発生しました。");
+        if (cells[2] && cells[4]) { cells[4].querySelector("button").style.display = "block"; }
+      } else if (cells[2] && cells[4]) {
+        cells[2].textContent = "未使用";
+        cells[4].innerHTML = "";
+      }
+      const counter = document.getElementById(`result-counter-${booth}`);
+      const count = counter.dataset.count.split(" ");
+      const newCount = [Number(count[0]) - 1, Number(count[1])];
+      counter.textContent = `使用中 ${newCount[0]}枚 / ${newCount[1]}枚`;
+      counter.dataset.count = newCount.join(" ");
+    }
+
+    function toggleRows(booth) {
+      const rows = document.querySelectorAll(`#result-${booth} .hidden-row`);
+      if (!rows.length) { return; }
+      const button = document.getElementById(`result-display-${booth}`);
+      if (rows[0].style.display === "table-row") {
+        rows.forEach(row => row.style.display = "none");
+        button.textContent = "すべて表示";
+      } else {
+        rows.forEach(row => row.style.display = "table-row");
+        button.textContent = "練習用のみ表示";
+      }
+    }
+
+    for (const key of ["snack", "gal", "element", "alien"]) {
+      document.getElementById(`result-display-${key}`).addEventListener("click", (e, booth = String(key)) => toggleRows(booth));
+      document.getElementById(`result-reload-${key}`).addEventListener("click", (e, booth = String(key)) => loadResults(booth));
+    }
+
+    // メッセージ表示
+    const logView = document.getElementById("log-view");
+    const errorView = document.getElementById("error-view");
+    function showLog(text) {
+      console.log(text)
+      document.getElementById("log-text").textContent = String(text);
+      logView.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+    function showError(text) {
+      console.error(text)
+      document.getElementById("error-text").textContent = String(text);
+      errorView.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+    document.getElementById("hide-log").addEventListener("click", () => {
+      logView.style.display = "none";
+    });
+    document.getElementById("hide-error").addEventListener("click", () => {
+      errorView.style.display = "none";
+    });
+  </script>
+</body>
+</html>
