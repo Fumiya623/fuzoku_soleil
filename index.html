@@ -439,7 +439,6 @@
         option.innerHTML = `
           <input type="radio" name="card" value="${cho.index}" required>
           <img src="images/${cho.file}" alt="${cho.title || `カード${cho.index}`}" class="choice-image">
-          <span class="insert">${cho.title || `カード${cho.index}`}</span>
         `;
         cardsWrapper.appendChild(option);
       }

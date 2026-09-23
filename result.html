@@ -64,7 +64,7 @@
       </section>
 
       <section class="card">
-        <p style="color: var(--fg-default); text-align: center;">アドバイス</p>
+        <p style="color: var(--fg-default); text-align: center;">天からのアドバイス</p>
         <h2 id="card-title" style="text-align: center;"></h2>
         <img id="card-image" class="result-image" src="" alt="カード画像">
         <p id="card-description" class="insert"></p>
@@ -87,6 +87,7 @@
       <p>占いをご体験くださりありがとうございました。高校生としてできる限りの工夫を凝らして企画しましたので、今後の生活の参考になりましたら幸いです。</p>
       <form id="feedback-form">
         <p>よろしければ、占いの感想などをこちらにご記入ください。もし表示などに不具合がございましたら、あわせてご記入ください。</p>
+        <button id="feedback-log" type="button" class="display-button" style="display: none;">前回の送信内容を表示する<br>（送信は取り消されません）</button>
         <textarea id="feedback-text" placeholder="記入は任意です。何回でも送信できます。" required></textarea>
         <div class="navigation-button-container">
           <button type="submit" class="navigation-button primary">送信する</button>
@@ -134,11 +135,12 @@
     const resultContent = document.getElementById("result-content");
     const feedbackView = document.getElementById("feedback-view");
     const logView = document.getElementById("log-view");
+    const feedbackLogButton = document.getElementById("feedback-log");
 
     document.addEventListener("DOMContentLoaded", async () => {
       try {
         if (booth && index && name) {
-          document.getElementById("feedback-text").value = localStorage.getItem(`feedback_text_${index}`) || "";
+          feedbackLogButton.style.display = localStorage.getItem(`feedback_text_${index}`) ? "block" : "none";
           feedbackView.style.display = "block";
           const navigationEntries = performance.getEntriesByType("navigation");
           const response = await fetch(`${SCRIPT_URL}?booth=${booth}&index=${index}&name=${encodeURIComponent(name)}&clear=${navigationEntries[0] && navigationEntries[0].type === "reload"}`);
@@ -154,6 +156,11 @@
         showError(err.message);
       }
     });
+
+    feedbackLogButton.addEventListener("click", () => {
+      document.getElementById("feedback-text").value = localStorage.getItem(`feedback_text_${index}`) || "";
+      feedbackLogButton.style.display = "none";
+    })
 
     function renderResult(data) {
       document.getElementById("timestamp").textContent = `鑑定日時 ${data.timestamp || "不明"}`;
@@ -188,6 +195,10 @@
           }
           item.appendChild(description);
 
+          const evaluation = document.createElement("p");
+          evaluation.textContent = f.evaluation || "";
+          item.appendChild(evaluation);
+
           fortuneContainer.appendChild(item);
         }
       }
@@ -195,7 +206,7 @@
       // キャラクター
       document.getElementById("hero-title").textContent = data.character.title || `未知のキャラクター`;
       document.getElementById("hero-description").textContent = data.character.description;
-      document.getElementById("hero-image").src = data.character.file || "";
+      document.getElementById("hero-image").src = `images/${data.character.file || ""}`;
 
       // 属性
       const attributesContainer = document.getElementById("attributes-list");
@@ -225,11 +236,15 @@
           description.className = "flex-container";
           for (const d of a.descriptions) {
             const descriptionItem = document.createElement("span");
-            descriptionItem.className = "flex-item";
+            descriptionItem.className = "flex-item attributes-description";
             descriptionItem.textContent = d;
             description.appendChild(descriptionItem);
           }
           item.appendChild(description);
+
+          const evaluation = document.createElement("p");
+          evaluation.textContent = a.evaluation || "";
+          item.appendChild(evaluation);
 
           attributesContainer.appendChild(item);
         }
@@ -238,7 +253,7 @@
       // カード情報
       document.getElementById("card-title").textContent = data.card.title || `未知のカード`;
       document.getElementById("card-description").textContent = data.card.description;
-      document.getElementById("card-image").src = data.card.file || "";
+      document.getElementById("card-image").src = `images/${data.card.file || ""}`;
 
       loadingView.style.display = "none";
       resultContent.style.display = "block";
@@ -257,13 +272,7 @@
         const response = await fetch(SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({
-            action: "postFeedback",
-            data: {
-              index: Number(index),
-              text: text.value
-            }
-          })
+          body: JSON.stringify({ index: Number(index), text: text.value })
         });
         const json = await response.json();
 
