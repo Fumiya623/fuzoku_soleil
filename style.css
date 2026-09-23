@@ -408,6 +408,13 @@ main.shrunk {
   font-size: 150%;
 }
 
+.navigation-button.small {
+  padding: 0.25rem 0.5rem;
+  color: var(--fg-default);
+  text-decoration: none;
+  text-align: center;
+}
+
 /* 本文の要素 */
 .progress-container {
   background-color: var(--bg-accent);
