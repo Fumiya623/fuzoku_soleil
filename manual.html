@@ -96,6 +96,28 @@
       </div>
     </section>
 
+    <div id="login-card" class="card">
+      <button id="login-button" class="navigation-button primary login-button">ログイン</button>
+      <p>「2. 占いを体験する」で占い結果を取得する際にログインが必要です。</p>
+      <details>
+        <summary>ログイン手順</summary>
+        <div>
+          <p>占い師ページを開く人は、事前に<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Googleフォーム</a>でメールアドレスを送信してください。石塚がシステムに登録し、Googleで承認されるまで最大数時間かかります。</p>
+          <p>登録が完了したら、初回のみ認証が必要になります。</p>
+          <ol>
+            <li>上の「ログイン」ボタンを押す。</li>
+            <li>ログインするアカウントを入力・選択する。</li>
+            <li>（初回のみ）画面左下の「続行」を押す。</li>
+            <img class="screenshot" src="images/confirmation1.png" alt="ログイン画像1つ目">
+            <li>（初回のみ）すべてにチェックを入れ、下までスクロールして「続行」を押す。</li>
+            <img class="screenshot" src="images/confirmation2.png" alt="ログイン画像2つ目">
+          </ol>
+          <p>一度ログインすると、1時間程度は再ログイン不要になります。</p>
+          <p>「<b>アクセスをブロック: Soleilシステム は Google の審査プロセスを完了していません</b>」と表示される場合、ログインしようとしたアカウントは登録されていません。間違いだと思われる場合は、石塚までお知らせください。</p>
+        </div>
+      </details>
+    </div>
+
     <section id="section-1" class="content-section">
       <div class="card">
         <h1>1. 占いの流れ</h1>
@@ -117,9 +139,9 @@
           <summary>結果閲覧用の二次元コード用紙を印刷する（詳細は未定）</summary>
           <div>
             <p>模擬店スタッフたちで協力して、事前に紙を印刷し、切り取っておきます。占い後にお客さんに渡し、自分の結果を見てもらうための紙です。</p>
-            <p>A4・カラー・片面で30ページ印刷し、8枚ずつに切り取ります。各ブース60回分あります。</p>
-            <object data="documents/code_cards_sample.pdf#zoom=Fit" type="application/pdf">二次元コード用紙のPDFは、下のボタンから開けます。</object>
-            <a href="documents/code_cards.pdf" class="link" target="_blank" rel="noopener noreferrer">印刷用PDFを開く</a>
+            <p>本番用のPDFをA4・カラー・片面で30ページ印刷し、8枚ずつに切り取ります。各ブース60回分あります。下のサンプルと同じレイアウトですが、データ量の関係で共有しません。</p>
+            <object data="documents/code_cards_sample.pdf#zoom=Fit" type="application/pdf">二次元コード用紙のPDFのサンプルは、下のボタンから開けます。</object>
+            <a href="documents/code_cards_sample.pdf" class="link" target="_blank" rel="noopener noreferrer">PDFのサンプルを開く</a>
             <p>いつ誰がどこで印刷して切り取るのか、詳細は未定です。</p>
             <p>紙の大きさや画像などを変更したい場合は、石塚までお伝えください。</p>
           </div>
@@ -325,21 +347,23 @@
       </div>
 
       <div class="card">
-        <h2>システムを開く</h2>
-        <p>下のボタンから、担当ブースの占いシステムを開きます。</p>
-        <nav class="link-container">
-          <a href="index.html?booth=snack" class="link link-snack" target="_blank" rel="noopener noreferrer">スナックママの人生の転機占い</a>
-          <a href="index.html?booth=gal" class="link link-gal" target="_blank" rel="noopener noreferrer">ギャルの恋愛占い</a>
-          <a href="index.html?booth=element" class="link link-element" target="_blank" rel="noopener noreferrer">マッドサイエンティストの元素占い</a>
-          <a href="index.html?booth=alien" class="link link-alien" target="_blank" rel="noopener noreferrer">宇宙人の未知の才能占い</a>
-        </nav>
-        <p>ログインボタンが表示されたらログインします。画面に従って「質問10個」「カード選択」「結果番号入力」「送信」の順に進めます。</p>
-        <p>結果番号を入力する場面では、下の表から未使用の番号を選択して入力します。</p>
+        <h2>占いを体験する手順</h2>
+        <ol>
+          <li>上にログインボタンが表示されている場合は、先にログインします。</li>
+          <li>下のボタンから、担当ブースの占いシステムを開きます。</li>
+          <nav class="link-container">
+            <a href="index.html?booth=snack" class="link link-snack" target="_blank" rel="noopener noreferrer">スナックママの人生の転機占い</a>
+            <a href="index.html?booth=gal" class="link link-gal" target="_blank" rel="noopener noreferrer">ギャルの恋愛占い</a>
+            <a href="index.html?booth=element" class="link link-element" target="_blank" rel="noopener noreferrer">マッドサイエンティストの元素占い</a>
+            <a href="index.html?booth=alien" class="link link-alien" target="_blank" rel="noopener noreferrer">宇宙人の未知の才能占い</a>
+          </nav>
+          <li>ログインボタンが表示されたらログインします。画面に従って「質問10個」「カード選択」「結果番号入力」「送信」の順に進めます。<br>結果番号を入力する場面では、下の表から未使用の番号を選択して入力します。</li>
+        </ol>
       </div>
 
       <div class="card">
         <h2>結果番号一覧</h2>
-        <p>取得にはログインが必要です。</p>
+        <p>取得にはログインが必要です。占い完了後は、各ブース右側の「更新」ボタンを押すと結果一覧が更新されます。</p>
         <div id="result-table">
           <div class="flex-container">
             <h3>スナックママの人生の転機占い</h3>
@@ -352,11 +376,11 @@
           <table>
             <thead>
               <tr>
-                <th>結果番号</th>
-                <th>用途</th>
-                <th>タイムスタンプ</th>
-                <th>結果リンク</th>
-                <th>削除</th>
+                <th class="th-snack">結果番号</th>
+                <th class="th-snack">用途</th>
+                <th class="th-snack">タイムスタンプ</th>
+                <th class="th-snack">結果リンク</th>
+                <th class="th-snack">削除</th>
               </tr>
             </thead>
             <tbody id="result-snack"></tbody>
@@ -373,11 +397,11 @@
           <table>
             <thead>
               <tr>
-                <th>結果番号</th>
-                <th>用途</th>
-                <th>タイムスタンプ</th>
-                <th>結果リンク</th>
-                <th>削除</th>
+                <th class="th-gal">結果番号</th>
+                <th class="th-gal">用途</th>
+                <th class="th-gal">タイムスタンプ</th>
+                <th class="th-gal">結果リンク</th>
+                <th class="th-gal">削除</th>
               </tr>
             </thead>
             <tbody id="result-gal"></tbody>
@@ -394,11 +418,11 @@
           <table>
             <thead>
               <tr>
-                <th>結果番号</th>
-                <th>用途</th>
-                <th>タイムスタンプ</th>
-                <th>結果リンク</th>
-                <th>削除</th>
+                <th class="th-element">結果番号</th>
+                <th class="th-element">用途</th>
+                <th class="th-element">タイムスタンプ</th>
+                <th class="th-element">結果リンク</th>
+                <th class="th-element">削除</th>
               </tr>
             </thead>
             <tbody id="result-element"></tbody>
@@ -415,16 +439,17 @@
           <table>
             <thead>
               <tr>
-                <th>結果番号</th>
-                <th>用途</th>
-                <th>タイムスタンプ</th>
-                <th>結果リンク</th>
-                <th>削除</th>
+                <th class="th-alien">結果番号</th>
+                <th class="th-alien">用途</th>
+                <th class="th-alien">タイムスタンプ</th>
+                <th class="th-alien">結果リンク</th>
+                <th class="th-alien">削除</th>
               </tr>
             </thead>
             <tbody id="result-alien"></tbody>
           </table>
         </div>
+        <p>結果を削除した／新たな結果を登録したとき、結果リンクを押すと古い結果が表示されることがありますが、開いたページを再読み込みすると更新されます。</p>
       </div>
     </section>
 
@@ -435,7 +460,7 @@
       </div>
       <div class="card">
         <h2>表示する言葉を変える</h2>
-        <p><a href="https://docs.google.com/spreadsheets/d/1ulzrqqKb2LJGSlRsjeE5PeWD7sZLk_aEylJdKLgl2gg/edit?usp=sharing" target="_blank" rel="noopener noreferrer">スプレッドシート</a>を開くと、文言などを変更できます。閲覧と編集にはアカウント登録が必要です。詳細は後日追加します。</p>
+        <p><a href="https://docs.google.com/spreadsheets/d/1ulzrqqKb2LJGSlRsjeE5PeWD7sZLk_aEylJdKLgl2gg/edit?usp=sharing" target="_blank" rel="noopener noreferrer">スプレッドシート</a>を開くと、文言などを変更できます。閲覧と編集にはアカウント登録が必要です。詳細はスプレッドシートの中にあります。</p>
       </div>
       <div class="card">
         <h2>使う画像を変える</h2>
@@ -450,12 +475,12 @@
     <section id="section-4" class="content-section">
       <div class="card">
         <h1>4. おまけ（しくみの詳細）</h1>
-        <p>システムの詳細を解説します。詳細は後日追加します。</p>
+        <p>システムの詳細を解説します。</p>
       </div>
 
       <div class="card">
         <h2>生成AIへの企画説明プロンプト例</h2>
-        <p>生成AIにアドバイスやアイデアを求める際、企画説明のテンプレートとして使い回せるプロンプトを残しておく。指示に関係する部分の説明をコピー＆ペーストして、説明の後に指示を加える形で活用してよい。</p>
+        <p>生成AIにアドバイスやアイデアを求める際、企画説明のテンプレートとして使い回せるプロンプトを残しておきます。指示に関係する部分の説明をコピー＆ペーストして、説明の後に指示を加える形で活用してよいです。</p>
         <details>
           <summary>プロンプト</summary>
           <p class="insert">1か月後にある高校の開校記念祭で、模擬店として占いの店を出店します。この店では、4つのブースで占い師がお客さんの運勢を占います。占い師はブースのコンセプトに合わせたコスプレをします。
@@ -489,29 +514,9 @@
         </details>
       </div>
     </section>
-
-    <div id="login-card" class="card">
-      <button id="login-button" class="navigation-button primary login-button">ログイン</button>
-      <p>「2. 占いを体験する」で占い結果を取得する際にログインが必要です。</p>
-      <details>
-        <summary>ログイン手順</summary>
-        <div>
-          <p>占い師ページを開く人は、事前に<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Googleフォーム</a>でメールアドレスを送信してください。石塚がシステムに登録し、Googleで承認されるまで最大数時間かかります。</p>
-          <p>登録が完了したら、初回のみ認証が必要になります。</p>
-          <ol>
-            <li>上の「ログイン」ボタンを押す。</li>
-            <li>ログインするアカウントを入力・選択する。</li>
-            <li>（初回のみ）画面左下の「続行」を押す。</li>
-            <img class="screenshot" src="images/confirmation1.png" alt="ログイン画像1つ目">
-            <li>（初回のみ）すべてにチェックを入れ、下までスクロールして「続行」を押す。</li>
-            <img class="screenshot" src="images/confirmation2.png" alt="ログイン画像2つ目">
-          </ol>
-          <p>一度ログインすると、1時間程度は再ログイン不要になります。</p>
-          <p>「<b>アクセスをブロック: Soleilシステム は Google の審査プロセスを完了していません</b>」と表示される場合、ログインしようとしたアカウントは登録されていません。間違いだと思われる場合は、石塚までお知らせください。</p>
-        </div>
-      </details>
-    </div>
   </main>
+
+  <footer>金沢大学附属高校第79回開校記念祭 有志模擬店 占いの館「soleil」</footer>
 
   <script>
     // 画面の外観調整

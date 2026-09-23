@@ -73,7 +73,7 @@ html, body {
   overflow-x: hidden;
   --content-width: 100%;
   --sidebar-size-min: 4rem;
-  --sidebar-size-default: max(calc(100% - var(--content-width) - 0.5rem), 12rem);
+  --sidebar-size-default: max(calc(100% - var(--content-width) - 0.5rem), 22rem);
   --sidebar-size-max: 52rem;
   --sidebar-size: var(--sidebar-size-default);
 }
@@ -127,6 +127,15 @@ object {
   width: 100%;
   height: 20rem;
   border: none;
+}
+footer {
+  width: 100%;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: var(--fg-default);
+  background-color: var(--bg-default);
 }
 
 /* ---汎用的な要素--- */
@@ -470,6 +479,15 @@ main.shrunk {
 }
 .choice-option:has(input[type="radio"]:checked) {
   background: var(--bg-accent);
+}
+.choice-option .choice-number {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  color: var(--fg-default);
+  font-size: 1.5rem;
+  font-weight: bold;
+  transform: translateY(-50%);
 }
 .choice-image {
   width: 100%;
@@ -824,7 +842,7 @@ details > div {
   margin: 0 0.5rem;
 }
 details > p, details > ul, details > ol {
-  margin: 0.25rem 0.5rem;
+  margin: 0.5rem;
 }
 
 .screenshot {
@@ -876,15 +894,27 @@ details > p, details > ul, details > ol {
   border-bottom-color: #e11d48;
   background-color: #660e29;
 }
+.th-snack:first-child {
+  background-color: #770e2b;
+}
 .th-gal {
   border-bottom-color: #e879f9;
   background-color: #64136b;
+}
+.th-gal:first-child {
+  background-color: #7a1583;
 }
 .th-element {
   border-bottom-color: #10b981;
   background-color: #044734;
 }
+.th-element:first-child {
+  background-color: #035a41;
+}
 .th-alien {
   border-bottom-color: #0ea5e9;
   background-color: #075985;
+}
+.th-alien:first-child {
+  background-color: #0369a1;
 }

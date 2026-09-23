@@ -48,6 +48,10 @@
           <button class="display-button" data-width="100vw">画面全体</button>
         </div>
       </div>
+      <div class="navigation-button-container">
+        <a href="index.html" class="navigation-button" style="text-align: center;">ブース変更</a>
+        <a href="manual.html" class="navigation-button" style="text-align: center;" target="_blank" rel="noopener noreferrer">マニュアル</a>
+      </div>
     </div>
     <div id="resizer" class="resizer">
       <button id="resize-button" class="resize-button"></button>
@@ -396,6 +400,7 @@
           option.innerHTML = `
             <input type="radio" name="question_${totalSteps}" value="${cho.index}" required>
             <span class="insert">${cho.description}</span>
+            <span class="choice-number">${cho.index}</span>
           `;
           choicesWrapper.appendChild(option);
         }

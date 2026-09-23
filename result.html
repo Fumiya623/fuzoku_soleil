@@ -95,6 +95,8 @@
     </section>
   </main>
 
+  <footer>金沢大学附属高校第79回開校記念祭 有志模擬店 占いの館「soleil」</footer>
+
   <script>
     // 画面の外観調整
     const fontSizeButtons = document.querySelectorAll("#font-size button");
@@ -138,7 +140,8 @@
         if (booth && index && name) {
           document.getElementById("feedback-text").value = localStorage.getItem(`feedback_text_${index}`) || "";
           feedbackView.style.display = "block";
-          const response = await fetch(`${SCRIPT_URL}?booth=${booth}&index=${index}&name=${encodeURIComponent(name)}`);
+          const navigationEntries = performance.getEntriesByType("navigation");
+          const response = await fetch(`${SCRIPT_URL}?booth=${booth}&index=${index}&name=${encodeURIComponent(name)}&clear=${navigationEntries[0] && navigationEntries[0].type === "reload"}`);
           if (!response) { throw new Error("通信エラーが発生しました。"); }
           const json = await response.json();
           if (!json.success) { throw new Error(json.message || "結果の取得に失敗しました。"); }
