@@ -18,11 +18,11 @@
     <div id="display-view" class="card" style="position: relative; padding: 0.5rem 1rem;">
       <div id="font-size" class="display-button-container">
         <strong>文字の大きさ</strong>
-        <button class="display-button" data-size="small">極小</button>
-        <button class="display-button" data-size="smaller">小</button>
-        <button class="display-button" data-size="medium">中</button>
-        <button class="display-button" data-size="large">大</button>
-        <button class="display-button" data-size="larger">極大</button>
+        <button class="display-button" data-size="12px">極小</button>
+        <button class="display-button" data-size="14px">小</button>
+        <button class="display-button" data-size="16px">中</button>
+        <button class="display-button" data-size="18px">大</button>
+        <button class="display-button" data-size="20px">極大</button>
       </div>
       <div id="width" class="display-button-container">
         <strong>画面の幅</strong>
@@ -103,7 +103,7 @@
     const fontSizeButtons = document.querySelectorAll("#font-size button");
     const widthButtons = document.querySelectorAll("#width button");
 
-    adjustFontSize(localStorage.getItem("result_font_size") || "medium");
+    adjustFontSize(localStorage.getItem("result_font_size") || "16px");
     adjustWidth(localStorage.getItem("result_width") || "768px");
 
     function adjustFontSize(size) {

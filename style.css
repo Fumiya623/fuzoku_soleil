@@ -69,6 +69,7 @@ html, body {
   background-color: #000000;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 16px;
   line-height: 1.6;
   overflow-x: hidden;
   --content-width: 100%;
@@ -685,8 +686,11 @@ header {
   transform: translateX(-50%);
 }
 header a {
+  max-width: calc(100% - 3.5rem);
   color: var(--fg-normal);
   text-decoration: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .drawer-check {
   display: none;
@@ -774,9 +778,6 @@ header a {
   font-weight: bold;
 }
 .step-timer {
-  position: absolute;
-  top: 0;
-  right: 0;
   padding: 0.25rem 0.5rem;
   font-weight: bold;
   background-color: var(--bg-eccentric);
@@ -862,6 +863,8 @@ details > p, details > ul, details > ol {
 
 .screenshot {
   width: 50%;
+  min-width: 12rem;
+  max-width: 16rem;
   object-fit: cover;
   border-radius: 0.25rem;
   margin: 0.5rem auto;

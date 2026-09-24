@@ -31,11 +31,11 @@
       </nav>
       <div id="font-size" class="display-button-container">
         <strong>文字の大きさ</strong>
-        <button class="display-button" data-size="small">極小</button>
-        <button class="display-button" data-size="smaller">小</button>
-        <button class="display-button" data-size="medium">中</button>
-        <button class="display-button" data-size="large">大</button>
-        <button class="display-button" data-size="larger">極大</button>
+        <button class="display-button" data-size="12px">極小</button>
+        <button class="display-button" data-size="14px">小</button>
+        <button class="display-button" data-size="16px">中</button>
+        <button class="display-button" data-size="18px">大</button>
+        <button class="display-button" data-size="20px">極大</button>
       </div>
       <div id="width" class="display-button-container">
         <strong>画面の幅</strong>
@@ -188,8 +188,10 @@
           <div class="step">
             <div class="step-number">2</div>
             <div>
-              <h3>選択式の質問</h3>
-              <div class="step-timer">2～3分（1問10～20秒）</div>
+              <div class="flex-container">
+                <h3>選択式の質問</h3>
+                <div class="step-timer">2～3分（1問10～20秒）</div>
+              </div>
               <p>会話を楽しみながら、5択の質問10個について、端末の画面上で「お客さんの回答」や「占い師から見たお客さんの印象」を選んでいきます。</p>
               <p>端末を見つめっぱなしにせず、お客さんの目を見ながら会話の中で質問を投げかけます。</p>
               <details>
@@ -204,8 +206,10 @@
           <div class="step">
             <div class="step-number">3</div>
             <div>
-              <h3>運命のカード選択</h3>
-              <div class="step-timer">約30秒</div>
+              <div class="flex-container">
+                <h3>運命のカード選択</h3>
+                <div class="step-timer">約30秒</div>
+              </div>
               <ol>
                 <li>画面上に表示された複数のカード画像をお客さんに見せ、直感で1枚選んでもらいます。</li>
                 <li>カードの説明が画面上に表示されるので、簡単に紹介します。</li>
@@ -216,8 +220,10 @@
           <div class="step">
             <div class="step-number">4</div>
             <div>
-              <h3>結果登録＆データ送信</h3>
-              <div class="step-timer">約30秒</div>
+              <div class="flex-container">
+                <h3>結果登録＆データ送信</h3>
+                <div class="step-timer">約30秒</div>
+              </div>
               <p>端末を手元に戻し、結果を保存します。</p>
               <ol>
                 <li>用意してある「二次元コード用紙」を1枚取り、書かれた番号を端末に入力して送信ボタンを押します。</li>
@@ -235,8 +241,10 @@
           <div class="step">
             <div class="step-number">5</div>
             <div>
-              <h3>結果の口頭解説＆お土産の伝授</h3>
-              <div class="step-timer">30秒～1分</div>
+              <div class="flex-container">
+                <h3>結果の口頭解説＆お土産の伝授</h3>
+                <div class="step-timer">30秒～1分</div>
+              </div>
               <ol>
                 <li>画面に結果が表示されたら、ポイントを絞って口頭で伝えます。</li>
                 <li>先ほど番号を入力した「二次元コード用紙」をお客さんに手渡します。</li>
@@ -525,7 +533,7 @@
     const fontSizeButtons = document.querySelectorAll("#font-size button");
     const widthButtons = document.querySelectorAll("#width button");
 
-    adjustFontSize(localStorage.getItem("manual_font_size") || "large");
+    adjustFontSize(localStorage.getItem("manual_font_size") || "16px");
     adjustWidth(localStorage.getItem("manual_width") || "1024px");
 
     function adjustFontSize(size) {
