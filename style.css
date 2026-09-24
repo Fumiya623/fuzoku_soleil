@@ -71,6 +71,7 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
   font-size: 16px;
   line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
   --content-width: 100%;
   --sidebar-size-min: 4rem;
@@ -685,12 +686,15 @@ header {
   background: var(--bg-accent);
   transform: translateX(-50%);
 }
-header a {
-  max-width: calc(100% - 3.5rem);
-  color: var(--fg-normal);
-  text-decoration: none;
+header > h2 {
+  max-width: 100%;
+  overflow-x: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+header a {
+  color: var(--fg-normal);
+  text-decoration: none;
 }
 .drawer-check {
   display: none;
@@ -789,6 +793,11 @@ header a {
   overflow-x: auto;
 }
 
+.result-button {
+  text-align: right;
+  flex: content;
+}
+
 table {
   border-collapse: collapse;
   margin: 0.5rem auto;
@@ -854,10 +863,7 @@ summary {
   cursor: pointer;
   font-weight: bold;
 }
-details > div {
-  margin: 0 0.5rem;
-}
-details > p, details > ul, details > ol {
+details > div, details > p, details > ul, details > ol {
   margin: 0.5rem;
 }
 
