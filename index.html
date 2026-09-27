@@ -7,12 +7,12 @@
   <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「soleil」で使用する占いプログラムの回答入力ページ">
   <meta name="robots" content="noindex,follow">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="48x48" href="/icons/favicon-48x48.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180x180.png">
-  <link rel="manifest" href="/icons/site.webmanifest">
+  <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon-180x180.png">
+  <link rel="manifest" href="icons/site.webmanifest">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,7 +23,6 @@
   </header>
   <div id="sidebar" class="sidebar">
     <div class="sidebar-container">
-      <h1 id="booth-title">占いの館「soleil」</h1>
       <div id="sidebar-content" class="sidebar-content">
         <p>こちらは模擬店スタッフ用の内部システムです。</p>
         <p>画面左上の<strong>三本線</strong>を押すと、このサイドバーの表示が切り替わります。サイドバーの<strong>境界線</strong>をドラッグすると幅が変わり、境界線をダブルクリックすると初めの位置に戻ります。</p>
@@ -378,7 +377,7 @@
         const questionCard = document.createElement("div");
         questionCard.className = "card form-card";
         questionCard.innerHTML = `
-          <div class="flex-container">
+          <div class="flex-container wrap">
             <h2>質問${qindex + 1}</h2>
             <span class="form-badge"><strong class="paragraph">${way}</strong>${que.title}</span>
           </div>
@@ -393,7 +392,7 @@
           option.innerHTML = `
             <input type="radio" name="question_${totalSteps}" value="${cindex + 1}" required>
             <h3 class="insert">${cho.title}</h3>
-            <img src="/images/card_${booth}_${qindex + 1}_${cindex + 1}.png" alt="" class="choice-image">
+            <img src="images/card_${booth}_${qindex + 1}_${cindex + 1}.jpg" alt="" class="choice-image">
             <span class="insert">${cho.description}</span>
             <span class="choice-number">${cindex + 1}</span>
           `;
@@ -412,7 +411,7 @@
       const cardCard = document.createElement("div");
       cardCard.className = "card form-card";
       cardCard.innerHTML = `
-        <div class="flex-container">
+        <div class="flex-container wrap">
           <h2>直感カード選択</h2>
           <strong class="form-badge">カードを並べて質問</strong>
         </div>
@@ -426,7 +425,7 @@
         option.className = "choice-option";
         option.innerHTML = `
           <input type="radio" name="card" value="${cindex + 1}" required>
-          <img src="/images/${cho.file}" alt="${cho.title}" class="choice-image">
+          <img src="images/${cho.file}" alt="${cho.title}" class="choice-image">
           <span class="insert">${cho.title}</span>
           <span class="choice-number">${cindex + 1}</span>
         `;
@@ -448,7 +447,7 @@
         const cardContainer = document.createElement("div");
         cardContainer.className = "card-description-container";
         cardContainer.innerHTML = `
-          <img src="/images/${cho.file}" alt="${cho.title}" class="choice-image">
+          <img src="images/${cho.file}" alt="${cho.title}" class="choice-image">
           <div class="card-description">
             <h2>${cho.title}</h2>
             <p class="insert">${cho.description}</p>
