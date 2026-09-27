@@ -7,10 +7,14 @@
   <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「soleil」で使用する占いプログラムの情報整理ページ">
   <meta name="robots" content="noindex,follow">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/icons/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180x180.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
   <link rel="stylesheet" href="style.css">
   <style>
-    main { height: calc(100% - 3rem); margin-top: 3rem; }
     .card > h2 { margin-bottom: 0.5rem; border-bottom: 1px solid var(--fg-default); }
   </style>
 </head>
@@ -77,8 +81,9 @@
             </ul>
             <h3>データベース</h3>
             <ul>
+              <li><a href="documents/code_cards_sample.pdf">二次元コード用紙の見本PDF</a></li>
               <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header">アカウント登録フォーム</a></li>
-              <li><a href="https://docs.google.com/spreadsheets/d/1ulzrqqKb2LJGSlRsjeE5PeWD7sZLk_aEylJdKLgl2gg/edit?usp=sharing">スプレッドシート</a></li>
+              <li><a href="https://docs.google.com/spreadsheets/d/1ulzrqqKb2LJGSlRsjeE5PeWD7sZLk_aEylJdKLgl2gg/edit?usp=sharing">Google スプレッドシート</a></li>
               <li><a href="https://script.google.com/d/1z-JcTMHU00_jVSh8ZM9-MKI9zLTgTXyW5GpQXgYS1ic7qWiDjP-OfVcw/edit?usp=sharing">データ読み書き用 Google Apps Script</a></li>
               <li><a href="https://script.google.com/d/1hZjHsx9aTnox8kvYcHUxT_WUnzP_pu0hdQ25dWTRMAPI8pu3pwf5Ay9h/edit?usp=sharing">占い結果取得用 Google Apps Script</a></li>
             </ul>
@@ -109,9 +114,9 @@
             <li>上の「ログイン」ボタンを押す。</li>
             <li>ログインするアカウントを入力・選択する。</li>
             <li>（初回のみ）画面左下の「続行」を押す。</li>
-            <img class="screenshot" src="images/confirmation1.png" alt="ログイン画像1つ目">
+            <img class="screenshot" src="/documents/confirmation1.png" alt="ログイン画像1つ目">
             <li>（初回のみ）すべてにチェックを入れ、下までスクロールして「続行」を押す。</li>
-            <img class="screenshot" src="images/confirmation2.png" alt="ログイン画像2つ目">
+            <img class="screenshot" src="/documents/confirmation2.png" alt="ログイン画像2つ目">
           </ol>
           <p>一度ログインすると、1時間程度は再ログイン不要になります。</p>
           <p>「<b>アクセスをブロック: Soleilシステム は Google の審査プロセスを完了していません</b>」と表示される場合、ログインしようとしたアカウントは登録されていません。間違いだと思われる場合は、石塚までお知らせください。</p>
@@ -151,22 +156,14 @@
               <li>A4・カラー・片面で15枚印刷する（各ブース60回分）</li>
               <li>16枚ずつに切り取る</li>
             </ul>
-            <object data="documents/code_cards_sample.pdf#zoom=Fit" type="application/pdf">二次元コード用紙の見本PDFは、下のボタンから開けます。</object>
-            <a href="documents/code_cards_sample.pdf" class="link" target="_blank" rel="noopener noreferrer">見本PDFを開く</a>
+            <object data="/documents/code_cards_sample.pdf#zoom=Fit" type="application/pdf">二次元コード用紙の見本PDFは、下のボタンから開けます。</object>
+            <a href="/documents/code_cards_sample.pdf" class="link" target="_blank" rel="noopener noreferrer">見本PDFを開く</a>
           </div>
         </details>
         <details>
           <summary>質問で使用する選択肢カード</summary>
           <div>
             <p>占いでお客さんに見せ、選んでもらうカード。現在制作中。</p>
-          </div>
-        </details>
-        <details>
-          <summary>占い師用の卓上チェックシート</summary>
-          <div>
-            <p>当日ブース内で確認する接客マニュアル。内容、形式、デザインを改良したうえで印刷する予定です。</p>
-            <object data="documents/manual_checksheet.pdf#zoom=Fit" type="application/pdf">卓上チェックシートの案PDFは、下のボタンから開けます。</object>
-            <a href="documents/manual_checksheet.pdf" class="link" target="_blank" rel="noopener noreferrer">案PDFを開く</a>
           </div>
         </details>
       </div>
@@ -207,9 +204,12 @@
                 <h3>選択式の質問</h3>
                 <div class="step-timer">2～3分</div>
               </div>
-              <p>会話を楽しみながら、お客さんの人柄を問う質問をします。</p>
-              <p>順番にカードを机の上に並べ、お客さんに選んでもらい、その回答を端末に入力していきます。</p>
-              <p>※ 現在、質問を厳選し、カードを制作しています。</p>
+              <p>会話を楽しみながら、お客さんの人柄を問う4択の質問を5個します。</p>
+              <ul>
+                <li><strong>1・2問め</strong>では、順番にカードを机の上に並べ、お客さんに選んでもらい、その回答を端末に入力していきます。</li>
+                <li><strong>3問め</strong>では、占い師がお客さんの印象を画面上で選びます。</li>
+                <li><strong>4・5問め</strong>では、1・2問めと同様にお客さんに回答してもらいます。</li>
+              </ul>
             </div>
           </div>
           <div class="step">
@@ -220,7 +220,7 @@
                 <div class="step-timer">約30秒</div>
               </div>
               <ol>
-                <li>最後の質問では、模様の書かれたカードを机の上に並べ、<strong>直感</strong>で1枚選んでもらいます。</li>
+                <li><strong>6問め</strong>として、模様の書かれたカードを8枚机の上に並べ、<strong>直感</strong>で1枚選んでもらいます。</li>
                 <li>端末で選択すると、カードの説明が画面上に表示されるので、簡単に紹介します。</li>
               </ol>
             </div>
@@ -233,7 +233,7 @@
                 <div class="step-timer">約30秒</div>
               </div>
               <ol>
-                <li>用意してある「二次元コード用紙」を1枚取り、書かれた番号を端末に入力して送信ボタンを押します。</li>
+                <li>用意してある「二次元コード用紙」を1枚取り、書かれた結果番号を端末に入力して送信ボタンを押します。</li>
                 <li>データの保存を待ちます（数秒～十数秒）。</li>
               </ol>
             </div>
@@ -247,7 +247,7 @@
               </div>
               <ol>
                 <li>画面に結果が表示されたら、ポイントを絞って口頭で伝えます。</li>
-                <li>先ほど番号を入力した「二次元コード用紙」をお客さんに手渡します。</li>
+                <li>先ほど結果番号を入力した「二次元コード用紙」をお客さんに手渡します。</li>
                 <li>スマホで二次元コードを読み取ると、占い結果をいつでも見返せることを伝えます。</li>
               </ol>
             </div>
@@ -280,7 +280,7 @@
           <table style="min-width: min(68rem, 300%);">
             <thead>
               <tr>
-                <th style="min-width: 4rem;">ステップ</th>
+                <th style="min-width: 6rem;">ステップ</th>
                 <th class="th-snack">スナックすばる</th>
                 <th class="th-gal">ウチらが恋路占わんとす</th>
                 <th class="th-element">人生元素解析</th>
@@ -365,7 +365,7 @@
             <a href="index.html?booth=element" class="link link-element" target="_blank" rel="noopener noreferrer">マッドサイエンティストの元素占い</a>
             <a href="index.html?booth=alien" class="link link-alien" target="_blank" rel="noopener noreferrer">宇宙人の未知の才能占い</a>
           </nav>
-          <li>ログインボタンが表示されたらログインします。画面に従って「質問」「カード選択」「結果番号入力」「送信」の順に進めます。<br>結果番号を入力する場面では、下の表から未使用の番号を選択して入力します。</li>
+          <li>ログインボタンが表示されたらログインします。画面に従って「質問」「カード選択」「結果番号入力」「送信」の順に進めます。<br>結果番号を入力する場面では、下の表から未使用の結果番号を選択して入力します。</li>
         </ol>
       </div>
 
@@ -491,7 +491,7 @@
         <ul>
           <li><strong>Google Cloud</strong><br>Apps Scriptの利用権限を管理するセキュリティ担当。</li>
           <li><strong>Google スプレッドシート</strong><br>占いの質問、選択肢、結果の文面などを管理するデータベース。</li>
-          <li><strong>Google Apps Script</strong><br>スプレッドシートのデータを読み書きし、結果の計算も行う頭脳。</li>
+          <li><strong>Google Apps Script</strong><br>スプレッドシートのデータを読み書きしてデータを送受信し、結果の計算も行う頭脳。</li>
           <li><strong>GitHub Pages</strong><br>データを受け取り、公開Webページ上に表示する受付。画像ファイルなども管理する。</li>
         </ul>
       </div>
@@ -510,22 +510,22 @@
             ④宇宙人の未知の才能占い（オマエタチノミライウラナッテヤル）
 
             仕組み：プログラミングを活用してオリジナルの占いを作ります。
-            ・番号とランダムな16文字の名前がパラメーターとしてついた結果閲覧用二次元コードを各ブース50枚、あらかじめ用意しておきます。
+            ・結果番号とランダムな16文字の名前がパラメーターとしてついた結果閲覧用二次元コードを各ブース50枚、あらかじめ用意しておきます。
             ・コンセプトごとの質問設定・結果文面・実行履歴をGoogleスプレッドシートに保管します。
-            ・占いにおいて回答や二次元コード番号を入力するフォームと、占い後にお客さんが二次元コードから閲覧する占い結果を、GitHub PagesのHTMLで表示します。
+            ・占いにおいて回答や結果番号を入力するフォームと、占い後にお客さんが二次元コードから閲覧する占い結果を、GitHub PagesのHTMLで表示します。
             ・データのやり取りをGoogle Apps Scriptが仲介し、スプレッドシートへのデータの読み書きやHTMLとのデータの送受信を担います。
 
             大まかな占いの流れ：
             1. 占い師は事前にパソコンまたはタブレット端末を用意し、専用ウェブサイトを開いておく。端末はお客さんから見えないように隠して、雰囲気を作る。お客さんをブースに迎え入れて、占いを始める。
-            2. 占い師がお客さんと会話し、お客さんの人柄を問う質問をする。その際、選択肢のカードを机の上に並べ、占い師が質問を言ってお客さんにカードを一つ選んでもらう。占い師はさりげなく端末に入力する。4～5択の質問が5個程度ある。
-            3. 占いらしい怪しげな模様が描かれた複数枚のカードを机の上に並べ、お客さんに直感で一つ選んでもらう。選んだカードに基づいて、お客さんの未来の予測、アドバイス、ラッキーアイテムなどを表示する。
-            4. 占い師は結果を紐づける二次元コードの番号を入力する。
-            5. 回答、選んだカード、二次元コード番号の情報がGASに送信され、GAS内部で回答をもとに占いの結果を算出してスプレッドシートに保存する。
+            2. 占い師がお客さんと会話し、お客さんの人柄を問う質問をする。その際、選択肢のカードを机の上に並べ、占い師が質問を言ってお客さんにカードを一つ選んでもらう。占い師はさりげなく端末に入力する。4択の質問が5個程度あり、4問はお客さんにカードを選択させ、1問は占い師がお客さんの印象を選ぶ。
+            3. 占いらしい怪しげな模様が描かれた8枚のカードを机の上に並べ、お客さんに直感で一つ選んでもらう。選んだカードに基づいて、お客さんの未来の予測、アドバイス、ラッキーアイテムなどを表示する。
+            4. 占い師は結果を紐づける二次元コードの結果番号を入力する。
+            5. 回答、選んだカード、結果番号の情報がGASに送信され、GAS内部で回答をもとに占いの結果を算出してスプレッドシートに保存する。
             6. 保存が完了すると、結果が占い師の端末に表示される。これは二次元コードを読み込んだ際に表示されるページと同じ内容である。結果をざっと見たら、占い師は二次元コードの紙をお客さんに渡す。占い後にパワーストーンが渡され、二次元コードの紙と合わせてお土産となる。
             7. お客さんは占い後に二次元コードを自分の端末で読み取り、結果を閲覧する。
 
             結果ページの内容：
-            占い時の質問に対する選択に応じて、各コンセプトにあった5個程度の観点でお客さんの属性を数値化し、数値とともに、その数値に応じたアドバイスを載せます。各属性の値をもとに、総合的に最も近いキャラクターを判定し、キャラクターのイラストと特徴も添えます。属性とキャラクターはお客さんの現状分析に当たります。さらに（属性とは別に）3個程度の観点で運勢を5段階評価し、その際にはキャラクターごとに初期値を決めておき、もともとランダムで生成された二次元コード名をもとにわずかな調整を加える方式をとります。また、占いの最後に選択したカードをもとに、お客さんに近い将来降りかかる運命を予測し、今後の行動の方針やラッキーアイテムなどを表示します。こちらは主に未来予測であり、どの組み合わせでも内容が矛盾しないように注意して文面を作成しておきます。
+            占い時の質問に対する選択に応じて、各コンセプトに合った3個の観点でお客さんの属性を数値化し、数値とともに、その数値に応じたアドバイスを載せます。各属性の値をもとに、総合的に最も近いキャラクターを判定し、キャラクターのイラストと特徴も添えます。属性とキャラクターはお客さんの現状分析に当たります。さらに（属性とは別に）3個程度の観点で運勢を5段階評価し、その際にはキャラクターごとに初期値を決めておき、もともとランダムで生成された二次元コード名をもとにわずかな調整を加える方式をとります。また、占いの最後に選択したカードをもとに、お客さんに近い将来降りかかる運命を予測し、今後の行動の方針やラッキーアイテムなどを表示します。こちらは主に未来予測であり、どの組み合わせでも内容が矛盾しないように注意して文面を作成しておきます。
 
             以上の情報を踏まえ、（指示）
           </p>
@@ -534,7 +534,7 @@
     </section>
   </main>
 
-  <footer>金沢大学附属高校第79回開校記念祭 有志模擬店 占いの館「soleil」</footer>
+  <footer><span>占いの館「soleil」 - 金沢大学附属高校第79回開校記念祭 有志模擬店</span></footer>
 
   <script>
     // 画面の外観調整
@@ -665,7 +665,7 @@
       if (accessToken) {
         for (const key of ["snack", "gal", "element", "alien"]) {
           if (!booth || key === booth) {
-            document.getElementById(`result-${key}`).innerHTML = `<td></td><td colspan="4">読み込み中...</td>`;
+            document.getElementById(`result-${key}`).innerHTML = `<td></td><td colspan="4">読み込み中…</td>`;
           }
         }
       }
@@ -706,7 +706,7 @@
       const row = document.getElementById(`row-${booth}-${index}`);
       const cells = row ? row.querySelectorAll("td") : [];
       if (cells[2] && cells[4]) {
-        cells[2].textContent = "削除中...";
+        cells[2].textContent = "削除中…";
         cells[4].querySelector("button").style.display = "none";
       }
       data = await callGasFunction("deleteResult", [booth, index]);
@@ -738,8 +738,8 @@
     }
 
     for (const key of ["snack", "gal", "element", "alien"]) {
-      document.getElementById(`result-display-${key}`).addEventListener("click", (e, booth = String(key)) => toggleRows(booth));
-      document.getElementById(`result-reload-${key}`).addEventListener("click", (e, booth = String(key)) => loadResults(booth));
+      document.getElementById(`result-display-${key}`).addEventListener("click", (e, booth = key) => toggleRows(booth));
+      document.getElementById(`result-reload-${key}`).addEventListener("click", (e, booth = key) => loadResults(booth));
     }
 
     // メッセージ表示
@@ -747,13 +747,13 @@
     const errorView = document.getElementById("error-view");
     function showLog(text) {
       console.log(text);
-      document.getElementById("log-text").textContent = String(text);
+      document.getElementById("log-text").textContent = text;
       logView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
     }
     function showError(text) {
       console.error(text);
-      document.getElementById("error-text").textContent = String(text);
+      document.getElementById("error-text").textContent = text;
       errorView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
     }

@@ -6,9 +6,15 @@
   <title>占いの館「soleil」鑑定結果</title>
   <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「soleil」で使用する占いプログラムの結果閲覧ページ">
   <meta name="robots" content="noindex,follow">
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/icons/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180x180.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
   <link rel="stylesheet" href="style.css">
   <style>
+    main { height: 100%; margin-top: 0; }
     h1, h2 { color: var(--fg-accent); }
     h2 { border-bottom: 1px solid var(--bg-accent); }
   </style>
@@ -36,12 +42,15 @@
 
     <div id="loading-view" class="card loading-card">
       <div class="spinner"></div>
-      <p id="loading-text">占い結果を読み込んでいます...</p>
+      <p id="loading-text"></p>
     </div>
 
     <div id="result-content" style="display: none;">
       <section class="card">
-        <div id="timestamp" style="text-align: right;"></div>
+        <div class="flex-container">
+          <span id="result-index"></span>
+          <span id="timestamp"></span>
+        </div>
         <h1 id="booth-title"></h1>
         <p id="booth-description"></p>
       </section>
@@ -68,6 +77,7 @@
         <h2 id="card-title" style="text-align: center;"></h2>
         <img id="card-image" class="result-image" src="" alt="カード画像">
         <p id="card-description" class="insert"></p>
+        <p><strong class="paragraph">ラッキーアイテム</strong><span id="card-charm"></span></p>
       </section>
     </div>
 
@@ -87,7 +97,11 @@
       <p>占いをご体験くださりありがとうございました。高校生としてできる限りの工夫を凝らして企画しましたので、今後の生活の参考になりましたら幸いです。</p>
       <form id="feedback-form">
         <p>よろしければ、占いの感想などをこちらにご記入ください。もし表示などに不具合がございましたら、あわせてご記入ください。</p>
-        <button id="feedback-log" type="button" class="display-button" style="display: none;">前回の送信内容を表示する<br>（送信は取り消されません）</button>
+        <div id="feedback-log-container" style="display: none;">
+          <button id="feedback-log" type="button" class="display-button">前回の送信内容を再表示</button>
+          <button id="feedback-clear" type="button" class="display-button">送信内容をクリア</button>
+          <br>（送信は取り消されません）
+        </div>
         <textarea id="feedback-text" placeholder="記入は任意です。何回でも送信できます。" required></textarea>
         <div class="navigation-button-container">
           <button type="submit" class="navigation-button primary">送信する</button>
@@ -96,7 +110,7 @@
     </section>
   </main>
 
-  <footer>金沢大学附属高校第79回開校記念祭 有志模擬店 占いの館「soleil」</footer>
+  <footer><span>占いの館「soleil」 - 金沢大学附属高校第79回開校記念祭 有志模擬店</span></footer>
 
   <script>
     // 画面の外観調整
@@ -134,14 +148,31 @@
     const loadingView = document.getElementById("loading-view");
     const resultContent = document.getElementById("result-content");
     const feedbackView = document.getElementById("feedback-view");
+    const feedbackLogContainer = document.getElementById("feedback-log-container");
+    const feedbackText = document.getElementById("feedback-text");
     const logView = document.getElementById("log-view");
-    const feedbackLogButton = document.getElementById("feedback-log");
 
     document.addEventListener("DOMContentLoaded", async () => {
+      let intervalId = null;
       try {
         if (booth && index && name) {
-          feedbackLogButton.style.display = localStorage.getItem(`feedback_text_${index}`) ? "block" : "none";
+          feedbackLogContainer.style.display = localStorage.getItem(`feedback_text_${index}`) ? "inline" : "none";
           feedbackView.style.display = "block";
+
+          const loadingText = document.getElementById("loading-text");
+          const loadingMessages = {
+            snack: ["ママがグラスを傾けています…", "アイスをアイスピックで砕き中…", "ちょっと氷追加してくるわね…", "次のカラオケ予約を入力中…", "ママがあなたの人生を回想中…", "チャームのお通しを準備中…"],
+            gal: ["運命たぐり寄せ中…", "ウチらの直感がバチバチ応答中…", "スマホの電波と運命を同調中…", "ウチらのギャルマインドを注入中…", "あげぽよな未来を引き寄せ中…", "超リアルな恋愛診断を弾き中…"],
+            element: ["被験者の精神波動を解析中…", "未知の人生元素を抽出し出している…", "フラスコ内で未来を調合中…", "運命の化学反応を測定中だ…", "計算式にあなたのデータを代入中…", "新元素「アナタ」の構造を特定中…"],
+            alien: ["ノウナイヲ スキャンチュウ…", "母船ノ スーパーコンピュータガ 計算中…", "ウチュウノ シグナルヲ 受信チュウ…", "未知ノ バイブスヲ 検知シタ…", "地球ノ 運命データヲ 照合中…", "テレパシーニテ 未来ヲ 解読チュウ…"]
+          }[booth] || ["占い結果を読み込んでいます…"];
+          loadingText.textContent = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+          intervalId = setInterval(() => {
+            let newText = "";
+            do { newText = loadingMessages[Math.floor(Math.random() * loadingMessages.length)]; } while (newText === loadingText.textContent);
+            loadingText.textContent = newText;
+          }, 2000);
+
           const navigationEntries = performance.getEntriesByType("navigation");
           const response = await fetch(`${SCRIPT_URL}?booth=${booth}&index=${index}&name=${encodeURIComponent(name)}&clear=${navigationEntries[0] && navigationEntries[0].type === "reload"}`);
           if (!response) { throw new Error("通信エラーが発生しました。"); }
@@ -154,15 +185,16 @@
       } catch (err) {
         loadingView.style.display = "none";
         showError(err.message);
+      } finally {
+        if (intervalId !== null) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
       }
     });
 
-    feedbackLogButton.addEventListener("click", () => {
-      document.getElementById("feedback-text").value = localStorage.getItem(`feedback_text_${index}`) || "";
-      feedbackLogButton.style.display = "none";
-    })
-
     function renderResult(data) {
+      document.getElementById("result-index").textContent = `結果番号 ${index}`;
       document.getElementById("timestamp").textContent = `鑑定日時 ${data.timestamp || "不明"}`;
       document.getElementById("booth-title").textContent = data.concept.title;
       document.getElementById("booth-description").textContent = data.concept.description;
@@ -170,90 +202,87 @@
       // 運勢
       const fortuneContainer = document.getElementById("fortune-list");
       fortuneContainer.innerHTML = "";
-      if (data.fortune && Array.isArray(data.fortune)) {
-        for (const f of data.fortune) {
-          const score = Math.max(Math.min(Number(f.score), 5), 0);
-          const stars = "★".repeat(score) + "☆".repeat(5 - score);
-          const item = document.createElement("div");
-          item.className = "fortune-item";
+      for (const f of data.fortune) {
+        const score = Math.max(Math.min(Number(f.score), 5), 0);
+        const stars = "★".repeat(score) + "☆".repeat(5 - score);
+        const item = document.createElement("div");
+        item.className = "fortune-item";
 
-          const header = document.createElement("div");
-          header.className = "flex-container";
-          header.innerHTML = `
-            <h3>${f.title}</h3>
-            <span class="stars">${stars}</span>
-          `;
-          item.appendChild(header);
+        const header = document.createElement("div");
+        header.className = "flex-container";
+        header.innerHTML = `
+          <h3>${f.title}</h3>
+          <span class="stars">${stars}</span>
+        `;
+        item.appendChild(header);
 
-          const description = document.createElement("div");
-          description.className = "flex-container";
-          for (const d of f.descriptions) {
-            const descriptionItem = document.createElement("span");
-            descriptionItem.className = "flex-item fortune-description";
-            descriptionItem.textContent = d;
-            description.appendChild(descriptionItem);
-          }
-          item.appendChild(description);
-
-          const evaluation = document.createElement("p");
-          evaluation.textContent = f.evaluation || "";
-          item.appendChild(evaluation);
-
-          fortuneContainer.appendChild(item);
+        const description = document.createElement("div");
+        description.className = "flex-container";
+        for (const d of f.descriptions) {
+          const descriptionItem = document.createElement("span");
+          descriptionItem.className = "flex-item fortune-description";
+          descriptionItem.textContent = d;
+          description.appendChild(descriptionItem);
         }
+        item.appendChild(description);
+
+        const evaluation = document.createElement("p");
+        evaluation.textContent = f.evaluation || "";
+        item.appendChild(evaluation);
+
+        fortuneContainer.appendChild(item);
       }
 
       // キャラクター
-      document.getElementById("hero-title").textContent = data.character.title || `未知のキャラクター`;
+      document.getElementById("hero-title").textContent = data.character.title;
       document.getElementById("hero-description").textContent = data.character.description;
-      document.getElementById("hero-image").src = `images/${data.character.file || ""}`;
+      document.getElementById("hero-image").src = `/images/${data.character.file || ""}`;
 
       // 属性
       const attributesContainer = document.getElementById("attributes-list");
       attributesContainer.innerHTML = "";
-      if (data.attributes && Array.isArray(data.attributes)) {
-        for (const a of data.attributes) {
-          const score = Math.max(Math.min(Number(a.score), 100), 0);
-          const item = document.createElement("div");
-          item.className = "attributes-item";
+      for (const a of data.attributes) {
+        const score = Math.max(Math.min(Number(a.score), 100), 0);
+        const item = document.createElement("div");
+        item.className = "attributes-item";
 
-          const header = document.createElement("div");
-          header.className = "flex-container";
-          header.innerHTML = `
-            <h3>${a.title}</h3>
-            <h3>${score} %</h3>
-          `;
-          item.appendChild(header);
+        const header = document.createElement("div");
+        header.className = "flex-container";
+        header.innerHTML = `
+          <h3>${a.title}</h3>
+          <h3>${score} %</h3>
+        `;
+        item.appendChild(header);
 
-          const ratio = document.createElement("div");
-          ratio.className = "ratio-container";
-          ratio.innerHTML = `
-            <div class="ratio-bar" style="width: ${score}%"></div>
-          `;
-          item.appendChild(ratio);
+        const ratio = document.createElement("div");
+        ratio.className = "ratio-container";
+        ratio.innerHTML = `
+          <div class="ratio-bar" style="width: ${score}%"></div>
+        `;
+        item.appendChild(ratio);
 
-          const description = document.createElement("div");
-          description.className = "flex-container";
-          for (const d of a.descriptions) {
-            const descriptionItem = document.createElement("span");
-            descriptionItem.className = "flex-item attributes-description";
-            descriptionItem.textContent = d;
-            description.appendChild(descriptionItem);
-          }
-          item.appendChild(description);
-
-          const evaluation = document.createElement("p");
-          evaluation.textContent = a.evaluation || "";
-          item.appendChild(evaluation);
-
-          attributesContainer.appendChild(item);
+        const description = document.createElement("div");
+        description.className = "flex-container";
+        for (const d of a.descriptions) {
+          const descriptionItem = document.createElement("span");
+          descriptionItem.className = "flex-item attributes-description";
+          descriptionItem.textContent = d;
+          description.appendChild(descriptionItem);
         }
+        item.appendChild(description);
+
+        const evaluation = document.createElement("p");
+        evaluation.textContent = a.evaluation || "";
+        item.appendChild(evaluation);
+
+        attributesContainer.appendChild(item);
       }
 
       // カード情報
-      document.getElementById("card-title").textContent = data.card.title || `未知のカード`;
+      document.getElementById("card-title").textContent = data.card.title;
       document.getElementById("card-description").textContent = data.card.description;
-      document.getElementById("card-image").src = `images/${data.card.file || ""}`;
+      document.getElementById("card-charm").textContent = data.card.charm;
+      document.getElementById("card-image").src = `/images/${data.card.file || ""}`;
 
       loadingView.style.display = "none";
       resultContent.style.display = "block";
@@ -263,23 +292,22 @@
     document.getElementById("feedback-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = e.target.querySelector("button");
-      const text = document.getElementById("feedback-text");
 
       btn.disabled = true;
-      btn.textContent = "送信中...";
+      btn.textContent = "送信中…";
 
       try {
         const response = await fetch(SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
-          body: JSON.stringify({ index: Number(index), text: text.value })
+          body: JSON.stringify({ index: Number(index), text: feedbackText.value })
         });
         const json = await response.json();
 
         if (json.success) {
           showLog("感想を送信しました。ありがとうございました！");
-          localStorage.setItem(`feedback_text_${index}`, text.value);
-          text.value = "";
+          localStorage.setItem(`feedback_text_${index}`, feedbackText.value);
+          feedbackText.value = "";
         } else {
           throw new Error(json.message);
         }
@@ -291,15 +319,25 @@
       }
     });
 
+    document.getElementById("feedback-log").addEventListener("click", () => {
+      feedbackText.value = localStorage.getItem(`feedback_text_${index}`) || "";
+      feedbackLogContainer.style.display = "none";
+    })
+    document.getElementById("feedback-clear").addEventListener("click", () => {
+      feedbackText.value = "";
+      localStorage.removeItem(`feedback_text_${index}`);
+      feedbackLogContainer.style.display = "none";
+    })
+
     // メッセージ表示
     function showLog(text) {
       console.log(text);
-      document.getElementById("log-text").textContent = String(text);
+      document.getElementById("log-text").textContent = text;
       logView.style.display = "block";
     }
     function showError(text) {
       console.error(text);
-      document.getElementById("error-text").textContent = String(text);
+      document.getElementById("error-text").textContent = text;
       errorView.style.display = "block";
     }
     document.getElementById("hide-log").addEventListener("click", () => {

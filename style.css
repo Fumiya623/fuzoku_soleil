@@ -65,7 +65,7 @@
 html, body {
   width: 100%;
   min-width: 256px;
-  min-height: 100%;
+  min-height: 100dvh;
   background-color: #000000;
   color: #ffffff;
   font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
@@ -87,12 +87,19 @@ button, input, textarea {
   border: none;
   font-size: inherit;
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(0.5rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
 main {
   display: flow-root;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 3rem);
   max-width: var(--content-width);
-  margin: 0 auto;
+  margin: 3rem auto 0;
   padding: 0 1rem;
   background-color: var(--bg-default);
 }
@@ -130,19 +137,88 @@ object {
   height: 20rem;
   border: none;
 }
-footer {
+
+header {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 0.5rem;
+  position: fixed;
+  z-index: 2;
   width: 100%;
+  max-width: var(--content-width);
+  height: 3rem;
+  top: 0;
+  left: 50%;
+  background: var(--bg-accent);
+  transform: translateX(-50%);
+}
+header > h2 {
+  max-width: 100%;
+  color: var(--fg-normal);
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+header a {
+  color: var(--fg-normal);
+  text-decoration: none;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: calc(100% - 3rem);
+  width: 100%;
+  height: 3rem;
   max-width: var(--content-width);
   margin: 0 auto;
   padding: 0.5rem 1rem;
-  text-align: center;
   color: var(--fg-default);
   background-color: var(--bg-default);
+}
+footer > span {
+  overflow-x: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 /* ---汎用的な要素--- */
 .insert {
   white-space: pre-line;
+}
+.paragraph {
+  margin-inline-end: 1rem;
+}
+
+.drawer-check {
+  display: none;
+}
+.hamburger {
+  display: flex;
+  height: 3rem;
+  width: 3rem;
+  padding: 1rem;
+  background-color: var(--bg-eccentric);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.hamburger span, .hamburger span::before, .hamburger span::after {
+  content: "";
+  display: block;
+  height: 0.25rem;
+  width: 1.5rem;
+  background: var(--fg-normal);
+  position: absolute;
+}
+.hamburger span::before {
+  bottom: 0.5rem;
+}
+.hamburger span::after {
+  top: 0.5rem;
 }
 
 .card {
@@ -171,7 +247,6 @@ footer {
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
 }
-@keyframes spin { to { transform: rotate(360deg); } }
 
 .display-button-container {
   margin: 0.5rem 0;
@@ -266,23 +341,30 @@ footer {
 
 /* ---主に回答入力ページ用--- */
 /* 画面分割の設定 */
-main.shrunk {
+.drawer-check:checked ~ header {
+  max-width: unset;
+} 
+.drawer-check:checked ~ main.shrunk {
   position: sticky;
   left: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) + 0.5rem);
 }
 
 .sidebar {
   position: fixed;
-  left: 0;
-  top: 0;
+  left: calc(-1 * clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)));
+  top: 3rem;
   width: var(--sidebar-size);
   min-width: var(--sidebar-size-min);
   max-width: var(--sidebar-size-max);
-  height: 100%;
-  background-color: var(--bg-accent);
+  height: calc(100% - 3rem);
+  background-color: var(--bg-eccentric);
+  box-shadow: 1px 0 8px var(--bg-default);
   color: var(--fg-normal);
   z-index: 1;
   transition: left 0.2s ease;
+}
+.drawer-check:checked ~ .sidebar {
+  left: 0;
 }
 .sidebar-container {
   width: 100%;
@@ -297,7 +379,7 @@ main.shrunk {
   position: absolute;
   left: 100%;
   top: 0;
-  width: 0.5rem;
+  width: 0;
   height: 100%;
   background-color: var(--fg-default);
   cursor: col-resize;
@@ -306,78 +388,44 @@ main.shrunk {
 .resizer:hover {
   background-color: var(--fg-normal);
 }
-
-.resize-button {
-  position: absolute;
-  background: none;
-  cursor: pointer;
-  top: 0;
-  right: 100%;
-  border: 1.5rem solid transparent;
-  border-left-width: 0;
-  border-right-color: var(--fg-default);
-  transform-origin: right;
-  transition: border-color 0.2s, transform 0.2s ease;
-}
-.resize-button:hover {
-  border-right-color: var(--fg-normal);
-}
-
-.sidebar.collapsed {
-  left: calc(-1 * clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)));
-}
-.sidebar.collapsed .resizer {
-  width: 0;
-}
-.sidebar.collapsed .resize-button {
-  transform: rotate(180deg);
+.drawer-check:checked ~ .sidebar .resizer {
+  width: 0.5rem;
 }
 
 @media (max-width: 768px) {
   html, body {
     --sidebar-size-default: 12rem;
   }
-  main.shrunk {
+  .drawer-check:checked ~ main.shrunk {
     position: block;
     left: unset;
-    margin-top: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) + 0.5rem);
+    margin-top: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) + 3rem + 0.5rem);
   }
   .sidebar {
     width: 100%;
     height: var(--sidebar-size);
+    left: 0;
+    top: calc(-1 * clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)));
     min-height: var(--sidebar-size-min);
     max-height: var(--sidebar-size-max);
+    box-shadow: 0 1px 8px var(--bg-default);
     min-width: unset;
     max-width: unset;
     transition: top 0.2s ease;
+  }
+  .drawer-check:checked ~ .sidebar {
+    top: 3rem;
   }
   .resizer {
     left: 0;
     top: 100%;
     width: 100%;
-    height: 0.5rem;
+    height: 0;
     cursor: row-resize;
   }
-  .resize-button {
-    top: unset;
-    right: unset;
-    left: 0;
-    bottom: 100%;
-    border: 1.5rem solid transparent;
-    border-top-width: 0;
-    border-bottom-color: var(--fg-default);
-    transform-origin: bottom;
-  }
-  .resize-button:hover {
-    border-right-color: transparent;
-    border-bottom-color: var(--fg-normal);
-  }
-  .sidebar.collapsed {
-    left: 0;
-    top: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) * -1);
-  }
-  .sidebar.collapsed .resizer {
-    height: 0;
+  .drawer-check:checked ~ .sidebar .resizer {
+    width: 100%;
+    height: 0.5rem;
   }
   #width {
     display: none;
@@ -387,31 +435,12 @@ main.shrunk {
 /* サイドバー内の要素 */
 .sidebar-content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  gap: 1rem;
-}
-.form-bar {
-  display: none;
-}
-.form-bar.active {
-  display: block;
-}
-.form-bar.preview {
-  display: block;
-  padding: 0.25rem;
-  color: var(--fg-default);
-  background-color: var(--bg-eccentric);
-  font-size: 75%;
-}
-.form-bar.preview h2 {
-  font-size: 150%;
 }
 
 .navigation-button.small {
   padding: 0.25rem 0.5rem;
   color: var(--fg-default);
+  background-color: var(--bg-default);
   text-decoration: none;
   text-align: center;
 }
@@ -436,10 +465,6 @@ main.shrunk {
 .form-card.active {
   display: block;
   animation: fadeIn 0.2s ease-in-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(0.5rem); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .form-badge {
@@ -468,7 +493,8 @@ main.shrunk {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0.5rem 1.5rem;
+  padding: 0.5rem;
+  padding-left: 1.5rem;
   background-color: var(--bg-normal);
   border: 2px solid var(--fg-accent);
   border-radius: 0.25rem;
@@ -490,12 +516,12 @@ main.shrunk {
 }
 .choice-option .choice-number {
   position: absolute;
-  top: 50%;
-  right: 0.5rem;
+  padding: 0 0.25rem;
+  top: 0;
+  left: 0;
   color: var(--fg-default);
-  font-size: 2rem;
+  font-size: 125%;
   font-weight: bold;
-  transform: translateY(-50%);
 }
 .choice-image {
   width: 100%;
@@ -518,6 +544,7 @@ main.shrunk {
   max-width: 16rem;
 }
 .card-description {
+  position: relative;
   flex: 1;
 }
 
@@ -590,7 +617,7 @@ main.shrunk {
 
 .big-number {
   margin: 0.25rem;
-  font-size: 2rem;
+  font-size: 200%;
   font-weight: bold;
   color: var(--fg-accent);
   letter-spacing: 1px;
@@ -632,7 +659,7 @@ textarea:focus {
 }
 .stars {
   color: #f59e0b;
-  font-size: 1.5rem;
+  font-size: 150%;
   letter-spacing: 2px;
   white-space: nowrap;
 }
@@ -671,58 +698,6 @@ textarea:focus {
 
 /* ---主に情報整理ページ用--- */
 /* ヘッダーとメニュー */
-header {
-  position: fixed;
-  z-index: 2;
-  width: 100%;
-  max-width: var(--content-width);
-  height: 3rem;
-  top: 0;
-  left: 50%;
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--bg-accent);
-  transform: translateX(-50%);
-}
-header > h2 {
-  max-width: 100%;
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-header a {
-  color: var(--fg-normal);
-  text-decoration: none;
-}
-.drawer-check {
-  display: none;
-}
-.hamburger {
-  display: flex;
-  height: 3rem;
-  width: 3rem;
-  padding: 1rem;
-  background-color: var(--bg-eccentric);
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-.hamburger span, .hamburger span::before, .hamburger span::after {
-  content: "";
-  display: block;
-  height: 0.25rem;
-  width: 1.5rem;
-  background: var(--fg-normal);
-  position: absolute;
-}
-.hamburger span::before {
-  bottom: 0.5rem;
-}
-.hamburger span::after {
-  top: 0.5rem;
-}
 .menu-content {
   position: fixed;
   z-index: 1;
@@ -778,7 +753,7 @@ header a {
   align-items: center;
   justify-content: center;
   background-color: var(--bg-accent);
-  font-size: 1.25rem;
+  font-size: 125%;
   font-weight: bold;
 }
 .step-timer {

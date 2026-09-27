@@ -7,16 +7,26 @@
   <meta name="description" content="金沢大学附属高校第79回開校記念祭における有志模擬店「soleil」で使用する占いプログラムの回答入力ページ">
   <meta name="robots" content="noindex,follow">
   <script src="https://accounts.google.com/gsi/client" async defer></script>
-  <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/x-icon" href="/icons/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/icons/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon-180x180.png">
+  <link rel="manifest" href="/icons/site.webmanifest">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <input id="drawer-check" class="drawer-check" type="checkbox">
+  <header>
+    <div><label for="drawer-check" class="hamburger"><span></span></label></div>
+    <h2><span id="booth-title">ブース選択</span> - 占いの館「soleil」</h2>
+  </header>
   <div id="sidebar" class="sidebar">
     <div class="sidebar-container">
       <h1 id="booth-title">占いの館「soleil」</h1>
       <div id="sidebar-content" class="sidebar-content">
         <p>こちらは模擬店スタッフ用の内部システムです。</p>
-        <p><b>操作のヒント：</b>三角形を押すと、このサイドバーを隠したり再表示したりすることができます。境界線をドラッグすると幅が変わり、境界線をダブルクリックすると初めの位置に戻ります。</p>
+        <p>画面左上の<strong>三本線</strong>を押すと、このサイドバーの表示が切り替わります。サイドバーの<strong>境界線</strong>をドラッグすると幅が変わり、境界線をダブルクリックすると初めの位置に戻ります。</p>
       </div>
       <table id="local-data-table" style="display: none;">
         <thead>
@@ -48,14 +58,12 @@
           <button class="display-button" data-width="100%">画面全体</button>
         </div>
       </div>
-      <div class="navigation-button-container">
+      <nav id="navigation-button-container" class="navigation-button-container" style="display: none;">
         <a href="index.html" class="navigation-button small">ブース変更</a>
         <a href="manual.html" class="navigation-button small" target="_blank" rel="noopener noreferrer">マニュアル</a>
-      </div>
+      </nav>
     </div>
-    <div id="resizer" class="resizer">
-      <button id="resize-button" class="resize-button"></button>
-    </div>
+    <div id="resizer" class="resizer"></div>
   </div>
 
   <main class="shrunk">
@@ -115,13 +123,16 @@
         <span id="submitted-code-index" class="big-number"></span>
         <div id="result-link" class="link-container"></div>
       </div>
-      <p>印字された番号をよく確かめて、<b>二次元コード用紙</b>を占い師から受け取ってください。</p>
-      <p>ブースから出たら、<b>パワーストーン</b>も受け取ってください。</p>
+      <p>印字された番号をよく確かめて、<b>二次元コード用紙</b>を渡します。</p>
+      <p>自身のスマホで読み取って結果を見返せることを伝えます。</p>
+      <p>ブースから出たら、<b>パワーストーン</b>も受け取るよう伝えます。</p>
       <div class="navigation-button-container">
         <button type="button" id="reset-button" class="navigation-button primary">占いを終了する</button>
       </div>
     </section>
   </main>
+
+  <footer><span>占いの館「soleil」 - 金沢大学附属高校第79回開校記念祭 有志模擬店</span></footer>
 
   <script>
     // 画面の外観調整
@@ -152,12 +163,7 @@
     // 折りたたみ機能
     const main = document.querySelector("main");
     const resizer = document.getElementById("resizer");
-    const resizeButton = document.getElementById("resize-button");
 
-    resizeButton.addEventListener("click", () => {
-      main.classList.toggle("shrunk");
-      document.getElementById("sidebar").classList.toggle("collapsed");
-    });
     resizer.addEventListener("dblclick", () => {
       document.body.style.setProperty("--sidebar-size", "var(--sidebar-size-default)");
     });
@@ -249,17 +255,22 @@
 
             localStorage.setItem("gas_access_token", accessToken);
             localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 60) * 1000));
+            document.getElementById("login-card").style.display = "none";
+            document.getElementById("navigation-button-container").style.display = "flex";
             if (booth) {
               await loadQuestions();
             } else {
               showLog("アカウントが認証されました。");
-              document.getElementById("login-card").style.display = "none";
             }
           }
         });
 
         document.getElementById("login-button").addEventListener("click", handleAuth);
-        if (accessToken) { loadQuestions(); }
+        if (accessToken) {
+          document.getElementById("login-card").style.display = "none";
+          document.getElementById("navigation-button-container").style.display = "flex";
+          loadQuestions();
+        }
 
       } else {
         setTimeout(waitForGSI, 50);
@@ -297,7 +308,6 @@
     }
 
     // ページ読み込み
-    const sidebar = document.getElementById("sidebar-content");
     const logView = document.getElementById("log-view");
     const errorView = document.getElementById("error-view");
     const portalView = document.getElementById("portal-view");
@@ -326,7 +336,6 @@
     });
 
     async function loadQuestions() {
-      document.getElementById("login-card").style.display = "none";
       loadingView.style.display = "block";
       const json = await callGasFunction("getQuestionsByBooth", [booth]);
       if (json && json.success) {
@@ -339,7 +348,10 @@
 
     function renderForm(data) {
       document.getElementById("booth-title").textContent = data.concept.title;
-      sidebar.innerHTML = "";
+      document.getElementById("sidebar-content").innerHTML = `
+        <h3>担当者</h3>
+        <p class="insert">${data.concept.staff}</p>
+      `;
 
       const container = document.getElementById("questions-container");
       container.innerHTML = "";
@@ -350,15 +362,6 @@
       totalSteps = 0;
 
       // ブースの紹介
-      const conceptBar = document.createElement("div");
-      conceptBar.className = "form-bar active";
-      conceptBar.innerHTML = `
-        <strong></strong>
-        <h2>担当者</h2>
-        <p class="insert">${data.concept.staff}</p>
-      `;
-      sidebar.appendChild(conceptBar);
-
       const conceptCard = document.createElement("div");
       conceptCard.className = "card form-card active";
       conceptCard.innerHTML = `
@@ -369,38 +372,30 @@
       totalSteps++;
 
       // 質問
-      for (const que of data.questions) {
-        const questionBar = document.createElement("div");
-        questionBar.className = "form-bar";
-        questionBar.appendChild(document.createElement("strong"));
-
-        const barTitle = document.createElement("h2");
-        barTitle.textContent = `質問${que.index}`;
-        questionBar.appendChild(barTitle);
-
-        for (const note of que.notes) {
-          const paragraph = document.createElement("p");
-          paragraph.textContent = String(note);
-          questionBar.appendChild(paragraph);
-        }
-        sidebar.appendChild(questionBar);
+      for (const [qindex, que] of data.questions.entries()) {
+        const way = que.title.startsWith("占い師") ? "画面上で選択" : "カードを並べて質問";
 
         const questionCard = document.createElement("div");
         questionCard.className = "card form-card";
         questionCard.innerHTML = `
-          <div class="flex-container"><h2>質問${que.index}</h2><span class="form-badge">${que.notes[0] || ""}</span></div>
+          <div class="flex-container">
+            <h2>質問${qindex + 1}</h2>
+            <span class="form-badge"><strong class="paragraph">${way}</strong>${que.title}</span>
+          </div>
           <p class="insert">${que.description}</p>
         `;
 
         const choicesWrapper = document.createElement("div");
-        choicesWrapper.className = "choices-container list";
-        for (const cho of que.choices) {
+        choicesWrapper.className = "choices-container grid";
+        for (const [cindex, cho] of que.choices.entries()) {
           const option = document.createElement("label");
           option.className = "choice-option";
           option.innerHTML = `
-            <input type="radio" name="question_${totalSteps}" value="${cho.index}" required>
+            <input type="radio" name="question_${totalSteps}" value="${cindex + 1}" required>
+            <h3 class="insert">${cho.title}</h3>
+            <img src="/images/card_${booth}_${qindex + 1}_${cindex + 1}.png" alt="" class="choice-image">
             <span class="insert">${cho.description}</span>
-            <span class="choice-number">${cho.index}</span>
+            <span class="choice-number">${cindex + 1}</span>
           `;
           choicesWrapper.appendChild(option);
         }
@@ -408,37 +403,32 @@
         container.appendChild(questionCard);
 
         const badge = document.createElement("div");
-        badge.textContent = String(que.notes[0]) || `質問${que.index}`;
+        badge.textContent = `【${way}】${que.title}`;
         navigationBadge.appendChild(badge);
         totalSteps++;
       }
 
       // カード選択
-      const cardBar = document.createElement("div");
-      cardBar.className = "form-bar";
-      cardBar.innerHTML = `
-        <strong></strong>
-        <h2>カード選択</h2>
-        <p>お客さんに画面を見せ、直感で一つ選んでもらいます。</p>
-      `;
-      sidebar.appendChild(cardBar);
-
       const cardCard = document.createElement("div");
       cardCard.className = "card form-card";
-
-      const cardTitle = document.createElement("h2");
-      cardTitle.textContent = "直感カード選択";
-      cardCard.appendChild(cardTitle);
+      cardCard.innerHTML = `
+        <div class="flex-container">
+          <h2>直感カード選択</h2>
+          <strong class="form-badge">カードを並べて質問</strong>
+        </div>
+      `;
 
       const cardsWrapper = document.createElement("div");
       cardsWrapper.className = "choices-container grid";
 
-      for (const cho of data.cards) {
+      for (const [cindex, cho] of data.cards.entries()) {
         const option = document.createElement("label");
         option.className = "choice-option";
         option.innerHTML = `
-          <input type="radio" name="card" value="${cho.index}" required>
-          <img src="images/${cho.file}" alt="${cho.title || `カード${cho.index}`}" class="choice-image">
+          <input type="radio" name="card" value="${cindex + 1}" required>
+          <img src="/images/${cho.file}" alt="${cho.title}" class="choice-image">
+          <span class="insert">${cho.title}</span>
+          <span class="choice-number">${cindex + 1}</span>
         `;
         cardsWrapper.appendChild(option);
       }
@@ -451,29 +441,21 @@
       totalSteps++;
 
       // カード解説
-      const descriptionBar = document.createElement("div");
-      descriptionBar.className = "form-bar";
-      descriptionBar.innerHTML = `
-        <strong></strong>
-        <h2>カード解説</h2>
-        <p>選んだカードの説明は、後で見ることもできます。</p>
-      `;
-      sidebar.appendChild(descriptionBar);
-
       const descriptionWrapper = document.createElement("div");
       descriptionWrapper.className = "card form-card";
       descriptionIndex = totalSteps;
-      for (const cho of data.cards) {
+      for (const [cindex, cho] of data.cards.entries()) {
         const cardContainer = document.createElement("div");
         cardContainer.className = "card-description-container";
         cardContainer.innerHTML = `
-          <img src="images/${cho.file}" alt="${cho.title || `カード${cho.index}`}" class="choice-image">
+          <img src="/images/${cho.file}" alt="${cho.title}" class="choice-image">
           <div class="card-description">
-            <h2>${cho.title || `カード${cho.index}`}</h2>
+            <h2>${cho.title}</h2>
             <p class="insert">${cho.description}</p>
+            <p><strong class="paragraph">ラッキーアイテム</strong>${cho.charm}</p>
           </div>
         `;
-        cardContainer.dataset.index = cho.index;
+        cardContainer.dataset.index = cindex + 1;
         descriptionWrapper.appendChild(cardContainer);
       }
       container.appendChild(descriptionWrapper);
@@ -484,20 +466,11 @@
       totalSteps++;
 
       // 結果番号の入力
-      const codeBar = document.createElement("div");
-      codeBar.className = "form-bar";
-      codeBar.innerHTML = `
-        <strong></strong>
-        <h2>結果番号の入力</h2>
-        <p>入力・送信中もトークをつなぎます。今日の占いを振り返り、お客さんの印象などを伝えましょう。</p>
-      `;
-      sidebar.appendChild(codeBar);
-
       const codeCard = document.createElement("div");
       codeCard.className = "card form-card";
       codeCard.innerHTML = `
         <h1>おつかれさまでした</h1>
-        <p>占い師が、結果を保存する<b>二次元コード用紙</b>を一つ取り、印字された4桁の番号を入力します。</p>
+        <p>結果を保存する<b>二次元コード用紙</b>を一つ取り、印字された4桁の番号を入力します。</p>
         <input type="number" id="code-index" class="input-field" placeholder="0000" min="1000" max="9999" required>
       `;
       container.appendChild(codeCard);
@@ -518,11 +491,6 @@
         }
       }
 
-      for (const [idx, bar] of document.querySelectorAll(".form-bar").entries()) {
-        bar.classList.toggle("active", idx === currentStep);
-        bar.classList.toggle("preview", idx === currentStep - 1 || idx === currentStep + 1);
-        bar.querySelector("strong").textContent = idx === currentStep - 1 ? "前の項目：" : idx === currentStep + 1 ? "次の項目：" : "";
-      }
       for (const [idx, card] of document.querySelectorAll(".form-card").entries()) {
         card.classList.toggle("active", idx === currentStep);
       }
@@ -581,9 +549,9 @@
 
       const json = await callGasFunction("saveFortuneData", [booth, code, answers, card]);
       if (json && json.success) {
-        document.getElementById("submitted-code-index").textContent = String(code);
+        document.getElementById("submitted-code-index").textContent = code;
         document.getElementById("result-link").innerHTML = `
-          <a href="result.html?booth=${booth}&index=${code}&name=${json.name}" class="link" target="_blank" rel="noopener noreferrer">結果を開く（二次元コードと同じページ）</a>
+          <a href="result.html?booth=${booth}&index=${code}&name=${json.name}" class="link" target="_blank" rel="noopener noreferrer">結果を開く</a>
         `;
         isFormChanged = false;
         successView.style.display = "block";
@@ -605,6 +573,7 @@
       formView.style.display = "block";
     });
 
+    // ローカル保存
     function updateLocalData() {
       const table = document.getElementById("local-data-table");
       const tbody = document.getElementById("local-data");
@@ -673,13 +642,13 @@
     // メッセージ表示
     function showLog(text) {
       console.log(text);
-      document.getElementById("log-text").textContent = String(text);
+      document.getElementById("log-text").textContent = text;
       logView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
     }
     function showError(text) {
       console.error(text);
-      document.getElementById("error-text").textContent = String(text);
+      document.getElementById("error-text").textContent = text;
       localSaveButton.style.display = "none";
       errorView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
