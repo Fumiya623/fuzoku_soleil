@@ -372,7 +372,7 @@
 
       // 質問
       for (const [qindex, que] of data.questions.entries()) {
-        const way = que.title.startsWith("占い師") ? "画面上で選択" : "カードを並べて質問";
+        const way = que.title === "観察質問" ? "占い師が画面上で選択" : "カードを並べて質問";
 
         const questionCard = document.createElement("div");
         questionCard.className = "card form-card";
@@ -392,7 +392,6 @@
           option.innerHTML = `
             <input type="radio" name="question_${totalSteps}" value="${cindex + 1}" required>
             <h3 class="insert">${cho.title}</h3>
-            <img src="images/card_${booth}_${qindex + 1}_${cindex + 1}.jpg" alt="" class="choice-image">
             <span class="insert">${cho.description}</span>
             <span class="choice-number">${cindex + 1}</span>
           `;
