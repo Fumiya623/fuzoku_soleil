@@ -300,18 +300,13 @@ footer > span {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
 }
 .flex-item {
-  min-width: 0;
-  color: var(--fg-default);
-}
-.flex-container.wrap {
-  flex-wrap: wrap;
-}
-.flex-container.wrap > .flex-item {
-  min-width: unset;
+  min-width: 12rem;
   flex: 1 1 100%;
+  color: var(--fg-default);
 }
 
 .message-card {

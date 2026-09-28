@@ -236,7 +236,7 @@
       // キャラクター
       document.getElementById("hero-title").textContent = data.character.title;
       document.getElementById("hero-description").textContent = data.character.description;
-      document.getElementById("hero-image").src = `/images/${data.character.file || ""}`;
+      document.getElementById("hero-image").src = `images/${data.character.file || ""}`;
 
       // 属性
       const attributesContainer = document.getElementById("attributes-list");
@@ -282,7 +282,7 @@
       document.getElementById("card-title").textContent = data.card.title;
       document.getElementById("card-description").textContent = data.card.description;
       document.getElementById("card-charm").textContent = data.card.charm;
-      document.getElementById("card-image").src = `/images/${data.card.file || ""}`;
+      document.getElementById("card-image").src = `images/${data.card.file || ""}`;
 
       loadingView.style.display = "none";
       resultContent.style.display = "block";
