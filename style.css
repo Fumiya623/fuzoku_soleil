@@ -304,9 +304,11 @@ footer > span {
   gap: 0.25rem 1rem;
 }
 .flex-item {
-  min-width: 12rem;
-  flex: 1 1 100%;
+  flex: 1 1 12rem;
   color: var(--fg-default);
+}
+.flex-item:last-child {
+  text-align: right;
 }
 
 .message-card {
