@@ -74,7 +74,10 @@
       <h2>エラー</h2>
       <p id="error-text" style="margin: 0.5rem 0; color: var(--fg-default);"></p>
       <p>エラーの内容や原因が不明な場合は、開発者までお知らせください。</p>
-      <button id="local-save-button" class="display-button" style="display: none;" data-items="">一時的にローカル保存する（結果番号をよく確かめてください）</button>
+      <div id="local-save-container" style="display: none;">
+        <p id="local-save-text" class="insert"></p>
+        <button id="local-save-button" class="display-button" data-items="">一時的にローカル保存する（結果番号をよく確かめてください）</button>
+      </div>
       <button id="hide-error" class="cross-container"><div class="cross"></div></button>
     </div>
 
@@ -122,9 +125,7 @@
         <span id="submitted-code-index" class="big-number"></span>
         <div id="result-link" class="link-container"></div>
       </div>
-      <p>印字された番号をよく確かめて、<b>二次元コード用紙</b>を渡します。</p>
-      <p>自身のスマホで読み取って結果を見返せることを伝えます。</p>
-      <p>ブースから出たら、<b>パワーストーン</b>も受け取るよう伝えます。</p>
+      <p id="bye-text" class="insert"></p>
       <div class="navigation-button-container">
         <button type="button" id="reset-button" class="navigation-button primary">占いを終了する</button>
       </div>
@@ -313,6 +314,7 @@
     const loadingView = document.getElementById("loading-view");
     const formView = document.getElementById("form-view");
     const successView = document.getElementById("success-view");
+    const localSaveContainer = document.getElementById("local-save-container");
 
     const prevButton = document.getElementById("prev-button");
     const nextButton = document.getElementById("next-button");
@@ -365,14 +367,14 @@
       conceptCard.className = "card form-card active";
       conceptCard.innerHTML = `
         <h1>いらっしゃいませ</h1>
-        <p class="insert">${data.concept.description}</p>
+        <p class="insert">${data.concept.introduction}</p>
       `;
       container.appendChild(conceptCard);
       totalSteps++;
 
       // 質問
       for (const [qindex, que] of data.questions.entries()) {
-        const way = que.title === "観察質問" ? "占い師が画面上で選択" : "カードを並べて質問";
+        const way = que.title === "観察質問" ? "占い師が選択" : "お客さんに質問";
 
         const questionCard = document.createElement("div");
         questionCard.className = "card form-card";
@@ -414,6 +416,7 @@
           <h2>直感カード選択</h2>
           <strong class="form-badge">カードを並べて質問</strong>
         </div>
+        <p class="insert">${data.concept.instruction}</p>
       `;
 
       const cardsWrapper = document.createElement("div");
@@ -468,6 +471,7 @@
       codeCard.className = "card form-card";
       codeCard.innerHTML = `
         <h1>おつかれさまでした</h1>
+        <p class="insert">${data.concept.wait}</p>
         <p>結果を保存する<b>二次元コード用紙</b>を一つ取り、印字された4桁の番号を入力します。</p>
         <input type="number" id="code-index" class="input-field" placeholder="0000" min="1000" max="9999" required>
       `;
@@ -477,6 +481,9 @@
       codeBadge.textContent = "結果番号の入力と送信";
       navigationBadge.appendChild(codeBadge);
       totalSteps++;
+
+      document.getElementById("bye-text").textContent = data.concept.bye;
+      document.getElementById("local-save-text").textContent = data.concept.local;
 
       formView.style.display = "block";
       updateStepDisplay();
@@ -557,7 +564,7 @@
         showError(json && json.message || "保存に失敗しました。");
         if (json && json.local) {
           localSaveButton.dataset.items = `${code} ${answers.join(",")} ${card};`;
-          localSaveButton.style.display = "block";
+          localSaveContainer.style.display = "block";
         }
         formView.style.display = "block";
       }
@@ -627,10 +634,10 @@
       if (!item) { return; }
       localStorage.setItem("local_result", (localStorage.getItem("local_result") || "") + item);
       updateLocalData();
-      localSaveButton.style.display = "none";
+      localSaveContainer.style.display = "none";
       document.getElementById("submitted-code-index").textContent = item.split(" ")[0];
       document.getElementById("result-link").innerHTML = `
-        <p>現在、結果は端末に一時保存されています。時間をおいてから二次元コードを読み取ると、結果を見られるようになります。</p>
+        <p>現在、結果は端末に一時保存されています。（左上の三本線からメニューを開き、後で再送信します）</p>
       `;
       isFormChanged = false;
       formView.style.display = "none";
@@ -647,7 +654,7 @@
     function showError(text) {
       console.error(text);
       document.getElementById("error-text").textContent = text;
-      localSaveButton.style.display = "none";
+      localSaveContainer.style.display = "none";
       errorView.style.display = "block";
       window.scrollTo({ top: 0, behavior: "auto" });
     }

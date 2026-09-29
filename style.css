@@ -474,7 +474,6 @@ footer > span {
 .form-badge {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  color: var(--fg-normal);
   background-color: var(--bg-accent);
 }
 
@@ -538,19 +537,20 @@ footer > span {
   display: none;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
 }
 .card-description-container.active {
   display: flex;
 }
-.card-description-container img {
+.card-description-container > img {
   width: 50%;
   min-width: 12rem;
   max-width: 16rem;
 }
 .card-description {
   position: relative;
-  flex: 1;
+  flex: 1 1 12rem;
 }
 
 .navigation-button-container {

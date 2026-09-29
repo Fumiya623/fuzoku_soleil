@@ -82,6 +82,7 @@
             <h3>データベース</h3>
             <ul>
               <li><a href="documents/code_cards_sample.pdf">二次元コード用紙の見本PDF</a></li>
+              <li><a href="documents/choice_cards_sample.pdf">選択肢カードの見本PDF</a></li>
               <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header">アカウント登録フォーム</a></li>
               <li><a href="https://docs.google.com/spreadsheets/d/1ulzrqqKb2LJGSlRsjeE5PeWD7sZLk_aEylJdKLgl2gg/edit?usp=sharing">Google スプレッドシート</a></li>
               <li><a href="https://script.google.com/d/1z-JcTMHU00_jVSh8ZM9-MKI9zLTgTXyW5GpQXgYS1ic7qWiDjP-OfVcw/edit?usp=sharing">データ読み書き用 Google Apps Script</a></li>
@@ -134,27 +135,25 @@
       <div class="card">
         <h2>前日までの事前準備</h2>
         <h3>アカウント登録（主に占い師）</h3>
+        <p>全体グループラインで案内した通り、当日デバイスを操作する占い師や、内容を確認する責任者などは、システムにGoogleアカウントを登録します。</p>
         <details>
-          <summary>全体グループラインで案内した通り</summary>
-          <div>
-            <p>当日デバイスを操作する占い師や、内容を確認する責任者などは、システムにGoogleアカウントを登録します。</p>
-            <ol>
-              <li>事前に<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Googleフォーム</a>でメールアドレスを送信します。</li>
-              <li>開発者がシステムに登録します。Googleで承認されるまで最大数時間かかります。</li>
-              <li>初回のみアカウント認証が必要です。画面左上の三本線の横の「<strong>スタッフガイド</strong>」を押してトップページに戻り、下までスクロールして、ログインを行います。</li>
-            </ol>
-          </div>
+          <summary>手順</summary>
+          <ol>
+            <li>事前に<a href="https://docs.google.com/forms/d/e/1FAIpQLSfXNsNXiVsoBCoN8LWPF92z65mcFBRCPB4jlpZwrc9fvdK4Cg/viewform?usp=header" target="_blank" rel="noopener noreferrer">Googleフォーム</a>でメールアドレスを送信します。</li>
+            <li>開発者がシステムに登録します。Googleで承認されるまで最大数時間かかります。</li>
+            <li>初回のみアカウント認証が必要です。画面左上の三本線の横の「<strong>スタッフガイド</strong>」を押して「2. 占いを体験する」に進み、ログインを行います。</li>
+          </ol>
         </details>
 
-        <h3>紙を印刷する（予定）</h3>
+        <h3>紙を印刷して切り取る</h3>
+        <p>先生に事前に印刷してもらい、スタッフたちで協力して切り取っておきます。</p>
         <details>
           <summary>結果閲覧用の二次元コード用紙</summary>
           <div>
-            <p>占い後にお客さんに渡し、自分の結果を見てもらう紙。模擬店スタッフたちで協力して、事前に印刷し、切り取っておきます。</p>
-            <p>いつ誰がどこで印刷して切り取るのか、詳細は未定です。</p>
+            <p>占い後にお客さんに渡し、自分の結果を見てもらう紙。</p>
             <ul>
               <li>A4・カラー・片面で15枚印刷する（各ブース60回分）</li>
-              <li>16枚ずつに切り取る</li>
+              <li>16個ずつに切り取る</li>
             </ul>
             <object data="documents/code_cards_sample.pdf#zoom=Fit" type="application/pdf">二次元コード用紙の見本PDFは、下のボタンから開けます。</object>
             <a href="documents/code_cards_sample.pdf" class="link" target="_blank" rel="noopener noreferrer">見本PDFを開く</a>
@@ -163,7 +162,13 @@
         <details>
           <summary>質問で使用する選択肢カード</summary>
           <div>
-            <p>占いでお客さんに見せ、選んでもらうカード。現在制作中。</p>
+            <p>占いでお客さんに見せ、選んでもらうカード。A4・カラー・片面で12枚印刷します。</p>
+            <ul>
+              <li><strong class="paragraph">4択質問</strong>4ブース×5問×4択＝80個。A4・1枚に10個ずつ、計8枚。</li>
+              <li><strong class="paragraph">直感カード選択</strong>4ブース×8択＝32個。A4・1枚に8個ずつ、計4枚。</li>
+            </ul>
+            <object data="documents/choice_cards_sample.pdf#zoom=Fit" type="application/pdf">選択肢カードの見本PDFは、下のボタンから開けます。</object>
+            <a href="documents/choice_cards_sample.pdf" class="link" target="_blank" rel="noopener noreferrer">見本PDFを開く</a>
           </div>
         </details>
       </div>
@@ -208,7 +213,7 @@
               <p>会話を楽しみながら、お客さんの人柄を問う4択の質問を5個します。</p>
               <ul>
                 <li><strong>1・2問め</strong>では、選択肢となるカードを机の上に並べ、お客さんに選んでもらい、その回答を端末に入力していきます。</li>
-                <li><strong>3問め</strong>では、占い師がお客さんの印象を画面上で選びます。</li>
+                <li><strong>3問め</strong>では、占い師がお客さんの印象を選びます。</li>
                 <li><strong>4・5問め</strong>では、1・2問めと同様にお客さんに回答してもらいます。</li>
               </ul>
             </div>
@@ -319,10 +324,10 @@
               </tr>
               <tr>
                 <td>5. 結果解説＆お土産</td>
-                <td>「アンタのタイプは〇〇ね！この二次元コードをあげるわ。ブースを出たらパワーストーンを受け取って、後でゆっくり見なさい。」</td>
+                <td>「アンタのタイプは〇〇ね！このQRコードをあげるわ。ブースを出たらパワーストーンを受け取って、後でゆっくり見なさい。」</td>
                 <td>「じゃん！ウチらの診断結果！このQR渡すからね！出たところでパワーストーンもらって、スマホで読み込んで絶対見てね！」</td>
                 <td>「実験成功だ！君の属性は〇〇！この解析結果（QR）を授与する。外の受付で触媒（ストーン）を受取り、後で検証せよ。」</td>
-                <td>「解析完了……オマエハ 〇〇タイプ。コノ 二次元コードヲ 授与スル……。出口デ 謎ノ鉱石ヲ 受ケ取り、スマホデ 確認セヨ。」</td>
+                <td>「解析完了……オマエハ 〇〇タイプ。コノ QRコードヲ 授与スル……。出口デ 謎ノ鉱石ヲ 受ケ取り、スマホデ 確認セヨ。」</td>
               </tr>
               <tr>
                 <td>6. お見送り</td>
@@ -519,7 +524,7 @@
           <li><strong class="paragraph">400_～499_</strong>宇宙人の未知の才能占い</li>
         </ul>
         <p>4桁目は、入力ミスを検出する check digit（一種の parity bit）です。「右から偶数桁目の数の合計の3倍」と「右から奇数桁目の合計」の和が10の倍数となるように数値が決まります。ちなみに、一般的なバーコードの数字（13桁）でも同じ仕組みが使われているようです。</p>
-        <p>したがって、結果番号を「abcd」とすると、d は -3 × (a + c) - b を 10 で割った余りになります。例えば「190_」では、-3 × (1 + 0) - 9 = -12 なので、10で割った余りは 8 となり、結果番号は「1908」であることがわかります。</p>
+        <p>したがって、結果番号を「abcd」とすると、d は －3 × (a ＋ c) － b を 10 で割った余りになります。例えば「190_」では、－3 × (1 ＋ 0) － 9 ＝ －12 なので、10で割った余りは 8 となり、結果番号は「1908」であることがわかります。</p>
         <p>また、二次元コードのリンク先のURLには、ブース名と結果番号のほかに、長さ16の英数字からなる二次元コード名もついています。これは、URLを編集してほかの人の結果を覗き見ることを防ぐパスワードの役割を担っています。</p>
       </div>
 
