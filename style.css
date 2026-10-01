@@ -348,7 +348,7 @@ footer > span {
 .drawer-check:checked ~ header {
   max-width: unset;
 } 
-.drawer-check:checked ~ main.shrunk {
+.drawer-check:checked ~ .shrunk {
   position: sticky;
   left: calc(clamp(var(--sidebar-size-min), var(--sidebar-size), var(--sidebar-size-max)) + 0.5rem);
 }

@@ -34,6 +34,7 @@
             <th>回答</th>
             <th>カード</th>
             <th>再送信</th>
+            <th>削除</th>
           </tr>
         </thead>
         <tbody id="local-data"></tbody>
@@ -67,17 +68,20 @@
 
   <main class="shrunk">
     <div id="log-view" class="card message-card" style="display: none;">
-      <p id="log-text" style="color: var(--fg-default);"></p>
+      <p id="log-text" class="insert" style="color: var(--fg-default);"></p>
       <button id="hide-log" class="cross-container"><div class="cross"></div></button>
     </div>
     <div id="error-view" class="card message-card" style="display: none;">
       <h2>エラー</h2>
-      <p id="error-text" style="margin: 0.5rem 0; color: var(--fg-default);"></p>
+      <p id="error-text" class="insert" style="color: var(--fg-default);"></p>
       <p>エラーの内容や原因が不明な場合は、開発者までお知らせください。</p>
-      <div id="local-save-container" style="display: none;">
-        <p id="local-save-text" class="insert"></p>
-        <button id="local-save-button" class="display-button" data-items="">一時的にローカル保存する（結果番号をよく確かめてください）</button>
-      </div>
+      <details id="local-save-container" style="display: none;">
+        <summary>通信エラー発生時</summary>
+        <div>
+          <p id="local-save-text" class="insert"></p>
+          <button id="local-save-button" class="display-button" data-items="">一時的にローカル保存する（結果番号をよく確かめてください）</button>
+        </div>
+      </details>
       <button id="hide-error" class="cross-container"><div class="cross"></div></button>
     </div>
 
@@ -132,7 +136,7 @@
     </section>
   </main>
 
-  <footer><span>占いの館「soleil」 - 金沢大学附属高校第79回開校記念祭 有志模擬店</span></footer>
+  <footer class="shrunk"><span>占いの館「soleil」 - 金沢大学附属高校第79回開校記念祭 有志模擬店</span></footer>
 
   <script>
     // 画面の外観調整
@@ -222,17 +226,21 @@
     const SCRIPT_ID = "AKfycbx3gcdIXPjk8yK-EdWUG2_rd5X-SDI28ck38_qv8vLB_OY6mAmjiIgHGyWj4B9BWV0";
     const SCOPES = "https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/spreadsheets";
 
+    const loginCard = document.getElementById("login-card");
+    let accessToken = "";
+    let tokenExpiry = 0;
     let tokenClient;
-    let accessToken = null;
+    let nextFunction = booth ? loadQuestions: () => showLog("アカウントが認証されました。");
 
     document.addEventListener("DOMContentLoaded", () => {
       main.style.transition = "all 0.2s ease";
       updateLocalData();
       if (booth) {
         const savedToken = localStorage.getItem("gas_access_token");
-        const tokenExpiry = localStorage.getItem("gas_token_expiry");
-        if (savedToken && tokenExpiry && Date.now() < parseInt(tokenExpiry)) {
+        const savedTokenExpiry = localStorage.getItem("gas_token_expiry");
+        if (savedToken && savedTokenExpiry && Date.now() < parseInt(savedTokenExpiry)) {
           accessToken = savedToken;
+          tokenExpiry = parseInt(savedTokenExpiry);
         }
       } else {
         loadingView.style.display = "none";
@@ -252,24 +260,21 @@
               return;
             }
             accessToken = tokenResponse.access_token;
+            tokenExpiry = Date.now() + (tokenResponse.expires_in - 60) * 1000;
 
             localStorage.setItem("gas_access_token", accessToken);
-            localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 60) * 1000));
-            document.getElementById("login-card").style.display = "none";
+            localStorage.setItem("gas_token_expiry", String(tokenExpiry));
+            loginCard.style.display = "none";
             document.getElementById("navigation-button-container").style.display = "flex";
-            if (booth) {
-              await loadQuestions();
-            } else {
-              showLog("アカウントが認証されました。");
-            }
+            await nextFunction();
           }
         });
 
         document.getElementById("login-button").addEventListener("click", handleAuth);
         if (accessToken) {
-          document.getElementById("login-card").style.display = "none";
+          loginCard.style.display = "none";
           document.getElementById("navigation-button-container").style.display = "flex";
-          loadQuestions();
+          nextFunction();
         }
 
       } else {
@@ -281,8 +286,14 @@
       tokenClient.requestAccessToken({ prompt: free ? "" : "consent" });
     }
 
-    async function callGasFunction(functionName, parameters = []) {
+    async function callGasFunction(retryFunc, functionName, parameters = []) {
       if (!accessToken) { return { success: false, message: "Googleアカウントでログインして、アクセスを認証してください。" }; }
+      if (Date.now() > tokenExpiry) {
+        nextFunction = retryFunc;
+        loginCard.style.display = "block";
+        await handleAuth();
+        return { success: false, message: "ログインから一定時間が経過しました。再ログインしてください。", local: true };
+      }
 
       try {
         const response = await fetch(`https://script.googleapis.com/v1/scripts/${SCRIPT_ID}:run`, {
@@ -299,7 +310,14 @@
         });
 
         const json = await response.json();
-        if (json.error) { return { success: false, message: `関数${functionName}の実行時にエラーが発生しました。\n${JSON.stringify(json.error)}` }; }
+        if (json.error) {
+          if (json.error.code === 401) {
+            nextFunction = retryFunc;
+            loginCard.style.display = "block";
+            await handleAuth();
+          }
+          return { success: false, message: `関数${functionName}の実行時にエラーが発生しました。\n${JSON.stringify(json.error)}` };
+        }
         return json.response.result;
 
       } catch (err) {
@@ -338,7 +356,7 @@
 
     async function loadQuestions() {
       loadingView.style.display = "block";
-      const json = await callGasFunction("getQuestionsByBooth", [booth]);
+      const json = await callGasFunction(loadQuestions, "getQuestionsByBooth", [booth]);
       if (json && json.success) {
         renderForm(json);
       } else {
@@ -517,6 +535,40 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
+    async function submitResult() {
+      formView.style.display = "none";
+      loadingView.style.display = "block";
+      document.getElementById("loading-text").textContent = "占い結果を保存しています...";
+
+      const answers = [];
+      for (let i = 1; i <= questionCount; i++) {
+        const selected = document.querySelector(`input[name="question_${i}"]:checked`);
+        answers.push(selected ? Number(selected.value): 0);
+      }
+      const cardIndex = document.querySelector(`input[name="card"]:checked`);
+      const card = cardIndex ? Number(cardIndex.value): 0;
+      const codeIndex = document.getElementById("code-index");
+      const code = codeIndex ? Number(codeIndex.value): 0;
+
+      const json = await callGasFunction(submitResult, "saveFortuneData", [booth, code, answers, card]);
+      if (json && json.success) {
+        document.getElementById("submitted-code-index").textContent = code;
+        document.getElementById("result-link").innerHTML = `
+          <a href="result.html?booth=${booth}&index=${code}&name=${json.name}" class="link" target="_blank" rel="noopener noreferrer">結果を開く</a>
+        `;
+        isFormChanged = false;
+        successView.style.display = "block";
+      } else {
+        showError(json && json.message || "保存に失敗しました。");
+        if (json && json.local) {
+          localSaveButton.dataset.items = `${code} ${answers.join(",")} ${card};`;
+          localSaveContainer.style.display = "block";
+        }
+        formView.style.display = "block";
+      }
+      loadingView.style.display = "none";
+    }
+
     nextButton.addEventListener("click", () => {
       if (currentStep >= 1 && currentStep <= questionCount + 1) {
         if (!document.querySelector(`input[name="${currentStep === questionCount + 1 ? "card" : `question_${currentStep}`}"]:checked`)) {
@@ -537,38 +589,7 @@
     formView.addEventListener("input", () => { isFormChanged = true; });
     formView.addEventListener("submit", async (e) => {
       e.preventDefault();
-
-      formView.style.display = "none";
-      loadingView.style.display = "block";
-      document.getElementById("loading-text").textContent = "占い結果を保存しています...";
-
-      const answers = [];
-      for (let i = 1; i <= questionCount; i++) {
-        const selected = document.querySelector(`input[name="question_${i}"]:checked`);
-        answers.push(selected ? Number(selected.value): 0);
-      }
-      const cardIndex = document.querySelector(`input[name="card"]:checked`);
-      const card = cardIndex ? Number(cardIndex.value): 0;
-      const codeIndex = document.getElementById("code-index");
-      const code = codeIndex ? Number(codeIndex.value): 0;
-
-      const json = await callGasFunction("saveFortuneData", [booth, code, answers, card]);
-      if (json && json.success) {
-        document.getElementById("submitted-code-index").textContent = code;
-        document.getElementById("result-link").innerHTML = `
-          <a href="result.html?booth=${booth}&index=${code}&name=${json.name}" class="link" target="_blank" rel="noopener noreferrer">結果を開く</a>
-        `;
-        isFormChanged = false;
-        successView.style.display = "block";
-      } else {
-        showError(json && json.message || "保存に失敗しました。");
-        if (json && json.local) {
-          localSaveButton.dataset.items = `${code} ${answers.join(",")} ${card};`;
-          localSaveContainer.style.display = "block";
-        }
-        formView.style.display = "block";
-      }
-      loadingView.style.display = "none";
+      await submitResult();
     });
     document.getElementById("reset-button").addEventListener("click", () => {
       formView.reset();
@@ -601,6 +622,7 @@
           <td>${dataList[1]}</td>
           <td>${dataList[2]}</td>
           <td><button id="local-data-button-${index}" onclick="retrySave(${index})">再送信</button></td>
+          <td><button id="local-delete-button-${index}" onclick="deleteLocalData(${index})">削除</button></td>
         `;
         tbody.appendChild(tr);
       }
@@ -617,7 +639,7 @@
       loadingView.style.display = "block";
       document.getElementById("loading-text").textContent = `${item[0]}番の占い結果を再送信しています...`;
 
-      const json = await callGasFunction("saveFortuneData", [booth, ...item]);
+      const json = await callGasFunction(retrySave, "saveFortuneData", [booth, ...item]);
       if (json && json.success) {
         localStorage.setItem("local_result", (localStorage.getItem("local_result") || "").split(";").filter((_, idx) => idx !== index).join(";"));
         updateLocalData();
@@ -627,6 +649,15 @@
         showError(json && json.message || "保存に失敗しました。");
       }
       loadingView.style.display = "none";
+    }
+
+    function deleteLocalData(index) {
+      const item = localData[index];
+      if (!item) { return; }
+      if (!confirm(`${item[0]}番の結果を削除してもよろしいですか？\nこの操作は取り消せません。`)) { return; }
+      localStorage.setItem("local_result", (localStorage.getItem("local_result") || "").split(";").filter((_, idx) => idx !== index).join(";"));
+      updateLocalData();
+      showLog(`${item[0]}番の占い結果を削除しました。`);
     }
 
     localSaveButton.addEventListener("click", () => {
