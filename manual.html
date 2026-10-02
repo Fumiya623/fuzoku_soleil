@@ -655,6 +655,7 @@
               return;
             }
             accessToken = tokenResponse.access_token;
+            tokenExpiry = Date.now() + (tokenResponse.expires_in - 60) * 1000;
 
             localStorage.setItem("gas_access_token", accessToken);
             localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 60) * 1000));
