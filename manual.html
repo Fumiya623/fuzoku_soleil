@@ -658,7 +658,7 @@
             tokenExpiry = Date.now() + (tokenResponse.expires_in - 60) * 1000;
 
             localStorage.setItem("gas_access_token", accessToken);
-            localStorage.setItem("gas_token_expiry", String(Date.now() + (tokenResponse.expires_in - 60) * 1000));
+            localStorage.setItem("gas_token_expiry", String(tokenExpiry));
             if (hash === "0") { showLog("アカウントが認証されました。"); }
             loginCard.style.display = "none";
             await nextFunction();
@@ -740,10 +740,10 @@
           const row = data[key][i];
           const tr = document.createElement("tr");
           tr.id = `row-${key}-${row.index}`;
-          tr.className = i < 90 ? "hidden-row" : "";
+          tr.className = i < 190 ? "hidden-row" : "";
           tr.innerHTML = `
             <td>${row.index}</td>
-            <td>${i < 60 ? "本番" : i < 90 ? "予備" : "練習"}</td>
+            <td>${i < 100 ? "本番" : i < 190 ? "予備" : "練習"}</td>
             <td>${row.timestamp || "未使用"}</td>
             <td><a href="result.html?booth=${key}&index=${row.index}&name=${row.codeName}" target="_blank" rel="noopener noreferrer">結果を開く</a></td>
             <td>${row.timestamp ? `<button onclick="deleteResult('${key}', ${row.index})">削除</button>` : ""}</td>
