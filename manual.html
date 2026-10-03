@@ -661,6 +661,7 @@
             localStorage.setItem("gas_token_expiry", String(tokenExpiry));
             if (hash === "0") { showLog("アカウントが認証されました。"); }
             loginCard.style.display = "none";
+            errorView.style.display = "none";
             await nextFunction();
           }
         });

@@ -265,6 +265,7 @@
             localStorage.setItem("gas_access_token", accessToken);
             localStorage.setItem("gas_token_expiry", String(tokenExpiry));
             loginCard.style.display = "none";
+            errorView.style.display = "none";
             document.getElementById("navigation-button-container").style.display = "flex";
             await nextFunction();
           }
