@@ -95,13 +95,13 @@
     <section id="feedback-view" class="card" style="display: none;">
       <h2>感想・不具合の報告</h2>
       <p>ご体験ありがとうございました。高校生のアイデアと技術をぎゅっと詰め込んだ手作り占い、楽しんでいただけましたか？<br>今回お渡ししたメッセージが、これからの日々を少しでも前向きに過ごすためのヒントになりましたら幸いです。</p>
+      <p>よろしければ、占いの感想などをこちらにご記入ください。もし表示などに不具合がございましたら、あわせてご記入ください。</p>
+      <div id="feedback-log-container" style="display: none;">
+        <button id="feedback-log" type="button" class="display-button">前回の送信内容を再表示</button>
+        <button id="feedback-clear" type="button" class="display-button">送信内容をクリア</button>
+        <br>（送信は取り消されません）
+      </div>
       <form id="feedback-form">
-        <p>よろしければ、占いの感想などをこちらにご記入ください。もし表示などに不具合がございましたら、あわせてご記入ください。</p>
-        <div id="feedback-log-container" style="display: none;">
-          <button id="feedback-log" type="button" class="display-button">前回の送信内容を再表示</button>
-          <button id="feedback-clear" type="button" class="display-button">送信内容をクリア</button>
-          <br>（送信は取り消されません）
-        </div>
         <textarea id="feedback-text" placeholder="記入は任意です。何回でも送信できます。" required></textarea>
         <div class="navigation-button-container">
           <button type="submit" class="navigation-button primary">送信する</button>
